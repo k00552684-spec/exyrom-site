@@ -9,26 +9,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  
   <style>
     :root {
-      --bg: #070d19;
-      --card-bg: rgba(13, 20, 36, 0.65);
-      --card-border: rgba(125, 211, 252, 0.15);
-      --card-border-hover: rgba(125, 211, 252, 0.4);
-      --accent-pastel-blue: #7dd3fc;
-      --accent-sky: #38bdf8;
-      --accent-light: #bae6fd;
-      --text-main: #f0f9ff;
-      --text-muted: #94a3b8;
+      --bg: #16100e;
+      --card-bg: rgba(33, 24, 21, 0.7);
+      --card-border: rgba(220, 185, 160, 0.18);
+      --card-border-hover: rgba(220, 185, 160, 0.45);
+      --accent-pastel-brown: #e6c5ac;
+      --accent-warm: #d8a47f;
+      --accent-light: #f7e8dc;
+      --text-main: #faf5f0;
+      --text-muted: #bdae9e;
       --telegram-blue: #229ED9;
     }
 
     /* Custom Sleek Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(125, 211, 252, 0.2); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent-sky); }
+    ::-webkit-scrollbar-thumb { background: rgba(230, 197, 172, 0.25); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-warm); }
 
     html { scroll-behavior: smooth; }
 
@@ -60,8 +60,8 @@
       pointer-events: none;
       animation: floatOrb 12s ease-in-out infinite alternate;
     }
-    .orb-1 { width: 350px; height: 350px; background: rgba(125, 211, 252, 0.12); top: -50px; left: -50px; }
-    .orb-2 { width: 400px; height: 400px; background: rgba(56, 189, 248, 0.08); bottom: -100px; right: -50px; animation-delay: -6s; }
+    .orb-1 { width: 350px; height: 350px; background: rgba(230, 197, 172, 0.12); top: -50px; left: -50px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(216, 164, 127, 0.08); bottom: -100px; right: -50px; animation-delay: -6s; }
 
     @keyframes floatOrb {
       0% { transform: translateY(0) scale(1); }
@@ -78,7 +78,7 @@
       padding: 2.75rem 2rem;
       border-radius: 28px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transition: transform 0.3s ease;
     }
 
@@ -86,7 +86,7 @@
       font-size: 3.2rem;
       font-weight: 800;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 0%, var(--accent-light) 50%, var(--accent-sky) 100%);
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent-light) 50%, var(--accent-pastel-brown) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.25rem;
@@ -124,13 +124,13 @@
       position: sticky;
       top: 1rem;
       z-index: 100;
-      background: rgba(7, 13, 25, 0.8);
+      background: rgba(22, 16, 14, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       padding: 0.75rem 1rem;
       border-radius: 20px;
       border: 1px solid var(--card-border);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .filter-tabs { display: flex; gap: 0.5rem; }
@@ -147,16 +147,16 @@
     }
 
     .tab-btn.active {
-      background: var(--accent-pastel-blue);
-      color: #031020;
-      border-color: var(--accent-pastel-blue);
-      box-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
+      background: var(--accent-pastel-brown);
+      color: #1a100a;
+      border-color: var(--accent-pastel-brown);
+      box-shadow: 0 0 20px rgba(230, 197, 172, 0.3);
     }
 
     .search-input {
       flex: 1;
       min-width: 200px;
-      background: rgba(13, 20, 36, 0.8);
+      background: rgba(33, 24, 21, 0.8);
       border: 1px solid var(--card-border);
       color: var(--text-main);
       padding: 0.7rem 1.2rem;
@@ -167,11 +167,11 @@
     }
 
     .search-input:focus {
-      border-color: var(--accent-pastel-blue);
-      box-shadow: 0 0 15px rgba(125, 211, 252, 0.2);
+      border-color: var(--accent-pastel-brown);
+      box-shadow: 0 0 15px rgba(230, 197, 172, 0.2);
     }
 
-    /* Dynamic Card Styles with Scroll Reveal */
+    /* Dynamic Card Styles */
     .builds-list { display: flex; flex-direction: column; gap: 1.25rem; }
 
     .card {
@@ -181,13 +181,12 @@
       border: 1px solid var(--card-border);
       border-radius: 22px;
       padding: 1.6rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
       transform: translateY(30px);
     }
 
-    /* Class added by JS when scrolled into view */
     .card.reveal {
       opacity: 1;
       transform: translateY(0);
@@ -196,7 +195,7 @@
     .card:hover {
       transform: translateY(-5px);
       border-color: var(--card-border-hover);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(125, 211, 252, 0.12);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(230, 197, 172, 0.12);
     }
 
     .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
@@ -212,13 +211,14 @@
       letter-spacing: 0.05em;
     }
 
-    .badge-rom { background: rgba(125, 211, 252, 0.15); color: var(--accent-pastel-blue); border: 1px solid rgba(125, 211, 252, 0.3); }
-    .badge-kernel { background: rgba(56, 189, 248, 0.15); color: var(--accent-sky); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-rom { background: rgba(230, 197, 172, 0.15); color: var(--accent-pastel-brown); border: 1px solid rgba(230, 197, 172, 0.3); }
+    .badge-kernel { background: rgba(216, 164, 127, 0.15); color: var(--accent-warm); border: 1px solid rgba(216, 164, 127, 0.3); }
+    .badge-gapps { background: rgba(247, 232, 220, 0.2); color: var(--accent-light); border: 1px solid rgba(247, 232, 220, 0.4); }
 
     .build-meta { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; font-weight: 500; }
 
     .changelog {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.05);
       padding: 0.9rem 1.2rem;
       border-radius: 14px;
@@ -233,19 +233,19 @@
       display: inline-block;
       width: 100%;
       text-align: center;
-      background: linear-gradient(135deg, var(--accent-pastel-blue), var(--accent-sky));
-      color: #031020;
+      background: linear-gradient(135deg, var(--accent-pastel-brown), var(--accent-warm));
+      color: #1a100a;
       padding: 0.85rem;
       border-radius: 14px;
       font-weight: 800;
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 15px rgba(125, 211, 252, 0.15);
+      box-shadow: 0 4px 15px rgba(230, 197, 172, 0.15);
     }
 
     .btn-dl:hover { 
       transform: scale(1.01); 
-      box-shadow: 0 8px 25px rgba(125, 211, 252, 0.35);
+      box-shadow: 0 8px 25px rgba(230, 197, 172, 0.35);
     }
 
     /* Floating Back to Top Button */
@@ -253,8 +253,8 @@
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      background: var(--accent-pastel-blue);
-      color: #031020;
+      background: var(--accent-pastel-brown);
+      color: #1a100a;
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -268,7 +268,7 @@
       opacity: 0;
       pointer-events: none;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 10px 25px rgba(125, 211, 252, 0.3);
+      box-shadow: 0 10px 25px rgba(230, 197, 172, 0.3);
       z-index: 99;
     }
 
@@ -301,6 +301,7 @@
         <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
         <button class="tab-btn" onclick="setFilter('rom', this)">ROMs</button>
         <button class="tab-btn" onclick="setFilter('kernel', this)">Kernels</button>
+        <button class="tab-btn" onclick="setFilter('gapps', this)">Gapps</button>
       </div>
       <input type="text" id="searchInput" class="search-input" placeholder="Search by device or build name..." oninput="renderBuilds()">
     </div>
@@ -484,6 +485,16 @@
                     -free exporter name on buffer release`,
         downloadUrl: "https://drive.google.com/drive/folders/1b_54tfSj5k1Ypmu07LL8pKS-JnuF9eXm?usp=sharing"
       },
+
+      //NikGApps
+      {
+      title: "NikGApps — Official Builds",
+        category: "gapps",
+        device: "ARM64 Devices",
+        android: "Android 16",
+        date: "2026",
+        changelog: "Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.",
+        downloadUrl: "https://nikgapps.com/downloads"
     ];
 
 
@@ -529,7 +540,7 @@
         card.innerHTML = `
           <div class="card-header">
             <div class="build-title">${item.title}</div>
-            <span class="badge ${item.category === 'rom' ? 'badge-rom' : 'badge-kernel'}">${item.category.toUpperCase()}</span>
+            <span class="badge badge-${item.category}">${item.category.toUpperCase()}</span>
           </div>
           <div class="build-meta">
             <span>📱 ${item.device}</span>
