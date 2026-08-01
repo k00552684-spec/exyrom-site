@@ -335,10 +335,14 @@
         device: "Samsung Galaxy M31, m31s, m21, f41, a51",
         android: "Android 13 to 16",
         date: "18 May 2026",
-        changelog: `-sched: fix uclamp_boosted(), BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
-                    -sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer(), Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive 
-                    -sched: Replace schedtune with uclamp, BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
-                    -BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware, BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
+        changelog: `-sched: fix uclamp_boosted()
+                    -BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
+                    -sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
+                    -Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive 
+                    -sched: Replace schedtune with uclamp
+                    -BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
+                    -BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
+                    -BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
                     -sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with(), Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
@@ -373,7 +377,8 @@
         device: "Samsung Galaxy M31, m21, a51",
         android: "Android 16",
         date: "2026-04-23",
-        changelog: `-nable frame pacing, Define screenRecorderAVCProfileLevel
+        changelog: `-nable frame pacing
+                    -Define screenRecorderAVCProfileLevel
                     -Decrease launch boost to 3sec
                     -Tune schedutil rate limits
                     -HWC Adapt from exynos9630 T BSP
