@@ -82,6 +82,20 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.25rem;
     }
+      .brand-header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .android-logo {
+      width: 48px;
+      height: 48px;
+      fill: var(--accent-pastel-brown);
+      filter: drop-shadow(0 2px 8px rgba(230, 197, 172, 0.25));
+    }
 
     .brand-subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem; font-weight: 500; }
 
@@ -235,12 +249,17 @@
   <div class="orb orb-2"></div>
 
   <div class="container">
-    <header>
-      <h1 class="brand-title">Project-ExyROMs</h1>
+   <header>
+      <div class="brand-header-flex">
+        <!-- Pastel Brown Android Head Logo -->
+        <svg class="android-logo" viewBox="0 0 24 24">
+          <path d="M17.523 15.3414C17.0601 15.3414 16.6873 14.9686 16.6873 14.5057C16.6873 14.0428 17.0601 13.67 17.523 13.67C17.9859 13.67 18.3587 14.0428 18.3587 14.5057C18.3587 14.9686 17.9859 15.3414 17.523 15.3414ZM6.47702 15.3414C6.01413 15.3414 5.64132 14.9686 5.64132 14.5057C5.64132 14.0428 6.01413 13.67 6.47702 13.67C6.93991 13.67 7.31272 14.0428 7.31272 14.5057C7.31272 14.9686 6.93991 15.3414 6.47702 15.3414ZM17.9234 10.3732L19.7891 7.142C19.9248 6.90696 19.8443 6.60627 19.6092 6.47057C19.3742 6.33486 19.0735 6.41539 18.9378 6.65042L17.0396 9.93836C15.5392 9.25464 13.8291 8.86877 12 8.86877C10.1709 8.86877 8.46083 9.25464 6.9604 9.93836L5.06223 6.65042C4.92652 6.41539 4.62583 6.33486 4.3908 6.47057C4.15576 6.60627 4.07524 6.90696 4.21095 7.142L6.07662 10.3732C2.71618 12.2036 0.435547 15.6881 0.435547 19.7578H23.5645C23.5645 15.6881 21.2838 12.2036 17.9234 10.3732Z"/>
+        </svg>
+        <h1 class="brand-title">Project-ExyROMs</h1>
+      </div>
       <p class="brand-subtitle">Official Builds, Kernels & Release Downloads</p>
       <a href="https://t.me/ExyROMs" target="_blank" class="btn-telegram">Official Telegram Channel</a>
     </header>
-
     <div class="controls">
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
@@ -436,6 +455,8 @@
         date: "2026",
         changelog: "-Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.",
         downloadUrl: "https://nikgapps.com/downloads"
+      },
+      
       // Drive Release
       {
         title: "LunarisAOSP v3.12 ",
