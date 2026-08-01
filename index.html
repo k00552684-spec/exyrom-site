@@ -97,7 +97,7 @@
       text-decoration: none;
       font-size: 0.95rem;
       box-shadow: 0 10px 25px rgba(34, 158, 217, 0.25);
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .btn-telegram:hover {
@@ -161,7 +161,6 @@
 
     .builds-list { display: flex; flex-direction: column; gap: 1.25rem; }
 
-    /* CARDS ARE VISIBLE BY DEFAULT */
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -171,7 +170,6 @@
       padding: 1.6rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      opacity: 1; /* Explicitly visible */
     }
 
     .card:hover {
@@ -257,243 +255,158 @@
   </div>
 
   <script>
-     const buildsData = [
-      // 1. Everline kernel
+    var buildsData = [
       {
-        title: "Everline kernel",
-        category: "kernel",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 13 to 16",
-        date: "26 Jul 2026",
-        changelog: `-sched/uclamp: Move tunables to cpuctl
-                    -sched/uclamp: Expose latency_sensitive and uclamp.boosted `,
-        Notice: `-Only support builds 25.07.2026 or newer
-                 -crDroid not compatible`,
+        title: "Everline OS — 25-07-2026",
+        category: "rom",
+        device: "Samsung Galaxy M31",
+        android: "Android 14",
+        date: "25 Jul 2026",
+        changelog: "Official Everline ROM update with latest security patches and fixes.",
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
-
-      // 2. Everline kernel
       {
         title: "Everline kernel",
         category: "kernel",
         device: "Samsung Galaxy M31, m31s, m21, f41, a51",
         android: "Android 13 to 16",
         date: "18 May 2026",
-        changelog: `-sched: fix uclamp_boosted()
-                    -BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
-                    -sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
-                    -Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive 
-                    -sched: Replace schedtune with uclamp
-                    -BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
-                    -BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
-                    -BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
-                    -sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
-                    -Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
+        changelog: "sched: Fix uclamp_boosted(), BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp\nsched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()\nsched: Replace schedtune with uclamp, BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware\nBACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware\nsched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()",
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
-
-      // 3. Project Matrixx os v12.3 (official)
       {
         title: "Project Matrixx os v12.3 (official)",
         category: "rom",
         device: "Samsung Galaxy M31, m31s, m21, f41, a51",
         android: "Android 16",
         date: "2026-05",
-        changelog: "-contain all previous commits",
+        changelog: "Contain all previous commits",
         downloadUrl: "https://sourceforge.net/projects/projectmatrixx/files/Android-16/"
       },
-
-      // 4. InfinityX v3.10
       {
         title: "InfinityX v3.10",
         category: "rom",
         device: "Samsung Galaxy M31, m31s, m21, f41, a51",
         android: "Android 16",
-        date: "05 May 2026",
-        changelog: `-contain all previous commits
-                    -OTA push`,
+        date: "06 May 2026",
+        changelog: "Contain all previous commits",
         downloadUrl: "https://github.com/Parbindar7/OTA/releases/tag/InfinityX_06-05-2026"
       },
-      
-      // 7. Afterlife OS v8.4 (official)
       {
-        title: "Afterlife OS v8.4 (official)",
+        title: "InfinityX OS — 21-02-2026",
         category: "rom",
-        device: "Samsung Galaxy M31, m21, a51",
-        android: "Android 16",
-        date: "2026-04-23",
-        changelog: `-Enable frame pacing
-                    -Define screenRecorderAVCProfileLevel
-                    -Decrease launch boost to 3sec
-                    -Tune schedutil rate limits
-                    -HWC Adapt from exynos9630 T BSP
-                    -adapt struct decon_win_config_data to exynos9610
-                    -fix missing dmabuf_trace_free call on buffer release path
-                    -free exporter name on buffer release
-                    -CONFIG_HZ to 300`,
+        device: "Samsung Galaxy M31",
+        android: "Android 14",
+        date: "21 Feb 2026",
+        changelog: "Official InfinityX OTA update build.",
+        downloadUrl: "https://github.com/Parbindar7/OTA/releases/tag/InfinityX_21-02-2026"
+      },
+      {
+        title: "InfinityX OS — 30-01-2026",
+        category: "rom",
+        device: "Samsung Galaxy M31",
+        android: "Android 14",
+        date: "30 Jan 2026",
+        changelog: "Official InfinityX initial OTA release.",
+        downloadUrl: "https://github.com/Parbindar7/OTA/releases/tag/InfinityX_30-01-2026"
+      },
+      {
+        title: "Afterlife OS — Official Build",
+        category: "rom",
+        device: "Samsung Galaxy M31",
+        android: "Android 14",
+        date: "2026",
+        changelog: "Official Afterlife OS download portal link.",
         downloadUrl: "https://afterlifeos.com/download"
       },
-
-      // 8. Lineage OS v23.2
       {
-        title: "Lineage OS v23.2",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41,a51",
-        android: "Android 16",
-        date: "26-07-2026",
-        changelog: `-Refactor Powerhint.json
-                    -Tune up/down frequency rate limits
-                    -Cleanup task_profiles_30.json`,
-        downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
-      },
-
-      // 9. Lineage OS v23.2
-      {
-        title: "Lineage OS v23.2",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 16",
-        date: "01-07-2026",
-        changelog: `-Refactor Powerhint.json
-                    -Add software c2 av1/dav1d decoder
-                    -Move media codecs configurations on tree`,
-        downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
-      },
-
-      // 10. Lineage OS v23.2
-      {
-        title: "Lineage OS v23.2",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 16",
-        date: "02-05-2026",
-        changelog: `-Powerhint: Re-tune for efficiency
-                    -Powerhint: Cleanup
-                    -Powerhint: Add UclampTAMin & UclampTALatency
-                    -Powerhint: Add UclampTAMin to LAUNCH
-                    -Powerhint: Refactor powerhint.json
-                    -Update cpuset parameters
-                    -Migrate from Schedtune to Uclamp
-                    -Drop schedtune
-                    -Refactor task_profiles for to reflect Uclamp changes`,
-        downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
-      },
-      
-      // 12. Voltage OS v5.8
-      {
-        title: "Voltage OS v5.8",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 16",
-        date: "2026-04-25",
-        changelog: `-Re-tune POWERHINT for efficiency
-                    -Boost CPU on EXPENSIVE_RENDERING
-                    -set TARGET_CPU_VARIANT to cortex-a73`,
-        downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
-      },
-
-      // 13. Lineage OS v23.2
-      {
-        title: "Lineage OS v23.2",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 16",
-        date: "2026-04-20",
-        changelog: `-Blur Disabled
-                    -Enable frame pacing
-                    -Define screenRecorderAVCProfileLevel
-                    -Decrease launch boost to 3sec
-                    -Tune schedutil rate limits
-                    -HWC Adapt from exynos9630 T BSP
-                    -adapt struct decon_win_config_data to exynos9610
-                    -fix missing dmabuf_trace_free call on buffer release path
-                    -free exporter name on buffer release
-                    -CONFIG_HZ to 300`,
-        downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
-      },
-
-      // 14. Matrixx OS v12.2 (official)
-      {
-        title: "Matrixx OS v12.2 (official)",
-        category: "rom",
-        device: "Samsung Galaxy M31, m31s, m21, f41, a51",
-        android: "Android 16",
-        date: "2026-04-13",
-        changelog: `-Blur Disabled
-                    -Decrease launch boost to 3sec
-                    -Tune schedutil rate limits
-                    -HWC Adapt from exynos9630 T BSP
-                    -adapt struct decon_win_config_data to exynos9610
-                    -fix missing dmabuf_trace_free call on buffer release path
-                    -free exporter name on buffer release`,
-        downloadUrl: "https://drive.google.com/drive/folders/1b_54tfSj5k1Ypmu07LL8pKS-JnuF9eXm?usp=sharing"
-      },
-
-      //NikGApps
-      {
-      title: "NikGApps — Official Builds",
+        title: "NikGApps — Official Packages",
         category: "gapps",
         device: "ARM64 Devices",
-        android: "Android 16",
+        android: "Android 13 to 16",
         date: "2026",
-        changelog: "Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.",
+        changelog: "Official NikGApps packages (Core, Basic, Omni, Full) for custom ROMs.",
         downloadUrl: "https://nikgapps.com/downloads"
+      },
+      {
+        title: "ExyROM Build Folder #1",
+        category: "rom",
+        device: "Samsung Galaxy M31",
+        android: "Android 14 / 15",
+        date: "2026",
+        changelog: "Official ROM build hosted on Google Drive.",
+        downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
+      },
+      {
+        title: "ExyKernel / Build Folder #2",
+        category: "kernel",
+        device: "Samsung Galaxy M31",
+        android: "Android 14 / 15",
+        date: "2026",
+        changelog: "Official Kernel build files hosted on Google Drive.",
+        downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
+      }
     ];
-    let currentFilter = 'all';
+
+    var currentFilter = "all";
 
     function setFilter(filter, btn) {
       currentFilter = filter;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      var buttons = document.querySelectorAll(".tab-btn");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+      }
+      btn.classList.add("active");
       renderBuilds();
     }
 
     function renderBuilds() {
-      const container = document.getElementById('buildsList');
+      var container = document.getElementById("buildsList");
       if (!container) return;
 
-      const searchInput = document.getElementById('searchInput');
-      const searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
-      container.innerHTML = '';
+      var searchInput = document.getElementById("searchInput");
+      var searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
+      container.innerHTML = "";
 
-      const filtered = buildsData.filter(item => {
-        const cat = (item.category || 'rom').toLowerCase();
-        const matchesCategory = currentFilter === 'all' || cat === currentFilter;
-        const matchesSearch = (item.title || '').toLowerCase().includes(searchQuery) || (item.device || '').toLowerCase().includes(searchQuery);
+      var filtered = buildsData.filter(function(item) {
+        var cat = (item.category || "rom").toLowerCase();
+        var matchesCategory = (currentFilter === "all") || (cat === currentFilter);
+        var matchesSearch = (item.title || "").toLowerCase().indexOf(searchQuery) !== -1 || 
+                            (item.device || "").toLowerCase().indexOf(searchQuery) !== -1;
         return matchesCategory && matchesSearch;
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 3rem; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border);">No builds found matching your search.</div>`;
+        container.innerHTML = '<div style="text-align:center; color: var(--text-muted); padding: 3rem; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border);">No builds found matching your search.</div>';
         return;
       }
 
-      filtered.forEach((item) => {
-        const cat = (item.category || 'rom').toLowerCase();
-        const badgeClass = `badge-${cat}`;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-header">
-            <div class="build-title">${item.title}</div>
-            <span class="badge ${badgeClass}">${cat.toUpperCase()}</span>
-          </div>
-          <div class="build-meta">
-            <span>📱 ${item.device}</span>
-            <span>🤖 ${item.android}</span>
-            <span>📅 ${item.date}</span>
-          </div>
-          <div class="changelog">
-            <strong>Changelog:</strong> ${item.changelog}
-          </div>
-          <a href="${item.downloadUrl}" target="_blank" class="btn-dl">📥 Download File / Open Link</a>
-        `;
+      for (var j = 0; j < filtered.length; j++) {
+        var item = filtered[j];
+        var cat = (item.category || "rom").toLowerCase();
+        var badgeClass = "badge-" + cat;
+
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = 
+          '<div class="card-header">' +
+            '<div class="build-title">' + item.title + '</div>' +
+            '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
+          '</div>' +
+          '<div class="build-meta">' +
+            '<span>📱 ' + item.device + '</span> ' +
+            '<span>🤖 ' + item.android + '</span> ' +
+            '<span>📅 ' + item.date + '</span>' +
+          '</div>' +
+          '<div class="changelog">' +
+            '<strong>Changelog:</strong> ' + item.changelog +
+          '</div>' +
+          '<a href="' + item.downloadUrl + '" target="_blank" class="btn-dl">📥 Download File / Open Link</a>';
+
         container.appendChild(card);
-      });
+      }
     }
 
-    // Initial render call
-    document.addEventListener('DOMContentLoaded', renderBuilds);
     renderBuilds();
   </script>
 </body>
