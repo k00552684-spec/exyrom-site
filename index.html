@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project-ExyROMs</title>
   
-  <!-- Modern Font: Plus Jakarta Sans -->
+  <!-- Font: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,9 +13,9 @@
   <style>
     :root {
       --bg: #16100e;
-      --card-bg: rgba(33, 24, 21, 0.7);
-      --card-border: rgba(220, 185, 160, 0.18);
-      --card-border-hover: rgba(220, 185, 160, 0.45);
+      --card-bg: rgba(33, 24, 21, 0.85);
+      --card-border: rgba(220, 185, 160, 0.2);
+      --card-border-hover: rgba(220, 185, 160, 0.5);
       --accent-pastel-brown: #e6c5ac;
       --accent-warm: #d8a47f;
       --accent-light: #f7e8dc;
@@ -24,7 +24,6 @@
       --telegram-blue: #229ED9;
     }
 
-    /* Custom Sleek Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: rgba(230, 197, 172, 0.25); border-radius: 10px; }
@@ -51,22 +50,15 @@
       position: relative;
     }
 
-    /* Ambient Background Glow Orbs */
     .orb {
       position: fixed;
       border-radius: 50%;
       filter: blur(120px);
       z-index: -1;
       pointer-events: none;
-      animation: floatOrb 12s ease-in-out infinite alternate;
     }
     .orb-1 { width: 350px; height: 350px; background: rgba(230, 197, 172, 0.12); top: -50px; left: -50px; }
-    .orb-2 { width: 400px; height: 400px; background: rgba(216, 164, 127, 0.08); bottom: -100px; right: -50px; animation-delay: -6s; }
-
-    @keyframes floatOrb {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(40px) scale(1.1); }
-    }
+    .orb-2 { width: 400px; height: 400px; background: rgba(216, 164, 127, 0.08); bottom: -100px; right: -50px; }
 
     .container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 1.75rem; }
 
@@ -75,15 +67,14 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
-      padding: 2.75rem 2rem;
+      padding: 2.5rem 2rem;
       border-radius: 28px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: transform 0.3s ease;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
     .brand-title {
-      font-size: 3.2rem;
+      font-size: 3rem;
       font-weight: 800;
       letter-spacing: -0.03em;
       background: linear-gradient(135deg, #ffffff 0%, var(--accent-light) 50%, var(--accent-pastel-brown) 100%);
@@ -106,15 +97,14 @@
       text-decoration: none;
       font-size: 0.95rem;
       box-shadow: 0 10px 25px rgba(34, 158, 217, 0.25);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
     }
 
     .btn-telegram:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-2px);
       box-shadow: 0 15px 30px rgba(34, 158, 217, 0.4);
     }
 
-    /* Controls Bar */
     .controls {
       display: flex;
       gap: 1rem;
@@ -124,7 +114,7 @@
       position: sticky;
       top: 1rem;
       z-index: 100;
-      background: rgba(22, 16, 14, 0.85);
+      background: rgba(22, 16, 14, 0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       padding: 0.75rem 1rem;
@@ -136,14 +126,14 @@
     .filter-tabs { display: flex; gap: 0.5rem; }
 
     .tab-btn {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
       padding: 0.65rem 1.25rem;
       border-radius: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
     }
 
     .tab-btn.active {
@@ -163,17 +153,15 @@
       border-radius: 12px;
       outline: none;
       font-size: 0.95rem;
-      transition: all 0.3s ease;
     }
 
     .search-input:focus {
       border-color: var(--accent-pastel-brown);
-      box-shadow: 0 0 15px rgba(230, 197, 172, 0.2);
     }
 
-    /* Dynamic Card Styles */
     .builds-list { display: flex; flex-direction: column; gap: 1.25rem; }
 
+    /* CARDS ARE VISIBLE BY DEFAULT */
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -182,20 +170,14 @@
       border-radius: 22px;
       padding: 1.6rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .card.reveal {
-      opacity: 1;
-      transform: translateY(0);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      opacity: 1; /* Explicitly visible */
     }
 
     .card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       border-color: var(--card-border-hover);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(230, 197, 172, 0.12);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(230, 197, 172, 0.15);
     }
 
     .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
@@ -239,52 +221,18 @@
       border-radius: 14px;
       font-weight: 800;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 4px 15px rgba(230, 197, 172, 0.15);
     }
 
     .btn-dl:hover { 
-      transform: scale(1.01); 
+      transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(230, 197, 172, 0.35);
-    }
-
-    /* Floating Back to Top Button */
-    .back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--accent-pastel-brown);
-      color: #1a100a;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: none;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 10px 25px rgba(230, 197, 172, 0.3);
-      z-index: 99;
-    }
-
-    .back-to-top.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .back-to-top:hover {
-      transform: translateY(-4px);
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Glow Effects -->
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
 
@@ -295,7 +243,6 @@
       <a href="https://t.me/ExyROMs" target="_blank" class="btn-telegram">✈️ Official Telegram Channel</a>
     </header>
 
-    <!-- Controls Bar -->
     <div class="controls">
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
@@ -306,12 +253,8 @@
       <input type="text" id="searchInput" class="search-input" placeholder="Search by device or build name..." oninput="renderBuilds()">
     </div>
 
-    <!-- Dynamic Cards Container -->
     <div class="builds-list" id="buildsList"></div>
   </div>
-
-  <!-- Scroll to top button -->
-  <button class="back-to-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
 
   <script>
      const buildsData = [
@@ -498,16 +441,6 @@
     ];
     let currentFilter = 'all';
 
-    const observerOptions = { threshold: 0.05, rootMargin: "0px 0px 50px 0px" };
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('reveal');
-          scrollObserver.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -556,25 +489,11 @@
           <a href="${item.downloadUrl}" target="_blank" class="btn-dl">📥 Download File / Open Link</a>
         `;
         container.appendChild(card);
-        scrollObserver.observe(card);
       });
     }
 
-    const scrollTopBtn = document.getElementById('scrollTopBtn');
-    if (scrollTopBtn) {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          scrollTopBtn.classList.add('visible');
-        } else {
-          scrollTopBtn.classList.remove('visible');
-        }
-      });
-    }
-
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
+    // Initial render call
+    document.addEventListener('DOMContentLoaded', renderBuilds);
     renderBuilds();
   </script>
 </body>
