@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExyROM | Custom ROM Releases</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-cyan: #38bdf8;
+      --accent-purple: #a855f7;
+      --accent-green: #34d399;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --telegram-blue: #229ED9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Hero Section */
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 2.5rem 2rem;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .brand-title {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-telegram {
+      background: var(--telegram-blue);
+      color: #fff;
+    }
+
+    .btn-telegram:hover {
+      box-shadow: 0 0 20px rgba(34, 158, 217, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Device / ROM Build Card */
+    .build-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .device-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .badge-status {
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--accent-green);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .spec-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--card-border);
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .spec-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .spec-value {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+      color: var(--accent-cyan);
+    }
+
+    /* Section Tabs / Lists */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+    }
+
+    .changelog-list {
+      list-style-position: inside;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+
+    .download-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+      color: #000;
+      flex: 1;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .btn-download:hover {
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Flashing Guide Box */
+    .guide-box {
+      background: rgba(168, 85, 247, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      padding: 1.25rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .guide-box ol {
+      margin-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1 class="brand-title">ExyROM</h1>
+      <p class="brand-subtitle">Optimized • Fast • Stable Custom Android Builds</p>
+      <div class="header-buttons">
+        <a href="https://t.me/ExyROM" target="_blank" class="btn btn-telegram">
+          ✈️ Join Telegram Channel
+        </a>
+      </div>
+    </header>
+
+    <!-- Latest ROM Release Card -->
+    <div class="build-card">
+      <div class="card-header">
+        <div>
+          <div class="device-name">ExyROM v1.0 — Official Build</div>
+          <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.2rem;">Maintained by @ExyROM</div>
+        </div>
+        <span class="badge-status">STABLE</span>
+      </div>
+
+      <!-- ROM Specs -->
+      <div class="specs-grid">
+        <div class="spec-box">
+          <div class="spec-label">Android Version</div>
+          <div class="spec-value">Android 14 / 15</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Build Date</div>
+          <div class="spec-value">August 2026</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">SELinux Status</div>
+          <div class="spec-value">Enforcing</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">GApps Type</div>
+          <div class="spec-value">Included (GAPPS)</div>
+        </div>
+      </div>
+
+      <!-- Changelog -->
+      <div class="section-title">📋 Key Features & Changelog</div>
+      <ul class="changelog-list">
+        <li>Initial Official ExyROM release.</li>
+        <li>Upgraded performance & aggressive battery optimizations.</li>
+        <li>Custom kernel integration with full KernelSU support.</li>
+        <li>Fixed storage mounting & encryption status in custom recoveries (TWRP/OrangeFox).</li>
+        <li>Latest Android Security Patch merged.</li>
+      </ul>
+
+      <!-- Flashing Guide -->
+      <div class="guide-box">
+        <strong style="color: var(--accent-purple);">⚡ Quick Flashing Steps:</strong>
+        <ol>
+          <li>Boot into Custom Recovery (TWRP / OrangeFox).</li>
+          <li>Wipe <code>Data</code>, <code>Cache</code>, and <code>Dalvik</code>.</li>
+          <li>Flash the ExyROM zip file.</li>
+          <li>Format Data (type 'yes') if coming from stock or another ROM.</li>
+          <li>Reboot to System & Enjoy!</li>
+        </ol>
+      </div>
+
+      <!-- Download Action Buttons -->
+      <div class="download-actions">
+        <a href="https://t.me/ExyROM" target="_blank" class="btn btn-download">
+          📥 Get Download Link on Telegram
+        </a>
+        <a href="https://t.me/ExyROM" target="_blank" class="btn btn-outline">
+          💬 Support Group
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 ExyROM Project. Built for performance and stability.
+    </footer>
+  </div>
+
+</body>
+</html>
