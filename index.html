@@ -206,8 +206,9 @@
     }
 
     .badge-rom { background: rgba(230, 197, 172, 0.15); color: var(--accent-pastel-brown); border: 1px solid rgba(230, 197, 172, 0.3); }
-    .badge-kernel { background: rgba(216, 164, 127, 0.15); color: var(--accent-warm); border: 1px solid rgba(216, 164, 127, 0.3); }
-    .badge-gapps { background: rgba(247, 232, 220, 0.2); color: var(--accent-light); border: 1px solid rgba(247, 232, 220, 0.4); }
+    .badge-kernel { background: rgba(216, 164, 127, 0.15); color: var(--accent-pastel-browm); border: 1px solid rgba(216, 164, 127, 0.3); }
+    .badge-gapps { background: rgba(247, 232, 220, 0.2); color: var(--accent-pastel-brown); border: 1px solid rgba(247, 232, 220, 0.4); }
+    .badge-recovery { background: rgba(220, 185, 160, 0.25); color: var(--accent-pastel-brown); border: 1px solid rgba(220, 185, 160, 0.5); }
 
     .build-meta { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; display: flex; gap: 1.25rem; flex-wrap: wrap; font-weight: 500; }
 
@@ -266,6 +267,7 @@
         <button class="tab-btn" onclick="setFilter('rom', this)">ROMs</button>
         <button class="tab-btn" onclick="setFilter('kernel', this)">Kernels</button>
         <button class="tab-btn" onclick="setFilter('gapps', this)">Gapps</button>
+        <button class="tab-btn" onclick="setFilter('recovery', this)">Recovery</button>
       </div>
       <input type="text" id="searchInput" class="search-input" placeholder="Search by device or build name..." oninput="renderBuilds()">
     </div>
@@ -482,6 +484,20 @@
                     2.Tune up/down frequency transition rate limits
                     3.Switch to AOSP task profiles`,
         downloadUrl: "https://drive.google.com/drive/folders/1_RG0oDENhUGLcEh5kDkDNwOtc5VT5s3t"
+      }
+
+      // TWRP Recovery
+      {
+        title: "TWRP Recovery v3.7.1",
+        category: "recovery",
+        device: "All Supported Devices"",
+        android: "Android 13 to 16",
+        date: "2026",
+        changelog: `
+                  1.Support dynamic partitions & storage decryption\n-Updated kernel tree\n-Fully compatible with Android 16 custom ROMs`,
+        Notice: `
+                 1.Flash via Odin (.tar) or existing recovery (.img)`,
+        downloadUrl: "https://twrp.me/Devices/"
       }
     ];
     var currentFilter = "all";
