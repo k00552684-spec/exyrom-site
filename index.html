@@ -271,15 +271,9 @@
       white-space: pre-line;
     }
 
-    /* Action Row (Download + Copy MD5) */
-    .action-row {
-      display: flex;
-      gap: 0.6rem;
-      align-items: center;
-    }
-
     .btn-dl {
-      flex: 1;
+      display: inline-block;
+      width: 100%;
       text-align: center;
       background: linear-gradient(135deg, var(--accent-pastel-brown), var(--accent-warm));
       color: #1a100a;
@@ -294,25 +288,6 @@
     .btn-dl:hover { 
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(230, 197, 172, 0.35);
-    }
-
-    .btn-copy-md5 {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--card-border);
-      color: var(--accent-light);
-      padding: 0.85rem 1.1rem;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .btn-copy-md5:hover {
-      background: rgba(230, 197, 172, 0.2);
-      color: var(--accent-pastel-brown);
-      border-color: var(--accent-pastel-brown);
     }
   </style>
 </head>
@@ -358,7 +333,6 @@
         date: "26 Jul 2026",
         maintainer: "PARBINDAR7",
         flavor: ["PERFORMANCE"],
-        md5: "e4d30b0a156a12df081c1023a41b1234",
         changelog: `
                     1.sched/uclamp: Move tunables to cpuctl
                     2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
@@ -393,7 +367,7 @@
 
       // 3. Project Matrixx os v12.3 (official)
       {
-        title: "Project Matrixx os v12.3 (official)",
+        title: "Project Matrixx os v12.3",
         category: "rom",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "Android 16",
@@ -612,13 +586,6 @@
       renderBuilds();
     }
 
-    function copyChecksum(text, btn) {
-      navigator.clipboard.writeText(text);
-      var originalText = btn.innerText;
-      btn.innerText = "✓ Copied!";
-      setTimeout(function() { btn.innerText = originalText; }, 1500);
-    }
-
     function renderBuilds() {
       var container = document.getElementById("buildsList");
       if (!container) return;
@@ -669,11 +636,6 @@
           ? '<div class="notice-box"><strong>Notice:</strong><br>' + item.Notice + '</div>' 
           : '';
 
-        // Copy MD5 Button
-        var md5ButtonHtml = item.md5 
-          ? '<button class="btn-copy-md5" onclick="copyChecksum(\'' + item.md5 + '\', this)">📋 Copy MD5</button>' 
-          : '';
-
         var card = document.createElement("div");
         card.className = "card";
         card.innerHTML = 
@@ -692,10 +654,7 @@
           '<div class="changelog">' +
             '<strong>Changelog:</strong><br>' + item.changelog +
           '</div>' +
-          '<div class="action-row">' +
-            '<a href="' + item.downloadUrl + '" target="_blank" class="btn-dl">Download File / Open Link</a>' +
-            md5ButtonHtml +
-          '</div>';
+          '<a href="' + item.downloadUrl + '" target="_blank" class="btn-dl">Download File / Open Link</a>';
 
         container.appendChild(card);
       }
