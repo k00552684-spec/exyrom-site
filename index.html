@@ -431,16 +431,25 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
+    /* Smooth Frosted Glass Lightbox with Zoom & Fade Animation */
     .lightbox-overlay {
-      display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(22, 16, 14, 0.65);
-      backdrop-filter: blur(20px);        
+      backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       z-index: 2000;
+      display: flex;
       justify-content: center;
       align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
     .lightbox-img {
@@ -450,6 +459,12 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.8);
       border: 1px solid var(--card-border);
       object-fit: contain;
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale(1);
     }
 
     .lightbox-btn {
@@ -586,7 +601,7 @@
     </div>
   </div>
 
-  <!-- Screenshot Interactive Lightbox -->
+  <!-- Screenshot Interactive Lightbox with Animation -->
   <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
     <span class="lightbox-close" onclick="closeLightbox()">✕</span>
     <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
@@ -1107,20 +1122,20 @@
         downloadUrl: "https://twrp.me/Devices/"
       },
 
-      //22. litegapps
-    {
-      title: "litegapp",
-      cateogry: "gapps",
-      device: "ARM64 Devices",
-      android: "Android 17",
-      date: "2026",
-      flavor: ["GOOGLE APPS PACKAGE"],
-      changelog:`
-                 1.Official litegapps release packages for custom rom android 17`,
-      Notice: `
-               only compatible for android 17`,
-      downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
-    },
+      // 22. litegapps
+      {
+        title: "litegapp",
+        category: "gapps",
+        device: "ARM64 Devices",
+        android: "Android 17",
+        date: "2026",
+        flavor: ["GOOGLE APPS PACKAGE"],
+        changelog: `
+                   1.Official litegapps release packages for custom rom android 17`,
+        Notice: `
+                   1.Only compatible for android 17`,
+        downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
+      },
 
        // 23. NikGApps
       {
@@ -1161,12 +1176,12 @@
       }
     }
 
-    /* Lightbox Navigation Logic */
+    /* Lightbox Navigation Logic with Animation */
     function openLightbox(buildIndex, imageIndex) {
       activeScreenshots = buildsData[buildIndex].screenshots || [];
       currentImageIndex = imageIndex;
       updateLightboxDisplay();
-      document.getElementById("lightboxModal").style.display = "flex";
+      document.getElementById("lightboxModal").classList.add("active");
     }
 
     function updateLightboxDisplay() {
@@ -1189,7 +1204,7 @@
     }
 
     function closeLightbox() {
-      document.getElementById("lightboxModal").style.display = "none";
+      document.getElementById("lightboxModal").classList.remove("active");
     }
 
     function closeLightboxOnBg(e) {
@@ -1201,7 +1216,7 @@
     /* Keyboard Controls */
     document.addEventListener("keydown", function(e) {
       var modal = document.getElementById("lightboxModal");
-      if (modal.style.display === "flex") {
+      if (modal.classList.contains("active")) {
         if (e.key === "ArrowRight") navigateLightbox(1);
         if (e.key === "ArrowLeft") navigateLightbox(-1);
         if (e.key === "Escape") closeLightbox();
