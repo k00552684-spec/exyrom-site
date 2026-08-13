@@ -24,7 +24,7 @@
       --telegram-blue: #229ED9;
     }
 
-    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar { width: 8px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: rgba(230, 197, 172, 0.25); border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-warm); }
@@ -255,7 +255,6 @@
     .badge-gapps { background: rgba(247, 232, 220, 0.2); color: var(--accent-pastel-brown); border: 1px solid rgba(247, 232, 220, 0.4); }
     .badge-recovery { background: rgba(220, 185, 160, 0.25); color: var(--accent-pastel-brown); border: 1px solid rgba(220, 185, 160, 0.5); }
 
-    /* Flavor Badges */
     .flavor-tags {
       display: flex;
       gap: 0.4rem;
@@ -274,6 +273,39 @@
     }
 
     .build-meta { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.85rem; display: flex; gap: 1.25rem; flex-wrap: wrap; font-weight: 500; }
+
+    /* Screenshot Gallery Styles */
+    .screenshots-wrapper {
+      margin-bottom: 1.25rem;
+    }
+
+    .screenshots-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-pastel-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .screenshots-gallery {
+      display: flex;
+      gap: 0.6rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .screenshot-thumb {
+      height: 160px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      object-fit: cover;
+    }
+
+    .screenshot-thumb:hover {
+      transform: scale(1.03);
+      border-color: var(--accent-pastel-brown);
+    }
 
     .notice-box {
       background: rgba(255, 80, 80, 0.15);
@@ -399,6 +431,28 @@
 
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
+
+    /* Screenshot Fullscreen Lightbox */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border: 1px solid var(--card-border);
+    }
   </style>
 </head>
 <body>
@@ -467,6 +521,11 @@
         </ol>
       </div>
     </div>
+  </div>
+
+  <!-- Screenshot Lightbox Modal -->
+  <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightbox()">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Screenshot Fullview">
   </div>
 
   <script>
@@ -728,7 +787,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/19QBt1_8HF0gyskg9fnHgojGY8s5MsnFm?usp=sharing"
       },
 
-      //18. LineageOS
+      // 18. LineageOS
       {
         title: "LineageOS EXT",
         category: "rom",
@@ -751,13 +810,13 @@
         downloadUrl: "https://drive.google.com/drive/folders/11VAKKkzQEnQ-hCucJFv6She-AtUQNiDo?usp=sharing",
       },
 
-      //19. Everline Kernel
+      // 19. Everline Kernel
       {
         title: "Everline Kernel",
         category: "kernel",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "A13-A17 Supported",
-        date: " 10 August 2026",
+        date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
         changelog: `
@@ -774,7 +833,7 @@
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
 
-      //20. VoltageOS
+      // 20. VoltageOS v6.0
       {
         title: "VoltageOS v6.0",
         category: "rom",
@@ -782,7 +841,7 @@
         android: "Android 17",
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["VANILLA", "UNOFFICIAL"],
         changelog: `
                     1.Update included soong namespaces
                     2.Set legacy gralloc flag
@@ -792,9 +851,15 @@
                     6.Use legacy libion implementation
                     7.Disable app launch blur`,
         Notice: `
-                 1.Initial A17 release
+                 1.Initial Android 17 release
                  2.Blur Disabled
-                 3.Report bugs with proper log please`,
+                 3.Kernel: 4.14.356-Everline-AOSP`,
+        screenshots: [
+          /* Replace these links with your uploaded image URLs */
+          "https://i.imgur.com/YOUR_IMAGE_1.jpg",
+          "https://i.imgur.com/YOUR_IMAGE_2.jpg",
+          "https://i.imgur.com/YOUR_IMAGE_3.jpg"
+        ],
         downloadUrl: "https://drive.google.com/drive/folders/1D-w32e6LOOtJuwNrJ_0rTNRPlI34Y6IA"
       },
       
@@ -803,11 +868,11 @@
         title: "TWRP Recovery v3.7.1",
         category: "recovery",
         device: "All Supported Devices",
-        android: "Android 13 to 16",
+        android: "Android 13 to 17",
         date: "2026",
         flavor: ["FLASHABLE ZIP/TAR"],
         changelog: `
-                   1.Fully compatible with Android 16 custom ROMs`,
+                   1.Fully compatible with Android 16 & 17 custom ROMs`,
         Notice: `
                 1.Flash via Odin (.tar) or existing recovery (.img)`,
         downloadUrl: "https://twrp.me/Devices/"
@@ -818,7 +883,7 @@
         title: "NikGApps — Official Builds",
         category: "gapps",
         device: "ARM64 Devices",
-        android: "Android 16",
+        android: "Android 16 & 17",
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
         changelog: `
@@ -848,6 +913,17 @@
       if (e.target.id === "guideModal") {
         toggleGuideModal();
       }
+    }
+
+    function openLightbox(src) {
+      var modal = document.getElementById("lightboxModal");
+      var img = document.getElementById("lightboxImg");
+      img.src = src;
+      modal.style.display = "flex";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").style.display = "none";
     }
 
     function renderBuilds() {
@@ -895,6 +971,18 @@
             '</div>';
         }
 
+        // Screenshot Gallery Render
+        var screenshotsHtml = '';
+        if (item.screenshots && item.screenshots.length > 0) {
+          screenshotsHtml = '<div class="screenshots-wrapper">' +
+            '<div class="screenshots-title">📸 ROM Screenshots:</div>' +
+            '<div class="screenshots-gallery">';
+          for (var s = 0; s < item.screenshots.length; s++) {
+            screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(\'' + item.screenshots[s] + '\')" alt="Screenshot">';
+          }
+          screenshotsHtml += '</div></div>';
+        }
+
         // Notice Box
         var noticeHtml = item.Notice 
           ? '<div class="notice-box"><strong>Notice:</strong><br>' + item.Notice + '</div>' 
@@ -914,6 +1002,7 @@
             '<span>' + item.date + '</span>' +
           '</div>' +
           maintainerHtml +
+          screenshotsHtml +
           noticeHtml +
           '<div class="changelog">' +
             '<strong>Changelog:</strong><br>' + item.changelog +
