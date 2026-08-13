@@ -431,25 +431,91 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
+    /* Interactive Lightbox Navigation Styles */
     .lightbox-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       z-index: 2000;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
     }
 
     .lightbox-img {
-      max-width: 90%;
-      max-height: 85vh;
+      max-width: 85%;
+      max-height: 80vh;
       border-radius: 18px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.8);
       border: 1px solid var(--card-border);
+      object-fit: contain;
+    }
+
+    .lightbox-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(33, 24, 21, 0.75);
+      border: 1px solid var(--card-border);
+      color: var(--accent-light);
+      font-size: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      z-index: 2010;
+    }
+
+    .lightbox-btn:hover {
+      background: var(--accent-pastel-brown);
+      color: #1a100a;
+      border-color: var(--accent-pastel-brown);
+    }
+
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(33, 24, 21, 0.75);
+      border: 1px solid var(--card-border);
+      color: var(--accent-light);
+      font-size: 1.2rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2010;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 80, 80, 0.3);
+      color: #ffffff;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px;
+      background: rgba(33, 24, 21, 0.75);
+      border: 1px solid var(--card-border);
+      color: var(--accent-pastel-brown);
+      padding: 0.4rem 0.9rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -521,9 +587,13 @@
     </div>
   </div>
 
-  <!-- Screenshot Lightbox Modal -->
-  <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightbox()">
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Screenshot Fullview">
+  <!-- Screenshot Interactive Lightbox -->
+  <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Screenshot Preview">
+    <button class="lightbox-btn lightbox-next" onclick="navigateLightbox(1)">❯</button>
+    <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
   </div>
 
   <script>
@@ -951,7 +1021,7 @@
         Notice: `
                    1.Initial A17 release
                    2.Report bugs with proper log please`,
-         screenshots: [
+          screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
           "./screenshots/voltageos/lineageos/v3.jpg",
@@ -1053,6 +1123,8 @@
     ];
 
     var currentFilter = "all";
+    var activeScreenshots = [];
+    var currentImageIndex = 0;
 
     function setFilter(filter, btn) {
       currentFilter = filter;
@@ -1075,16 +1147,52 @@
       }
     }
 
-    function openLightbox(src) {
-      var modal = document.getElementById("lightboxModal");
+    /* Lightbox Navigation Logic */
+    function openLightbox(buildIndex, imageIndex) {
+      activeScreenshots = buildsData[buildIndex].screenshots || [];
+      currentImageIndex = imageIndex;
+      updateLightboxDisplay();
+      document.getElementById("lightboxModal").style.display = "flex";
+    }
+
+    function updateLightboxDisplay() {
+      if (activeScreenshots.length === 0) return;
       var img = document.getElementById("lightboxImg");
-      img.src = src;
-      modal.style.display = "flex";
+      var counter = document.getElementById("lightboxCounter");
+      img.src = activeScreenshots[currentImageIndex];
+      counter.innerText = (currentImageIndex + 1) + " / " + activeScreenshots.length;
+    }
+
+    function navigateLightbox(direction) {
+      if (activeScreenshots.length === 0) return;
+      currentImageIndex += direction;
+      if (currentImageIndex < 0) {
+        currentImageIndex = activeScreenshots.length - 1;
+      } else if (currentImageIndex >= activeScreenshots.length) {
+        currentImageIndex = 0;
+      }
+      updateLightboxDisplay();
     }
 
     function closeLightbox() {
       document.getElementById("lightboxModal").style.display = "none";
     }
+
+    function closeLightboxOnBg(e) {
+      if (e.target.id === "lightboxModal") {
+        closeLightbox();
+      }
+    }
+
+    /* Keyboard Controls */
+    document.addEventListener("keydown", function(e) {
+      var modal = document.getElementById("lightboxModal");
+      if (modal.style.display === "flex") {
+        if (e.key === "ArrowRight") navigateLightbox(1);
+        if (e.key === "ArrowLeft") navigateLightbox(-1);
+        if (e.key === "Escape") closeLightbox();
+      }
+    });
 
     function renderBuilds() {
       var container = document.getElementById("buildsList");
@@ -1109,6 +1217,7 @@
 
       for (var j = 0; j < filtered.length; j++) {
         var item = filtered[j];
+        var realBuildIndex = buildsData.indexOf(item);
         var cat = (item.category || "rom").toLowerCase();
         var badgeClass = "badge-" + cat;
 
@@ -1136,7 +1245,7 @@
             '<div class="screenshots-title">ROM Screenshots:</div>' +
             '<div class="screenshots-gallery">';
           for (var s = 0; s < item.screenshots.length; s++) {
-            screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(\'' + item.screenshots[s] + '\')" alt="Screenshot">';
+            screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(' + realBuildIndex + ', ' + s + ')" alt="Screenshot">';
           }
           screenshotsHtml += '</div></div>';
         }
