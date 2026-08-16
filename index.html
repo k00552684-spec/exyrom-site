@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project-ExyROMs</title>
-  
-  <!-- Font: Plus Jakarta Sans -->
+ 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -221,7 +220,6 @@
 
     .builds-list { display: flex; flex-direction: column; gap: 1.25rem; }
 
-    /* Section Category Dividers without left border line */
     .section-header {
       display: flex;
       align-items: center;
@@ -278,6 +276,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      display: inline-block;
     }
 
     .badge-rom { background: rgba(230, 197, 172, 0.15); color: var(--accent-pastel-brown); border: 1px solid rgba(230, 197, 172, 0.3); }
@@ -460,7 +459,6 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
-    /* Lightbox & Hardware-Accelerated Smooth Animation */
     .lightbox-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -569,7 +567,7 @@
   <div class="container">
    <header>
       <div class="brand-header-flex">
-        <!-- Pastel Brown Android Head Logo -->
+        
         <svg class="android-logo" viewBox="0 0 24 24">
           <path d="M17.523 15.3414C17.0601 15.3414 16.6873 14.9686 16.6873 14.5057C16.6873 14.0428 17.0601 13.67 17.523 13.67C17.9859 13.67 18.3587 14.0428 18.3587 14.5057C18.3587 14.9686 17.9859 15.3414 17.523 15.3414ZM6.47702 15.3414C6.01413 15.3414 5.64132 14.9686 5.64132 14.5057C5.64132 14.0428 6.01413 13.67 6.47702 13.67C6.93991 13.67 7.31272 14.0428 7.31272 14.5057C7.31272 14.9686 6.93991 15.3414 6.47702 15.3414ZM17.9234 10.3732L19.7891 7.142C19.9248 6.90696 19.8443 6.60627 19.6092 6.47057C19.3742 6.33486 19.0735 6.41539 18.9378 6.65042L17.0396 9.93836C15.5392 9.25464 13.8291 8.86877 12 8.86877C10.1709 8.86877 8.46083 9.25464 6.9604 9.93836L5.06223 6.65042C4.92652 6.41539 4.62583 6.33486 4.3908 6.47057C4.15576 6.60627 4.07524 6.90696 4.21095 7.142L6.07662 10.3732C2.71618 12.2036 0.435547 15.6881 0.435547 19.7578H23.5645C23.5645 15.6881 21.2838 12.2036 17.9234 10.3732Z"/>
         </svg>
@@ -596,7 +594,6 @@
     <div class="builds-list" id="buildsList"></div>
   </div>
 
-  <!-- Flashing Guide Modal -->
   <div class="modal-overlay" id="guideModal" onclick="closeGuideOnOverlay(event)">
     <div class="modal-card">
       <div class="modal-header">
@@ -629,7 +626,6 @@
     </div>
   </div>
 
-  <!-- Screenshot Interactive Lightbox -->
   <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
     <span class="lightbox-close" onclick="closeLightbox()">✕</span>
     <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
@@ -792,17 +788,6 @@
                     1.Refactor Powerhint.json
                     2.Tune up/down frequency rate limits
                     3.Cleanup task_profiles_30.json`,
-        screenshots: [
-          "./screenshots/voltageos/lineageeos/v1.jpg",
-          "./screenshots/voltageos/lineageeos/v2.jpg",
-          "./screenshots/voltageos/lineageeos/v3.jpg",
-          "./screenshots/voltageos/lineageeos/v4.jpg",
-          "./screenshots/voltageos/lineageeos/v5.jpg",
-          "./screenshots/voltageos/lineageeos/v6.jpg",
-          "./screenshots/voltageos/lineageeos/v7.jpg",
-          "./screenshots/voltageos/lineageeos/v8.jpg",
-          "./screenshots/voltageos/lineageeos/v9.jpg"
-        ],
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
       },
 
@@ -819,17 +804,6 @@
                     1.Refactor Powerhint.json
                     2.Add software c2 av1/dav1d decoder
                     3.Move media codecs configurations on tree`,
-        screenshots: [
-          "./screenshots/voltageos/lineageoos/v1.jpg",
-          "./screenshots/voltageos/lineageoos/v2.jpg",
-          "./screenshots/voltageos/lineageoos/v3.jpg",
-          "./screenshots/voltageos/lineageoos/v4.jpg",
-          "./screenshots/voltageos/lineageoos/v5.jpg",
-          "./screenshots/voltageos/lineageoos/v6.jpg",
-          "./screenshots/voltageos/lineageoos/v7.jpg",
-          "./screenshots/voltageos/lineageoos/v8.jpg",
-          "./screenshots/voltageos/lineageoos/v9.jpg"
-        ],
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
       },
 
@@ -852,17 +826,6 @@
                     7.Migrate from Schedtune to Uclamp
                     8.Drop schedtune
                     9.Refactor task_profiles for to reflect Uclamp changes`,
-        screenshots: [
-          "./screenshots/voltageos/lineage/v1.jpg",
-          "./screenshots/voltageos/lineage/v2.jpg",
-          "./screenshots/voltageos/lineage/v3.jpg",
-          "./screenshots/voltageos/lineage/v4.jpg",
-          "./screenshots/voltageos/lineage/v5.jpg",
-          "./screenshots/voltageos/lineage/v6.jpg",
-          "./screenshots/voltageos/lineage/v7.jpg",
-          "./screenshots/voltageos/lineage/v8.jpg",
-          "./screenshots/voltageos/lineage/v9.jpg"
-        ],
         downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
       },
       
@@ -913,17 +876,6 @@
                     8.fix missing dmabuf_trace_free call on buffer release path 
                     9.free exporter name on buffer release
                     10.CONFIG_HZ to 300`,
-        screenshots: [
-          "./screenshots/voltageos/lineageos23/v1.jpg",
-          "./screenshots/voltageos/lineageos23/v2.jpg",
-          "./screenshots/voltageos/lineageos23/v3.jpg",
-          "./screenshots/voltageos/lineageos23/v4.jpg",
-          "./screenshots/voltageos/lineageos23/v5.jpg",
-          "./screenshots/voltageos/lineageos23/v6.jpg",
-          "./screenshots/voltageos/lineageos23/v7.jpg",
-          "./screenshots/voltageos/lineageos23/v8.jpg",
-          "./screenshots/voltageos/lineageos23/v9.jpg"
-        ],
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
 
@@ -985,7 +937,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/1_RG0oDENhUGLcEh5kDkDNwOtc5VT5s3t"
       },
 
-      //16. Lunaris
+      // 16. Lunaris
       {
         title: "LunarisAOSP 12.3 EOL",
         category: "rom",
@@ -1014,6 +966,23 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1ZYYzDbaUuHe5nAPtg2ryV5afHvq6LACQ?usp=sharing"
       },
+
+      //17. Infinity x
+      {
+        title: "InfinityX 12.3",
+        category: "rom",
+        device: "Samsung Galaxy A51, F41, M31, M31s, M21",
+        android: "Android 16",
+        date: "16 August 2026",
+        maintainer: "PARBINDAR7",
+        flavor: ["GAPPS"],
+        chagelog: `
+                   1.Re-configure cpuset
+                   2.Remove cpuidle off node`,
+        Notice: `
+                 1.OTA Pushed
+                 2.EOL A16. Next update based on A17
+                 3.No kernel changes`,
 
       // 17. Lineage OS v23.2
       {
@@ -1234,7 +1203,6 @@
       }
     }
 
-    /* Lightbox Navigation Logic with Smooth Animation */
     function openLightbox(buildIndex, imageIndex) {
       activeScreenshots = buildsData[buildIndex].screenshots || [];
       currentImageIndex = imageIndex;
@@ -1271,7 +1239,6 @@
       }
     }
 
-    /* Keyboard Controls */
     document.addEventListener("keydown", function(e) {
       var modal = document.getElementById("lightboxModal");
       if (modal.classList.contains("active")) {
@@ -1323,7 +1290,7 @@
       card.innerHTML = 
         '<div class="card-header">' +
           '<div class="build-title">' + item.title + '</div>' +
-          '<span class="badge " + badgeClass + "">' + cat.toUpperCase() + '</span>' +
+          '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
         '</div>' +
         flavorHtml +
         '<div class="build-meta">' +
@@ -1364,7 +1331,6 @@
         return;
       }
 
-      // Grouping definitions with Android 16 ROMs first, then Android 17 ROMs
       var sections = [
         {
           title: "Android 16 ROMs",
