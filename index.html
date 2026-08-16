@@ -22,6 +22,8 @@
       --text-main: #faf5f0;
       --text-muted: #bdae9e;
       --telegram-blue: #229ED9;
+      --a17-badge: #ff9e80;
+      --a16-badge: #80d8ff;
     }
 
     ::-webkit-scrollbar { width: 8px; height: 6px; }
@@ -189,9 +191,10 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 0.65rem 1.25rem;
+      padding: 0.65rem 1.1rem;
       border-radius: 12px;
       font-weight: 700;
+      font-size: 0.88rem;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -242,10 +245,16 @@
 
     .build-title { font-size: 1.35rem; font-weight: 700; color: var(--text-main); }
 
+    .badge-group {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
     .badge {
-      padding: 0.3rem 0.85rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -255,6 +264,18 @@
     .badge-kernel { background: rgba(216, 164, 127, 0.15); color: var(--accent-pastel-brown); border: 1px solid rgba(216, 164, 127, 0.3); }
     .badge-gapps { background: rgba(247, 232, 220, 0.2); color: var(--accent-pastel-brown); border: 1px solid rgba(247, 232, 220, 0.4); }
     .badge-recovery { background: rgba(220, 185, 160, 0.25); color: var(--accent-pastel-brown); border: 1px solid rgba(220, 185, 160, 0.5); }
+
+    .badge-a17 {
+      background: rgba(255, 158, 128, 0.18);
+      color: #ffab91;
+      border: 1px solid rgba(255, 158, 128, 0.4);
+    }
+
+    .badge-a16 {
+      background: rgba(128, 216, 255, 0.15);
+      color: #b3e5fc;
+      border: 1px solid rgba(128, 216, 255, 0.35);
+    }
 
     .flavor-tags {
       display: flex;
@@ -431,7 +452,7 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
-    /* Hardware-Accelerated Lightbox Animation optimized for Mobile Phones */
+    /* Lightbox & Hardware-Accelerated Animation */
     .lightbox-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -556,12 +577,13 @@
     <div class="controls">
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
-        <button class="tab-btn" onclick="setFilter('rom', this)">ROMs</button>
+        <button class="tab-btn" onclick="setFilter('a17', this)">Android 17</button>
+        <button class="tab-btn" onclick="setFilter('a16', this)">Android 16</button>
         <button class="tab-btn" onclick="setFilter('kernel', this)">Kernels</button>
         <button class="tab-btn" onclick="setFilter('gapps', this)">Gapps</button>
         <button class="tab-btn" onclick="setFilter('recovery', this)">Recovery</button>
       </div>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search by device or build name..." oninput="renderBuilds()">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by device, android version, or build name..." oninput="renderBuilds()">
     </div>
 
     <div class="builds-list" id="buildsList"></div>
@@ -582,7 +604,7 @@
           <li>Go to <b>Wipe &gt; Advanced Wipe</b>.</li>
           <li>Select <b>Dalvik / ART Cache, Cache, Metadata, and Data</b> then swipe to wipe.</li>
           <li>Go to <b>Install</b> and select your downloaded <b>ROM zip</b> file.</li>
-          <li><i>(Optional)</i> Flash <b>NikGApps</b> (if flashing a Vanilla build) and <b>Everline Kernel</b> <i>(optional)</i>.</li>
+          <li><i>(Optional)</i> Flash <b>NikGApps / LiteGApps</b> (if flashing a Vanilla build) and <b>Everline Kernel</b>.</li>
           <li>Reboot to System and complete setup.</li>
         </ol>
       </div>
@@ -725,6 +747,7 @@
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
           "./screenshots/voltageos/afterlife/v2.jpg",
+          "./screenshots/voltageos/afterlife/v3.jpg",
           "./screenshots/voltageos/afterlife/v3.jpg",
           "./screenshots/voltageos/afterlife/v4.jpg",
           "./screenshots/voltageos/afterlife/v5.jpg",
@@ -1064,7 +1087,7 @@
         Notice: `
                    1.Initial A17 release
                    2.Report bugs with proper log please`,
-          screenshots: [
+        screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
           "./screenshots/voltageos/lineageos/v3.jpg",
@@ -1262,9 +1285,22 @@
 
       var filtered = buildsData.filter(function(item) {
         var cat = (item.category || "rom").toLowerCase();
-        var matchesCategory = (currentFilter === "all") || (cat === currentFilter);
+        var androidVer = (item.android || "").toLowerCase();
+
+        var matchesCategory = false;
+        if (currentFilter === "all") {
+          matchesCategory = true;
+        } else if (currentFilter === "a17") {
+          matchesCategory = (androidVer.indexOf("17") !== -1 || (item.title || "").toLowerCase().indexOf("a17") !== -1) && cat === "rom";
+        } else if (currentFilter === "a16") {
+          matchesCategory = (androidVer.indexOf("16") !== -1 || (item.title || "").toLowerCase().indexOf("a16") !== -1) && cat === "rom";
+        } else {
+          matchesCategory = (cat === currentFilter);
+        }
+
         var matchesSearch = (item.title || "").toLowerCase().indexOf(searchQuery) !== -1 || 
-                            (item.device || "").toLowerCase().indexOf(searchQuery) !== -1;
+                            (item.device || "").toLowerCase().indexOf(searchQuery) !== -1 ||
+                            (item.android || "").toLowerCase().indexOf(searchQuery) !== -1;
         return matchesCategory && matchesSearch;
       });
 
@@ -1278,6 +1314,17 @@
         var realBuildIndex = buildsData.indexOf(item);
         var cat = (item.category || "rom").toLowerCase();
         var badgeClass = "badge-" + cat;
+
+        // Version badge tag
+        var versionBadgeHtml = '';
+        var androidText = item.android || '';
+        if (cat === 'rom') {
+          if (androidText.indexOf('17') !== -1) {
+            versionBadgeHtml = '<span class="badge badge-a17">Android 17</span>';
+          } else if (androidText.indexOf('16') !== -1) {
+            versionBadgeHtml = '<span class="badge badge-a16">Android 16</span>';
+          }
+        }
 
         // Maintainer Link
         var maintainerHtml = '';
@@ -1317,7 +1364,10 @@
         card.innerHTML = 
           '<div class="card-header">' +
             '<div class="build-title">' + item.title + '</div>' +
-            '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
+            '<div class="badge-group">' +
+              versionBadgeHtml +
+              '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
+            '</div>' +
           '</div>' +
           flavorHtml +
           '<div class="build-meta">' +
