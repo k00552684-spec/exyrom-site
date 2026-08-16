@@ -221,7 +221,7 @@
 
     .builds-list { display: flex; flex-direction: column; gap: 1.25rem; }
 
-    /* Section Category Dividers */
+    /* Section Category Dividers without left border line */
     .section-header {
       display: flex;
       align-items: center;
@@ -231,7 +231,6 @@
       padding: 0.75rem 1.2rem;
       background: rgba(230, 197, 172, 0.06);
       border: 1px solid rgba(220, 185, 160, 0.15);
-      border-left: 4px solid var(--accent-pastel-brown);
       border-radius: 14px;
     }
 
@@ -461,7 +460,7 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
-    /* Lightbox & Smooth Animation */
+    /* Lightbox & Hardware-Accelerated Smooth Animation */
     .lightbox-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -1300,8 +1299,8 @@
       if (item.flavor) {
         var tagsArray = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
         flavorHtml = '<div class="flavor-tags">' + 
-          tagsArray.map(function(t) { return '<span class="flavor-badge">' + t + '</span>'; }).join('') + 
-          '</div>';
+            tagsArray.map(function(t) { return '<span class="flavor-badge">' + t + '</span>'; }).join('') + 
+            '</div>';
       }
 
       var screenshotsHtml = '';
@@ -1324,7 +1323,7 @@
       card.innerHTML = 
         '<div class="card-header">' +
           '<div class="build-title">' + item.title + '</div>' +
-          '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
+          '<span class="badge " + badgeClass + "">' + cat.toUpperCase() + '</span>' +
         '</div>' +
         flavorHtml +
         '<div class="build-meta">' +
@@ -1365,18 +1364,18 @@
         return;
       }
 
-      // Grouping definitions
+      // Grouping definitions with Android 16 ROMs first, then Android 17 ROMs
       var sections = [
-        {
-          title: "Android 17 ROMs",
-          items: filtered.filter(function(i) {
-            return (i.category || "rom").toLowerCase() === "rom" && (i.android || "").toLowerCase().indexOf("17") !== -1;
-          })
-        },
         {
           title: "Android 16 ROMs",
           items: filtered.filter(function(i) {
             return (i.category || "rom").toLowerCase() === "rom" && (i.android || "").toLowerCase().indexOf("16") !== -1;
+          })
+        },
+        {
+          title: "Android 17 ROMs",
+          items: filtered.filter(function(i) {
+            return (i.category || "rom").toLowerCase() === "rom" && (i.android || "").toLowerCase().indexOf("17") !== -1;
           })
         },
         {
