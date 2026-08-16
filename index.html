@@ -303,11 +303,11 @@
 
     .build-meta { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.85rem; display: flex; gap: 1.25rem; flex-wrap: wrap; font-weight: 500; }
 
-    .screenshots-wrapper {
+    .gallery-wrapper {
       margin-bottom: 1.25rem;
     }
 
-    .screenshots-title {
+    .gallery-title {
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--accent-pastel-brown);
@@ -459,6 +459,7 @@
     .guide-steps li { margin-bottom: 0.4rem; }
     .guide-steps b { color: var(--text-main); }
 
+    /* Lightbox & Hardware-Accelerated Smooth Animation */
     .lightbox-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -567,7 +568,6 @@
   <div class="container">
    <header>
       <div class="brand-header-flex">
-        
         <svg class="android-logo" viewBox="0 0 24 24">
           <path d="M17.523 15.3414C17.0601 15.3414 16.6873 14.9686 16.6873 14.5057C16.6873 14.0428 17.0601 13.67 17.523 13.67C17.9859 13.67 18.3587 14.0428 18.3587 14.5057C18.3587 14.9686 17.9859 15.3414 17.523 15.3414ZM6.47702 15.3414C6.01413 15.3414 5.64132 14.9686 5.64132 14.5057C5.64132 14.0428 6.01413 13.67 6.47702 13.67C6.93991 13.67 7.31272 14.0428 7.31272 14.5057C7.31272 14.9686 6.93991 15.3414 6.47702 15.3414ZM17.9234 10.3732L19.7891 7.142C19.9248 6.90696 19.8443 6.60627 19.6092 6.47057C19.3742 6.33486 19.0735 6.41539 18.9378 6.65042L17.0396 9.93836C15.5392 9.25464 13.8291 8.86877 12 8.86877C10.1709 8.86877 8.46083 9.25464 6.9604 9.93836L5.06223 6.65042C4.92652 6.41539 4.62583 6.33486 4.3908 6.47057C4.15576 6.60627 4.07524 6.90696 4.21095 7.142L6.07662 10.3732C2.71618 12.2036 0.435547 15.6881 0.435547 19.7578H23.5645C23.5645 15.6881 21.2838 12.2036 17.9234 10.3732Z"/>
         </svg>
@@ -686,6 +686,7 @@
         date: "May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
+        featureScreenshots: [],
         changelog: `
                     1.contain all previous commits`,
         screenshots: [
@@ -711,6 +712,7 @@
         date: "05 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS INCLUDED"],
+        featureScreenshots: [],
         changelog: `
                     1.contain all previous commits
                     2.OTA push`,
@@ -737,6 +739,7 @@
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
+        featureScreenshots: [],
         changelog: `
                     1.Enable frame pacing
                     2.Define screenRecorderAVCProfileLevel
@@ -784,6 +787,7 @@
         date: "26 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Refactor Powerhint.json
                     2.Tune up/down frequency rate limits
@@ -800,6 +804,7 @@
         date: "01 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Refactor Powerhint.json
                     2.Add software c2 av1/dav1d decoder
@@ -816,6 +821,7 @@
         date: "02 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Powerhint: Re-tune for efficiency
                     2.Powerhint: Cleanup
@@ -838,6 +844,7 @@
         date: "25 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Re-tune POWERHINT for efficiency
                     2.Boost CPU on EXPENSIVE_RENDERING
@@ -865,6 +872,7 @@
         date: "20 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Blur Disabled
                     2.Enable frame pacing
@@ -888,6 +896,7 @@
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
+        featureScreenshots: [],
         changelog: `
                     1.Blur Disabled
                     2.Decrease launch boost to 3sec
@@ -919,6 +928,7 @@
         date: "01 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                    1.Remove unused /dev/freezer
                    2.Tune up/down frequency transition rate limits
@@ -946,6 +956,7 @@
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Re-configure cpuset
                     2.Remove cpuidle off node`,
@@ -967,7 +978,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/1ZYYzDbaUuHe5nAPtg2ryV5afHvq6LACQ?usp=sharing"
       },
 
-      //17. Infinity x
+      // 17. Infinity x
       {
         title: "InfinityX 12.3",
         category: "rom",
@@ -976,15 +987,18 @@
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
-        chagelog: `
+        featureScreenshots: [],
+        changelog: `
                    1.Re-configure cpuset
                    2.Remove cpuidle off node`,
         Notice: `
                  1.OTA Pushed
                  2.EOL A16. Next update based on A17
                  3.No kernel changes`,
+        downloadUrl: "https://github.com/Parbindar7/OTA/releases"
+      },
 
-      // 17. Lineage OS v23.2
+      // 18. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -993,6 +1007,7 @@
         date: "09 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                    1.Tune Powerhint.json
                    2.Tune up/down frequency rate limits
@@ -1012,7 +1027,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/1-M5lUH2KREBlKlmYeRi5mXcA1sdh48e4?usp=sharing"
       },
 
-      // 18. VoltageOS
+      // 19. VoltageOS
       {
         title: "VoltageOS 5.11 EOL",
         category: "rom",
@@ -1021,6 +1036,7 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                     1.Tune Powerhint
                     2.Tune up/down frequency rate limits
@@ -1042,7 +1058,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/19QBt1_8HF0gyskg9fnHgojGY8s5MsnFm?usp=sharing"
       },
 
-      // 19. LineageOS
+      // 20. LineageOS
       {
         title: "LineageOS EXT",
         category: "rom",
@@ -1051,6 +1067,7 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
+        featureScreenshots: [],
         changelog: `
                    1.Update included soong namespaces
                    2.Set legacy gralloc flag
@@ -1076,7 +1093,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/11VAKKkzQEnQ-hCucJFv6She-AtUQNiDo?usp=sharing",
       },
 
-      // 20. Everline Kernel
+      // 21. Everline Kernel
       {
         title: "Everline Kernel",
         category: "kernel",
@@ -1099,7 +1116,7 @@
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
 
-      // 21. VoltageOS v6.0
+      // 22. VoltageOS v6.0
       {
         title: "VoltageOS v6.0",
         category: "rom",
@@ -1108,6 +1125,7 @@
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
+        featureScreenshots: [],
         changelog: `
                     1.Update included soong namespaces
                     2.Set legacy gralloc flag
@@ -1134,7 +1152,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/1D-w32e6LOOtJuwNrJ_0rTNRPlI34Y6IA"
       },
       
-      // 22. TWRP Recovery
+      // 23. TWRP Recovery
       {
         title: "TWRP Recovery v3.7.1",
         category: "recovery",
@@ -1149,7 +1167,7 @@
         downloadUrl: "https://twrp.me/Devices/"
       },
 
-      // 23. litegapps
+      // 24. litegapps
       {
         title: "litegapp",
         category: "gapps",
@@ -1164,7 +1182,7 @@
         downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
       },
 
-       // 24. NikGApps
+      // 25. NikGApps
       {
         title: "NikGApps — Official Builds",
         category: "gapps",
@@ -1203,8 +1221,12 @@
       }
     }
 
-    function openLightbox(buildIndex, imageIndex) {
-      activeScreenshots = buildsData[buildIndex].screenshots || [];
+    function openLightbox(buildIndex, imageIndex, type) {
+      if (type === 'features') {
+        activeScreenshots = buildsData[buildIndex].featureScreenshots || [];
+      } else {
+        activeScreenshots = buildsData[buildIndex].screenshots || [];
+      }
       currentImageIndex = imageIndex;
       updateLightboxDisplay();
       document.getElementById("lightboxModal").classList.add("active");
@@ -1270,13 +1292,24 @@
             '</div>';
       }
 
+      var featuresHtml = '';
+      if (item.featureScreenshots && item.featureScreenshots.length > 0) {
+        featuresHtml = '<div class="gallery-wrapper">' +
+          '<div class="gallery-title">Feature Screenshots:</div>' +
+          '<div class="screenshots-gallery">';
+        for (var f = 0; f < item.featureScreenshots.length; f++) {
+          featuresHtml += '<img src="' + item.featureScreenshots[f] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(' + realBuildIndex + ', ' + f + ', \'features\')" alt="Feature Screenshot">';
+        }
+        featuresHtml += '</div></div>';
+      }
+
       var screenshotsHtml = '';
       if (item.screenshots && item.screenshots.length > 0) {
-        screenshotsHtml = '<div class="screenshots-wrapper">' +
-          '<div class="screenshots-title">ROM Screenshots:</div>' +
+        screenshotsHtml = '<div class="gallery-wrapper">' +
+          '<div class="gallery-title">ROM Screenshots:</div>' +
           '<div class="screenshots-gallery">';
         for (var s = 0; s < item.screenshots.length; s++) {
-          screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(' + realBuildIndex + ', ' + s + ')" alt="Screenshot">';
+          screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb" onclick="openLightbox(' + realBuildIndex + ', ' + s + ', \'rom\')" alt="Screenshot">';
         }
         screenshotsHtml += '</div></div>';
       }
@@ -1299,6 +1332,7 @@
           '<span>' + item.date + '</span>' +
         '</div>' +
         maintainerHtml +
+        featuresHtml +
         screenshotsHtml +
         noticeHtml +
         '<div class="changelog">' +
