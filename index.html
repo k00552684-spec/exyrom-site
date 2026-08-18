@@ -1,968 +1,698 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project-ExyROMs // Developer Hub</title>
-  
-  <!-- Modern Typography Stack -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #050508;
-      --surface-1: rgba(16, 16, 24, 0.65);
-      --surface-2: rgba(24, 24, 36, 0.85);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(168, 85, 247, 0.4);
-      
-      --accent-purple: #a855f7;
-      --accent-cyan: #06b6d4;
-      --accent-copper: #e28c5a;
-      --accent-amber: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #475569;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem 1rem 6rem 1rem;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Ambient Dynamic Mesh Backdrops */
-    .mesh-glow {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(140px);
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.6;
-    }
-    .mesh-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%); top: -100px; left: -100px; }
-    .mesh-2 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%); bottom: -150px; right: -150px; }
-    .mesh-3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(226,140,90,0.1) 0%, transparent 70%); top: 40%; left: 50%; transform: translate(-50%, -50%); }
-
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
-
-    .container {
-      width: 100%;
-      max-width: 980px;
-      display: flex;
-      flex-direction: column;
-      gap: 3.5rem;
-    }
-
-    /* Floating Navigation */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(12, 12, 18, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      padding: 0.75rem 1.4rem;
-      border-radius: 99px;
-      position: sticky;
-      top: 1.25rem;
-      z-index: 100;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-brand {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    .nav-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-cyan);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: color 0.2s ease;
-    }
-
-    .nav-link:hover { color: #fff; }
-
-    .btn-nav {
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-      color: #fff;
-      padding: 0.45rem 1.1rem;
-      border-radius: 99px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-
-    .btn-nav:hover { transform: scale(1.05); }
-
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 3rem 1rem 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-    }
-
-    .hero-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent-cyan);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      background: rgba(6, 182, 212, 0.1);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      padding: 0.35rem 0.9rem;
-      border-radius: 99px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .pulse-dot {
-      width: 6px; height: 6px;
-      background: var(--accent-cyan);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.8rem, 8vw, 4.5rem);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      background: linear-gradient(135deg, #ffffff 30%, var(--accent-purple) 70%, var(--accent-cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
-      max-width: 620px;
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-
-    .telemetry-strip {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .telemetry-item {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      padding: 0.4rem 1rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .telemetry-item b { color: #fff; }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .btn-primary-glow {
-      background: linear-gradient(135deg, var(--accent-purple), #9333ea);
-      color: #fff;
-      padding: 0.85rem 1.8rem;
-      border-radius: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
-      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .btn-primary-glow:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 40px rgba(168, 85, 247, 0.5);
-    }
-
-    .btn-glass {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 0.85rem 1.8rem;
-      border-radius: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Section Numbering & Structure */
-    .section-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .section-headline {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .section-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-purple);
-    }
-
-    .section-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    /* Glass Panels */
-    .panel {
-      background: var(--surface-1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 2rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    /* 01 About */
-    .about-text {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
-    .about-text b { color: #fff; }
-
-    /* 02 Tech Stack Grid */
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-
-    .stack-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .stack-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .stack-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    .stack-badge {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-main);
-      padding: 0.3rem 0.75rem;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
-
-    /* 03 Devices */
-    .devices-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .device-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 1.25rem;
-      transition: border-color 0.2s ease;
-    }
-    .device-card:hover { border-color: var(--accent-purple); }
-
-    .device-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .device-code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--accent-purple);
-    }
-
-    /* 04 Releases Engine */
-    .controls {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .filter-tabs {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.55rem 1.1rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active {
-      background: var(--accent-purple);
-      color: #fff;
-      border-color: var(--accent-purple);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-    }
-
-    .search-input {
-      flex: 1;
-      min-width: 220px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 0.65rem 1.2rem;
-      border-radius: 12px;
-      outline: none;
-      font-size: 0.9rem;
-      transition: border-color 0.2s ease;
-    }
-
-    .search-input:focus { border-color: var(--accent-cyan); }
-
-    .builds-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .category-divider {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 1.25rem;
-      background: linear-gradient(90deg, rgba(168, 85, 247, 0.1) 0%, transparent 100%);
-      border-left: 3px solid var(--accent-purple);
-      border-radius: 12px;
-      margin-top: 1rem;
-    }
-
-    .category-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .category-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      background: rgba(168, 85, 247, 0.2);
-      color: #e9d5ff;
-      padding: 0.25rem 0.65rem;
-      border-radius: 99px;
-      font-weight: 700;
-    }
-
-    /* Build Cards */
-    .card {
-      background: var(--surface-1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 1.75rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: var(--border-glow);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.15);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.6rem;
-    }
-
-    .build-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .badge {
-      padding: 0.3rem 0.8rem;
-      border-radius: 99px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .badge-rom { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
-    .badge-kernel { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); }
-    .badge-gapps { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .badge-recovery { background: rgba(226, 140, 90, 0.15); color: #fb923c; border: 1px solid rgba(226, 140, 90, 0.4); }
-
-    .flavor-tags {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.85rem;
-    }
-
-    .flavor-badge {
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-    }
-
-    .build-meta {
-      display: flex;
-      gap: 1.25rem;
-      font-size: 0.86rem;
-      color: var(--text-muted);
-      margin-bottom: 0.85rem;
-      flex-wrap: wrap;
-    }
-
-    .maintainer-row {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 1.1rem;
-    }
-
-    .maintainer-link {
-      color: var(--accent-cyan);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .maintainer-link:hover { text-decoration: underline; }
-
-    .gallery-wrapper {
-      margin-bottom: 1.2rem;
-    }
-
-    .box-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent-purple);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .screenshots-gallery {
-      display: flex;
-      gap: 0.6rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-    }
-
-    .screenshot-thumb-img {
-      height: 160px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      object-fit: cover;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .screenshot-thumb-img:hover {
-      transform: scale(1.03);
-      border-color: var(--accent-cyan);
-    }
-
-    .notice-card {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-      padding: 0.85rem 1.15rem;
-      border-radius: 12px;
-      font-size: 0.86rem;
-      margin-bottom: 1.2rem;
-      white-space: pre-line;
-    }
-
-    .changelog-box {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 0.9rem 1.15rem;
-      border-radius: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 1.2rem;
-      white-space: pre-line;
-    }
-
-    .btn-download {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-      color: #fff;
-      padding: 0.85rem;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.92rem;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25);
-    }
-
-    .btn-download:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(6, 182, 212, 0.4);
-    }
-
-    /* Modal Instructions */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    .modal-card {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      max-width: 600px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.85rem;
-    }
-
-    .modal-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .modal-close {
-      cursor: pointer;
-      font-size: 1.3rem;
-      color: var(--text-muted);
-    }
-
-    .guide-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.25rem;
-    }
-
-    .guide-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      margin-bottom: 0.75rem;
-    }
-
-    .guide-list {
-      padding-left: 1.25rem;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .guide-list li { margin-bottom: 0.4rem; }
-    .guide-list b { color: #fff; }
-
-    /* Lightbox */
-    .lightbox-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 2000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
-    }
-
-    .lightbox-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .lightbox-img {
-      max-width: 90vw;
-      max-height: 85vh;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      object-fit: contain;
-      transform: scale(0.9);
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .lightbox-overlay.active .lightbox-img { transform: scale(1); }
-
-    .lightbox-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border);
-      color: #fff;
-      font-size: 1.4rem;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    }
-
-    .lightbox-prev { left: 20px; }
-    .lightbox-next { right: 20px; }
-
-    .lightbox-close {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border);
-      color: #fff;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .lightbox-counter {
-      position: absolute;
-      bottom: 25px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 0.35rem 0.85rem;
-      border-radius: 99px;
-      font-size: 0.8rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project-ExyROMs // Firmware Lab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0d10;
+    --bg-2:#0d1114;
+    --surface-1: rgba(19,25,28,0.72);
+    --surface-2: rgba(24,31,35,0.9);
+    --border: rgba(212,166,120,0.14);
+    --border-strong: rgba(212,166,120,0.32);
+
+    --copper:#c98a4b;
+    --copper-bright:#e3a464;
+    --solder-green:#5fb87a;
+    --solder-green-bright:#7ed99a;
+    --odin-blue:#5b8fc7;
+    --warn-amber:#d9a441;
+
+    --text-main:#edf1ee;
+    --text-dim:#93a09a;
+    --text-faint:#5a6a63;
+
+    --font-display:'Big Shoulders Display', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --font-body:'IBM Plex Sans', sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,138,75,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(91,143,199,0.06), transparent 60%),
+      var(--bg);
+    color:var(--text-main);
+    font-family:var(--font-body);
+    min-height:100vh;
+    padding:0 1.25rem 5rem 1.25rem;
+    position:relative;
+  }
+
+  /* faint PCB grid texture */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background-image:
+      linear-gradient(rgba(212,166,120,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,166,120,0.035) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
+  }
+
+  ::selection{background:var(--copper); color:#0a0d10;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-strong); border-radius:99px;}
+
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--solder-green-bright); outline-offset:3px; border-radius:4px;}
+
+  /* signature: signal trace running down the page edge */
+  .signal-rail{
+    position:fixed;
+    left:14px;
+    top:0;
+    bottom:0;
+    width:2px;
+    z-index:1;
+    background:linear-gradient(to bottom, transparent, var(--border-strong) 8%, var(--border-strong) 92%, transparent);
+    display:block;
+  }
+  .signal-rail::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-40px;
+    width:9px; height:9px;
+    margin-left:-4.5px;
+    border-radius:50%;
+    background:var(--solder-green-bright);
+    box-shadow:0 0 12px 3px rgba(126,217,154,0.7);
+    animation: pulse-travel 7s linear infinite;
+  }
+  @media (max-width:900px){ .signal-rail{display:none;} }
+  @media (prefers-reduced-motion: reduce){ .signal-rail::after{animation:none; top:50%;} }
+
+  @keyframes pulse-travel{
+    0%{ top:-2%; opacity:0; }
+    5%{ opacity:1; }
+    95%{ opacity:1; }
+    100%{ top:102%; opacity:0; }
+  }
+
+  .container{
+    width:100%;
+    max-width:960px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:3.75rem;
+    padding-left: clamp(0px, 2vw, 28px);
+  }
+
+  /* NAV */
+  .navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    background:rgba(10,13,16,0.75);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--border);
+    padding:0.7rem 1.1rem;
+    border-radius:10px;
+    position:sticky;
+    top:1rem;
+    z-index:100;
+    margin-top:1rem;
+  }
+  .nav-brand{
+    font-family:var(--font-mono);
+    font-weight:600;
+    font-size:0.92rem;
+    letter-spacing:0.02em;
+    text-decoration:none;
+    color:#fff;
+    display:flex; align-items:center; gap:0.55rem;
+  }
+  .led{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--solder-green-bright);
+    box-shadow:0 0 8px 2px rgba(126,217,154,0.65);
+    flex-shrink:0;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .led.blink{ animation: blink 2.4s ease-in-out infinite; }
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  .nav-links{display:flex; gap:1.4rem; align-items:center;}
+  .nav-link{
+    font-family:var(--font-mono);
+    color:var(--text-dim); text-decoration:none; font-size:0.78rem;
+    letter-spacing:0.03em;
+  }
+  .nav-link:hover{color:#fff;}
+  .btn-nav{
+    background:var(--solder-green);
+    color:#08110b;
+    padding:0.4rem 0.9rem;
+    border-radius:5px;
+    font-family:var(--font-mono);
+    font-weight:600;
+    font-size:0.76rem;
+    text-decoration:none;
+  }
+  .btn-nav:hover{background:var(--solder-green-bright);}
+
+  /* HERO */
+  .hero{ padding:2.5rem 0 0.5rem 0; display:flex; flex-direction:column; gap:1.4rem;}
+  .boot-log{
+    font-family:var(--font-mono);
+    font-size:0.74rem;
+    color:var(--text-faint);
+    display:flex; flex-direction:column; gap:0.18rem;
+    line-height:1.5;
+  }
+  .boot-log .ok{color:var(--solder-green);}
+  .boot-log .tag{color:var(--copper);}
+  .cursor-blink{display:inline-block; width:7px; background:var(--solder-green-bright); margin-left:2px;}
+  @media (prefers-reduced-motion: no-preference){
+    .cursor-blink{ animation: blink 1s steps(1) infinite; }
+  }
+
+  .hero-title{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(3rem, 9vw, 5.4rem);
+    line-height:0.92;
+    letter-spacing:-0.01em;
+    text-transform:uppercase;
+    color:#fff;
+    max-width:14ch;
+  }
+  .hero-title .accent{ color:var(--copper-bright); }
+  .hero-title .underline-wrap{ position:relative; display:inline-block; }
+  .hero-title svg.trace-underline{
+    position:absolute; left:0; bottom:-6px; width:100%; height:14px; overflow:visible;
+  }
+  .hero-title svg.trace-underline path{
+    stroke:var(--copper); stroke-width:3; fill:none; stroke-linecap:round;
+    stroke-dasharray:400; stroke-dashoffset:400;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .hero-title svg.trace-underline path{ animation: draw 1.4s 0.3s ease-out forwards; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-title svg.trace-underline path{ stroke-dashoffset:0; }
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  .hero-subtitle{
+    max-width:620px;
+    color:var(--text-dim);
+    font-size:1.02rem;
+    line-height:1.65;
+  }
+  .hero-subtitle b{ color:var(--text-main); font-weight:600; }
+
+  .status-strip{
+    display:flex; flex-wrap:wrap; gap:0.55rem; margin-top:0.25rem;
+  }
+  .status-chip{
+    font-family:var(--font-mono);
+    font-size:0.76rem;
+    color:var(--text-dim);
+    background:rgba(0,0,0,0.35);
+    border:1px solid var(--border);
+    padding:0.35rem 0.8rem;
+    border-radius:5px;
+  }
+  .status-chip b{ color:var(--copper-bright); font-weight:600; }
+
+  .hero-actions{ display:flex; gap:0.85rem; margin-top:0.6rem; flex-wrap:wrap; }
+  .btn-flash{
+    font-family:var(--font-mono);
+    background:var(--solder-green);
+    color:#08110b;
+    padding:0.8rem 1.5rem;
+    border-radius:6px;
+    font-weight:700;
+    font-size:0.86rem;
+    text-decoration:none;
+    letter-spacing:0.02em;
+    box-shadow:0 0 0 rgba(126,217,154,0);
+    transition:box-shadow 0.2s ease, transform 0.15s ease, background 0.2s ease;
+  }
+  .btn-flash:hover{ background:var(--solder-green-bright); transform:translateY(-1px); box-shadow:0 6px 24px rgba(95,184,122,0.35);}
+  .btn-outline{
+    font-family:var(--font-mono);
+    background:transparent;
+    border:1px solid var(--border-strong);
+    color:var(--text-main);
+    padding:0.8rem 1.5rem;
+    border-radius:6px;
+    font-weight:600;
+    font-size:0.86rem;
+    cursor:pointer;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .btn-outline:hover{ border-color:var(--copper-bright); background:rgba(201,138,75,0.06); }
+
+  /* SECTION MARKERS (partition-table framing) */
+  .section-wrapper{ display:flex; flex-direction:column; gap:1.4rem; }
+  .section-marker{ display:flex; align-items:baseline; gap:0.8rem; }
+  .section-addr{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    color:var(--copper);
+    background:rgba(201,138,75,0.08);
+    border:1px solid var(--border);
+    padding:0.15rem 0.5rem;
+    border-radius:4px;
+  }
+  .section-name{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:1.9rem;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    color:#fff;
+  }
+
+  .panel{
+    position:relative;
+    background:var(--surface-1);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:1.75rem;
+  }
+  .about-text{ color:var(--text-dim); font-size:1rem; line-height:1.75; }
+  .about-text b{ color:var(--text-main); }
+
+  /* corner brackets, PCB test-point style */
+  .bracketed{ position:relative; }
+  .bracketed::before, .bracketed::after{
+    content:""; position:absolute; width:14px; height:14px; pointer-events:none;
+  }
+  .bracketed::before{ top:-1px; left:-1px; border-top:2px solid var(--copper); border-left:2px solid var(--copper); }
+  .bracketed::after{ bottom:-1px; right:-1px; border-bottom:2px solid var(--copper); border-right:2px solid var(--copper); }
+
+  /* STACK */
+  .stack-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
+  .stack-card{ background:rgba(0,0,0,0.28); border:1px solid var(--border); border-radius:8px; padding:1.3rem; display:flex; flex-direction:column; gap:0.75rem;}
+  .stack-title{ font-family:var(--font-mono); font-size:0.72rem; color:var(--odin-blue); text-transform:uppercase; letter-spacing:0.08em;}
+  .stack-badges{ display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .stack-badge{ background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text-main); padding:0.28rem 0.7rem; border-radius:5px; font-size:0.8rem; font-family:var(--font-mono);}
+
+  /* DEVICES */
+  .devices-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; }
+  .device-card{ background:rgba(0,0,0,0.28); border:1px solid var(--border); border-radius:8px; padding:1.1rem; transition:border-color 0.2s ease;}
+  .device-card:hover{ border-color:var(--border-strong); }
+  .device-name{ font-weight:600; font-size:1.02rem; margin-bottom:0.2rem; }
+  .device-code{ font-family:var(--font-mono); font-size:0.78rem; color:var(--copper);}
+
+  /* RELEASES CONTROLS */
+  .controls{ display:flex; gap:0.7rem; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:1.4rem;}
+  .filter-tabs{ display:flex; gap:0.35rem; flex-wrap:wrap; }
+  .tab-btn{
+    font-family:var(--font-mono);
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:0.5rem 0.95rem;
+    border-radius:5px;
+    font-size:0.78rem;
+    font-weight:600;
+    cursor:pointer;
+    letter-spacing:0.02em;
+    transition:all 0.15s ease;
+  }
+  .tab-btn.active{ background:var(--solder-green); color:#08110b; border-color:var(--solder-green); }
+  .search-input{
+    flex:1; min-width:200px;
+    font-family:var(--font-mono);
+    background:rgba(0,0,0,0.35);
+    border:1px solid var(--border);
+    color:#fff;
+    padding:0.6rem 1rem;
+    border-radius:5px;
+    outline:none;
+    font-size:0.85rem;
+  }
+  .search-input:focus{ border-color:var(--odin-blue); }
+  .search-input::placeholder{ color:var(--text-faint); }
+
+  .builds-list{ display:flex; flex-direction:column; gap:1.4rem; }
+  .category-divider{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0.7rem 1rem;
+    border-left:2px solid var(--copper);
+    background:linear-gradient(90deg, rgba(201,138,75,0.08), transparent 100%);
+    border-radius:4px;
+    margin-top:0.5rem;
+  }
+  .category-title{ font-family:var(--font-display); font-weight:700; font-size:1.15rem; text-transform:uppercase; color:#fff; }
+  .category-count{ font-family:var(--font-mono); font-size:0.72rem; background:rgba(201,138,75,0.15); color:var(--copper-bright); padding:0.2rem 0.6rem; border-radius:99px; }
+
+  /* BUILD CARD */
+  .card{
+    position:relative;
+    background:var(--surface-1);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:1.6rem;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+  .card:hover{ border-color:var(--border-strong); transform:translateY(-2px); }
+
+  .card-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:0.5rem; }
+  .build-title-row{ display:flex; align-items:center; gap:0.55rem; }
+  .build-title{ font-weight:700; font-size:1.2rem; color:#fff; }
+
+  .badge{ padding:0.28rem 0.7rem; border-radius:5px; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; font-family:var(--font-mono); white-space:nowrap;}
+  .badge-rom{ background:rgba(95,184,122,0.13); color:var(--solder-green-bright); border:1px solid rgba(95,184,122,0.35); }
+  .badge-kernel{ background:rgba(91,143,199,0.13); color:#9dc0ec; border:1px solid rgba(91,143,199,0.35); }
+  .badge-gapps{ background:rgba(217,164,65,0.13); color:#f0c876; border:1px solid rgba(217,164,65,0.35); }
+  .badge-recovery{ background:rgba(201,138,75,0.13); color:var(--copper-bright); border:1px solid rgba(201,138,75,0.35); }
+
+  .status-tag{ display:flex; align-items:center; gap:0.4rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--text-dim); }
+
+  .flavor-tags{ display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+  .flavor-badge{ font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:0.18rem 0.55rem; border-radius:4px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text-dim); }
+
+  .build-meta{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    color:var(--text-dim);
+    display:flex; flex-direction:column; gap:0.3rem;
+    margin-bottom:0.85rem;
+    padding:0.7rem 0.9rem;
+    background:rgba(0,0,0,0.3);
+    border-radius:6px;
+    border:1px solid var(--border);
+  }
+  .build-meta div span.k{ color:var(--text-faint); }
+  .build-meta div span.v{ color:var(--text-main); }
+  .build-meta div::before{ content:"$ "; color:var(--copper); }
+
+  .maintainer-row{ font-size:0.82rem; color:var(--text-dim); margin-bottom:1rem; font-family:var(--font-mono); }
+  .maintainer-link{ color:var(--odin-blue); text-decoration:none; font-weight:700; }
+  .maintainer-link:hover{ text-decoration:underline; }
+
+  .gallery-wrapper{ margin-bottom:1.1rem; }
+  .box-label{ font-family:var(--font-mono); font-size:0.7rem; color:var(--copper); text-transform:uppercase; margin-bottom:0.45rem; letter-spacing:0.05em;}
+  .screenshots-gallery{ display:flex; gap:0.55rem; overflow-x:auto; padding-bottom:0.4rem; }
+  .screenshot-thumb-img{ height:150px; border-radius:6px; border:1px solid var(--border); cursor:pointer; object-fit:cover; transition:transform 0.2s ease, border-color 0.2s ease; }
+  .screenshot-thumb-img:hover{ transform:scale(1.03); border-color:var(--odin-blue); }
+
+  .notice-card{
+    background:rgba(217,164,65,0.08);
+    border:1px solid rgba(217,164,65,0.3);
+    color:#f0c876;
+    padding:0.8rem 1rem;
+    border-radius:6px;
+    font-size:0.83rem;
+    font-family:var(--font-mono);
+    margin-bottom:1.1rem;
+    white-space:pre-line;
+    line-height:1.5;
+  }
+
+  .changelog-box{
+    background:rgba(0,0,0,0.4);
+    border:1px solid var(--border);
+    padding:0.85rem 1.05rem;
+    border-radius:6px;
+    font-family:var(--font-mono);
+    font-size:0.79rem;
+    color:var(--text-dim);
+    line-height:1.65;
+    margin-bottom:1.1rem;
+    white-space:pre-line;
+  }
+  .changelog-box strong{ color:var(--solder-green-bright); font-family:var(--font-mono); }
+
+  .btn-download{
+    display:flex; align-items:center; justify-content:center; gap:0.5rem;
+    width:100%; text-align:center;
+    background:var(--solder-green);
+    color:#08110b;
+    padding:0.8rem;
+    border-radius:6px;
+    font-weight:700;
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    text-decoration:none;
+    letter-spacing:0.02em;
+    transition:background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-download:hover{ background:var(--solder-green-bright); box-shadow:0 6px 24px rgba(95,184,122,0.3); }
+
+  /* MODAL */
+  .modal-overlay{
+    display:none; position:fixed; inset:0;
+    background:rgba(4,6,7,0.85);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    z-index:1000; justify-content:center; align-items:center; padding:1rem;
+  }
+  .modal-card{
+    background:var(--surface-2); border:1px solid var(--border-strong); border-radius:10px;
+    max-width:600px; width:100%; max-height:85vh; overflow-y:auto; padding:1.9rem;
+    display:flex; flex-direction:column; gap:1.4rem;
+  }
+  .modal-header{ display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:0.8rem; }
+  .modal-title{ font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:#fff; text-transform:uppercase;}
+  .modal-close{ cursor:pointer; font-size:1.2rem; color:var(--text-dim); background:none; border:none; font-family:var(--font-mono);}
+  .guide-card{ background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; padding:1.15rem; }
+  .guide-title{ font-family:var(--font-mono); font-size:0.88rem; font-weight:700; color:var(--odin-blue); margin-bottom:0.7rem; }
+  .guide-list{ padding-left:1.2rem; font-size:0.86rem; color:var(--text-dim); line-height:1.65; }
+  .guide-list li{ margin-bottom:0.35rem; }
+  .guide-list b{ color:var(--text-main); }
+
+  /* LIGHTBOX */
+  .lightbox-overlay{
+    position:fixed; inset:0; background:rgba(2,3,4,0.94);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    z-index:2000; display:flex; justify-content:center; align-items:center;
+    opacity:0; visibility:hidden; transition:opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .lightbox-overlay.active{ opacity:1; visibility:visible; }
+  .lightbox-img{ max-width:90vw; max-height:85vh; border-radius:8px; border:1px solid var(--border); object-fit:contain; }
+  .lightbox-btn{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff;
+    font-size:1.3rem; width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .lightbox-prev{ left:18px; } .lightbox-next{ right:18px; }
+  .lightbox-close{
+    position:absolute; top:22px; right:22px;
+    background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff;
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .lightbox-counter{
+    position:absolute; bottom:22px;
+    background:rgba(0,0,0,0.6); border:1px solid var(--border); color:#fff;
+    padding:0.3rem 0.8rem; border-radius:99px; font-size:0.78rem; font-family:var(--font-mono);
+  }
+
+  .empty-state{ text-align:center; color:var(--text-dim); padding:3rem; background:var(--surface-1); border-radius:10px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.9rem;}
+
+  footer{
+    max-width:960px; margin:0 auto; padding-top:2rem;
+    border-top:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
+    font-family:var(--font-mono); font-size:0.78rem; color:var(--text-faint);
+  }
+  footer a{ color:var(--text-dim); text-decoration:none; }
+  footer a:hover{ color:var(--copper-bright); }
+</style>
 </head>
 <body>
 
-  <div class="mesh-glow mesh-1"></div>
-  <div class="mesh-glow mesh-2"></div>
-  <div class="mesh-glow mesh-3"></div>
+<div class="signal-rail" aria-hidden="true"></div>
 
-  <div class="container">
-    
-    <!-- Navbar -->
-    <nav class="navbar">
-      <a href="#" class="nav-brand">
-        <span class="nav-dot"></span>
-        Project-ExyROMs
-      </a>
-      <div class="nav-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#stack" class="nav-link">Stack</a>
-        <a href="#devices" class="nav-link">Devices</a>
-        <a href="#releases" class="nav-link">Releases</a>
-        <a href="https://t.me/ExyROMs" target="_blank" class="btn-nav">Telegram</a>
-      </div>
-    </nav>
+<div class="container">
 
-    <!-- Hero -->
-    <header class="hero">
-      <div class="hero-tag">
-        <span class="pulse-dot"></span>
-        Exynos Performance Hub
-      </div>
-      <h1 class="hero-title">Next-Gen Custom<br>ROM Development</h1>
-      <p class="hero-subtitle">Open-source firmware builds, optimized low-latency kernels, and pure AOSP ports maintained with speed and stability in mind.</p>
-      
-      <div class="telemetry-strip">
-        <div class="telemetry-item">Builds: <b id="totalBuildsCount">0</b></div>
-        <div class="telemetry-item">Android 16/17 Ready</div>
-        <div class="telemetry-item">Maintained by <b>PARBINDAR7</b></div>
-      </div>
+  <nav class="navbar">
+    <a href="#" class="nav-brand"><span class="led blink"></span>PROJECT-EXYROMS</a>
+    <div class="nav-links">
+      <a href="#about" class="nav-link">ABOUT</a>
+      <a href="#stack" class="nav-link">STACK</a>
+      <a href="#devices" class="nav-link">DEVICES</a>
+      <a href="#releases" class="nav-link">RELEASES</a>
+      <a href="https://t.me/ExyROMs" target="_blank" class="btn-nav">TELEGRAM</a>
+    </div>
+  </nav>
 
-      <div class="hero-actions">
-        <a href="#releases" class="btn-primary-glow">Explore Releases</a>
-        <button onclick="toggleGuideModal()" class="btn-glass">How to Flash</button>
-      </div>
-    </header>
+  <header class="hero">
+    <div class="boot-log" aria-hidden="true">
+      <div><span class="tag">[BOOT]</span> exynos9611 · target loaded</div>
+      <div><span class="tag">[VERIFY]</span> signature check <span class="ok">OK</span></div>
+      <div><span class="tag">[MOUNT]</span> /system /vendor /data <span class="ok">OK</span><span class="cursor-blink">&nbsp;</span></div>
+    </div>
 
-    <!-- 01 About -->
-    <section class="section-wrapper" id="about">
-      <div class="section-headline">
-        <span class="section-num">01</span>
-        <h2 class="section-name">About Project</h2>
-      </div>
-      <div class="panel">
-        <p class="about-text">
-          <b>Project-ExyROMs</b> is dedicated to pushing Samsung Exynos platforms to their absolute limits. Focusing on <b>AOSP bringing-up</b>, <b>uclamp task scheduling</b>, <b>kernel efficiency</b>, and <b>frame pacing optimization</b>, our builds deliver clean, bloat-free Android 16 & 17 experiences.
-        </p>
-      </div>
-    </section>
+    <h1 class="hero-title">
+      FLASH BEYOND<br>
+      <span class="underline-wrap">
+        <span class="accent">STOCK</span>
+        <svg class="trace-underline" viewBox="0 0 220 14" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 8 C 40 12, 70 2, 110 8 S 180 12, 218 6" />
+        </svg>
+      </span>
+    </h1>
 
-    <section class="section-wrapper" id="stack">
-      <div class="section-headline">
-        <span class="section-num">02</span>
-        <h2 class="section-name">Tech Stack & Tools</h2>
-      </div>
-      <div class="stack-grid">
-        <div class="stack-card">
-          <div class="stack-title">Kernel & Architecture</div>
-          <div class="stack-badges">
-            <span class="stack-badge">KernelSU</span>
-            <span class="stack-badge">Uclamp</span>
-            <span class="stack-badge">Powerhint</span>
-            <span class="stack-badge">ARM64</span>
-          </div>
-        </div>
-        <div class="stack-card">
-          <div class="stack-title">Systems & Source</div>
-          <div class="stack-badges">
-            <span class="stack-badge">AOSP</span>
-            <span class="stack-badge">LineageOS</span>
-            <span class="stack-badge">Linux 4.14</span>
-            <span class="stack-badge">BPF</span>
-          </div>
-        </div>
-        <div class="stack-card">
-          <div class="stack-title">Tooling & Recovery</div>
-          <div class="stack-badges">
-            <span class="stack-badge">TWRP Recovery</span>
-            <span class="stack-badge">Odin / Heimdall</span>
-            <span class="stack-badge">Git</span>
-            <span class="stack-badge">Bash</span>
-          </div>
+    <p class="hero-subtitle">Custom firmware for Samsung Exynos 9611 devices — <b>AOSP-based ROMs</b>, <b>tuned kernels</b>, and <b>bloat-free builds</b>, maintained build by build for daily-driver stability.</p>
+
+    <div class="status-strip">
+      <div class="status-chip">PACKAGES <b id="totalBuildsCount">0</b></div>
+      <div class="status-chip">TARGET <b>A16 / A17</b></div>
+      <div class="status-chip">MAINTAINER <b>PARBINDAR7</b></div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#releases" class="btn-flash">Browse Releases →</a>
+      <button onclick="toggleGuideModal()" class="btn-outline">Flashing Guide</button>
+    </div>
+  </header>
+
+  <section class="section-wrapper" id="about">
+    <div class="section-marker">
+      <span class="section-addr">0x00</span>
+      <h2 class="section-name">About</h2>
+    </div>
+    <div class="panel bracketed">
+      <p class="about-text">
+        <b>Project-ExyROMs</b> pushes the aging Exynos 9611 platform further than Samsung ever intended. The focus stays narrow and deliberate: <b>AOSP bring-up</b>, <b>uclamp task scheduling</b>, <b>kernel efficiency</b>, and <b>frame-pacing</b> tuning — the difference between a ROM that boots and one that's actually pleasant to carry every day.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-wrapper" id="stack">
+    <div class="section-marker">
+      <span class="section-addr">0x01</span>
+      <h2 class="section-name">Toolchain</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-title">Kernel &amp; Scheduling</div>
+        <div class="stack-badges">
+          <span class="stack-badge">KernelSU</span>
+          <span class="stack-badge">Uclamp</span>
+          <span class="stack-badge">Powerhint</span>
+          <span class="stack-badge">ARM64</span>
         </div>
       </div>
-    </section>
-
-    <!-- 03 Supported Devices -->
-    <section class="section-wrapper" id="devices">
-      <div class="section-headline">
-        <span class="section-num">03</span>
-        <h2 class="section-name">Supported Devices</h2>
-      </div>
-      <div class="devices-grid">
-        <div class="device-card">
-          <div class="device-name">Galaxy M31</div>
-          <div class="device-code">Exynos 9611 // m31ns</div>
-        </div>
-        <div class="device-card">
-          <div class="device-name">Galaxy A51</div>
-          <div class="device-code">Exynos 9611 // a51ns</div>
-        </div>
-        <div class="device-card">
-          <div class="device-name">Galaxy M21</div>
-          <div class="device-code">Exynos 9611 // m21ns</div>
-        </div>
-        <div class="device-card">
-          <div class="device-name">Galaxy F41</div>
-          <div class="device-code">Exynos 9611 // f41ns</div>
+      <div class="stack-card">
+        <div class="stack-title">Source &amp; Base</div>
+        <div class="stack-badges">
+          <span class="stack-badge">AOSP</span>
+          <span class="stack-badge">LineageOS</span>
+          <span class="stack-badge">Linux 4.14</span>
+          <span class="stack-badge">BPF</span>
         </div>
       </div>
-    </section>
-
-    <!-- 04 Releases Engine -->
-    <section class="section-wrapper" id="releases">
-      <div class="section-headline">
-        <span class="section-num">04</span>
-        <h2 class="section-name">Releases & Builds</h2>
-      </div>
-
-      <div class="controls">
-        <div class="filter-tabs">
-          <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
-          <button class="tab-btn" onclick="setFilter('rom', this)">ROMs</button>
-          <button class="tab-btn" onclick="setFilter('kernel', this)">Kernels</button>
-          <button class="tab-btn" onclick="setFilter('gapps', this)">Gapps</button>
-          <button class="tab-btn" onclick="setFilter('recovery', this)">Recovery</button>
+      <div class="stack-card">
+        <div class="stack-title">Flashing &amp; Recovery</div>
+        <div class="stack-badges">
+          <span class="stack-badge">TWRP</span>
+          <span class="stack-badge">Odin / Heimdall</span>
+          <span class="stack-badge">Git</span>
+          <span class="stack-badge">Bash</span>
         </div>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search builds, Android version..." oninput="renderBuilds()">
-      </div>
-
-      <div class="builds-list" id="buildsList"></div>
-    </section>
-
-  </div>
-
-  <!-- Guide Modal -->
-  <div class="modal-overlay" id="guideModal" onclick="closeGuideOnOverlay(event)">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title">Flashing Guide</div>
-        <span class="modal-close" onclick="toggleGuideModal()">✕</span>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-title">Clean Flash (Recommended)</div>
-        <ol class="guide-list">
-          <li>Boot into <b>TWRP Recovery</b>.</li>
-          <li>Wipe <b>Dalvik / ART Cache, Cache, Metadata, and Data</b>.</li>
-          <li>Install the <b>ROM zip</b>.</li>
-          <li><i>(Optional)</i> Flash <b>NikGApps / LiteGApps</b> and <b>Everline Kernel</b>.</li>
-          <li>Reboot to System.</li>
-        </ol>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-title">Dirty Flash (Updating)</div>
-        <ol class="guide-list">
-          <li>Boot into <b>TWRP Recovery</b>.</li>
-          <li>Wipe <b>Dalvik / ART Cache and Cache</b>.</li>
-          <li>Flash updated <b>ROM zip</b>.</li>
-          <li><i>(Optional)</i> Reflash <b>Everline Kernel</b>.</li>
-          <li>Reboot to System.</li>
-        </ol>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Lightbox -->
-  <div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
-    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
-    <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
-    <button class="lightbox-btn lightbox-next" onclick="navigateLightbox(1)">❯</button>
-    <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
-  </div>
+  <section class="section-wrapper" id="devices">
+    <div class="section-marker">
+      <span class="section-addr">0x02</span>
+      <h2 class="section-name">Devices</h2>
+    </div>
+    <div class="devices-grid">
+      <div class="device-card"><div class="device-name">Galaxy M31</div><div class="device-code">Exynos 9611 · m31ns</div></div>
+      <div class="device-card"><div class="device-name">Galaxy A51</div><div class="device-code">Exynos 9611 · a51ns</div></div>
+      <div class="device-card"><div class="device-name">Galaxy M21</div><div class="device-code">Exynos 9611 · m21ns</div></div>
+      <div class="device-card"><div class="device-name">Galaxy F41</div><div class="device-code">Exynos 9611 · f41ns</div></div>
+    </div>
+  </section>
 
-  <script>
-    var buildsData = [
+  <section class="section-wrapper" id="releases">
+    <div class="section-marker">
+      <span class="section-addr">0x03</span>
+      <h2 class="section-name">Releases</h2>
+    </div>
+
+    <div class="controls">
+      <div class="filter-tabs">
+        <button class="tab-btn active" onclick="setFilter('all', this)">ALL</button>
+        <button class="tab-btn" onclick="setFilter('rom', this)">ROM</button>
+        <button class="tab-btn" onclick="setFilter('kernel', this)">KERNEL</button>
+        <button class="tab-btn" onclick="setFilter('gapps', this)">GAPPS</button>
+        <button class="tab-btn" onclick="setFilter('recovery', this)">RECOVERY</button>
+      </div>
+      <input type="text" id="searchInput" class="search-input" placeholder="grep build, android ver..." oninput="renderBuilds()">
+    </div>
+
+    <div class="builds-list" id="buildsList"></div>
+  </section>
+
+</div>
+
+<footer>
+  <span>GND · Project-ExyROMs © 2026</span>
+  <a href="https://t.me/ExyROMs" target="_blank">t.me/ExyROMs</a>
+  <span>EOF</span>
+</footer>
+
+<div class="modal-overlay" id="guideModal" onclick="closeGuideOnOverlay(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">Flashing Guide</div>
+      <button class="modal-close" onclick="toggleGuideModal()">✕</button>
+    </div>
+    <div class="guide-card">
+      <div class="guide-title">Clean flash (recommended)</div>
+      <ol class="guide-list">
+        <li>Boot into <b>TWRP Recovery</b>.</li>
+        <li>Wipe <b>Dalvik / ART Cache, Cache, Metadata, Data</b>.</li>
+        <li>Install the <b>ROM zip</b>.</li>
+        <li><i>(Optional)</i> Flash <b>NikGApps / LiteGApps</b> and <b>Everline Kernel</b>.</li>
+        <li>Reboot to system.</li>
+      </ol>
+    </div>
+    <div class="guide-card">
+      <div class="guide-title">Dirty flash (updating)</div>
+      <ol class="guide-list">
+        <li>Boot into <b>TWRP Recovery</b>.</li>
+        <li>Wipe <b>Dalvik / ART Cache and Cache</b>.</li>
+        <li>Flash updated <b>ROM zip</b>.</li>
+        <li><i>(Optional)</i> Reflash <b>Everline Kernel</b>.</li>
+        <li>Reboot to system.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
+  <button class="lightbox-btn lightbox-next" onclick="navigateLightbox(1)">❯</button>
+  <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+</div>
+
+<script>
+var buildsData = [
       // 1. Everline kernel
       {
         title: "Everline kernel",
@@ -977,7 +707,7 @@
                     2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
         Notice: `
                  1.Only support builds 25.07.2026 or newer
-                 2.crDroid not compatible`,
+                2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
 
@@ -1004,7 +734,7 @@
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
 
-      // 3. Project Matrixx os v12.3
+      // 3. Project Matrixx os v12.3 (official)
       {
         title: "Project Matrixx os v12.3",
         category: "rom",
@@ -1055,7 +785,7 @@
         downloadUrl: "https://github.com/Parbindar7/OTA/releases/tag/InfinityX_06-05-2026"
       },
       
-      // 7. Afterlife OS v8.4
+      // 7. Afterlife OS v8.4 (official)
       {
         title: "Afterlife OS v8.4",
         category: "rom",
@@ -1169,17 +899,6 @@
                     1.Re-tune POWERHINT for efficiency
                     2.Boost CPU on EXPENSIVE_RENDERING
                     3.set TARGET_CPU_VARIANT to cortex-a73`,
-        screenshots: [
-          "./screenshots/voltageos/voltageos5.8/v1.jpg",
-          "./screenshots/voltageos/voltageos5.8/v2.jpg",
-          "./screenshots/voltageos/voltageos5.8/v3.jpg",
-          "./screenshots/voltageos/voltageos5.8/v4.jpg",
-          "./screenshots/voltageos/voltageos5.8/v5.jpg",
-          "./screenshots/voltageos/voltageos5.8/v6.jpg",
-          "./screenshots/voltageos/voltageos5.8/v7.jpg",
-          "./screenshots/voltageos/voltageos5.8/v8.jpg",
-          "./screenshots/voltageos/voltageos5.8/v9.jpg"
-        ],
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
       },
 
@@ -1206,7 +925,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
 
-      // 14. Matrixx OS v12.2
+      // 14. Matrixx OS v12.2 (official)
       {
         title: "Matrixx OS v12.2",
         category: "rom",
@@ -1247,9 +966,9 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `
-                    1.Remove unused /dev/freezer
-                    2.Tune up/down frequency transition rate limits
-                    3.Switch to AOSP task profiles`,
+                   1.Remove unused /dev/freezer
+                   2.Tune up/down frequency transition rate limits
+                   3.Switch to AOSP task profiles`,
         screenshots: [
           "./screenshots/voltageos/lunaris/v1.jpg",
           "./screenshots/voltageos/lunaris/v2.jpg",
@@ -1304,8 +1023,8 @@
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
         changelog: `
-                    1.Re-configure cpuset
-                    2.Remove cpuidle off node`,
+                   1.Re-configure cpuset
+                   2.Remove cpuidle off node`,
         Notice: `
                  1.OTA Pushed
                  2.EOL A16. Next update based on A17
@@ -1344,10 +1063,10 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `
-                    1.Tune Powerhint.json
-                    2.Tune up/down frequency rate limits
-                    3.Switch to AOSP task profiles
-                    4.Remove unused /dev/freezer`,
+                   1.Tune Powerhint.json
+                   2.Tune up/down frequency rate limits
+                   3.Switch to AOSP task profiles
+                   4.Remove unused /dev/freezer`,
         screenshots: [
           "./screenshots/voltageos/lineageos23.2/v1.jpg",
           "./screenshots/voltageos/lineageos23.2/v2.jpg",
@@ -1392,7 +1111,7 @@
         downloadUrl: "https://drive.google.com/drive/folders/19QBt1_8HF0gyskg9fnHgojGY8s5MsnFm?usp=sharing"
       },
 
-      // 20. LineageOS EXT
+      // 20. LineageOS
       {
         title: "LineageOS EXT",
         category: "rom",
@@ -1402,16 +1121,16 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `
-                    1.Update included soong namespaces
-                    2.Set legacy gralloc flag
-                    3.Remove apk_verity_prop from flags_health_check.te
-                    4.Remove duplicate sysfs_block
-                    5.Remove duplicate clean_scratch_files
-                    6.Use legacy libion implementation
-                    7.Disable app launch blur`,
+                   1.Update included soong namespaces
+                   2.Set legacy gralloc flag
+                   3.Remove apk_verity_prop from flags_health_check.te
+                   4.Remove duplicate sysfs_block
+                   5.Remove duplicate clean_scratch_files
+                   6.Use legacy libion implementation
+                   7.Disable app launch blur`,
         Notice: `
-                 1.Initial A17 release
-                 2.Report bugs with proper log please`,
+                   1.Initial A17 release
+                   2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
@@ -1519,9 +1238,9 @@
         date: "2026",
         flavor: ["FLASHABLE ZIP/TAR"],
         changelog: `
-                    1.Fully compatible with Android 16 & 17 custom ROMs`,
+                   1.Fully compatible with Android 16 & 17 custom ROMs`,
         Notice: `
-                 1.Flash via Odin (.tar) or existing recovery (.img)`,
+                1.Flash via Odin (.tar) or existing recovery (.img)`,
         downloadUrl: "https://twrp.me/Devices/"
       },
 
@@ -1534,9 +1253,9 @@
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
         changelog: `
-                    1.Official litegapps release packages for custom rom android 17`,
+                   1.Official litegapps release packages for custom rom android 17`,
         Notice: `
-                 1.Only compatible for android 17`,
+                   1.Only compatible for android 17`,
         downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
       },
 
@@ -1549,231 +1268,173 @@
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
         changelog: `
-                    1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
-        downloadUrl: "https://nikgapps.com/downloads"
-      }
-    ];
+                   1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
+        downloadUrl: "https://nikgapps.com/downloads" }
+];
 
-    var currentFilter = "all";
-    var activeScreenshots = [];
-    var currentImageIndex = 0;
+var currentFilter = "all";
+var activeScreenshots = [];
+var currentImageIndex = 0;
 
-    function setFilter(filter, btn) {
-      currentFilter = filter;
-      var buttons = document.querySelectorAll(".tab-btn");
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("active");
-      }
-      btn.classList.add("active");
-      renderBuilds();
-    }
+function setFilter(filter, btn){
+  currentFilter = filter;
+  document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
+  btn.classList.add("active");
+  renderBuilds();
+}
 
-    function toggleGuideModal() {
-      var modal = document.getElementById("guideModal");
-      modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
-    }
+function toggleGuideModal(){
+  var modal = document.getElementById("guideModal");
+  modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
+}
+function closeGuideOnOverlay(e){ if(e.target.id === "guideModal") toggleGuideModal(); }
 
-    function closeGuideOnOverlay(e) {
-      if (e.target.id === "guideModal") {
-        toggleGuideModal();
-      }
-    }
+function openLightbox(buildIndex, imageIndex, type){
+  activeScreenshots = type === 'features' ? (buildsData[buildIndex].featureScreenshots || []) : (buildsData[buildIndex].screenshots || []);
+  currentImageIndex = imageIndex;
+  updateLightboxDisplay();
+  document.getElementById("lightboxModal").classList.add("active");
+}
+function updateLightboxDisplay(){
+  if(activeScreenshots.length === 0) return;
+  document.getElementById("lightboxImg").src = activeScreenshots[currentImageIndex];
+  document.getElementById("lightboxCounter").innerText = (currentImageIndex + 1) + " / " + activeScreenshots.length;
+}
+function navigateLightbox(direction){
+  if(activeScreenshots.length === 0) return;
+  currentImageIndex += direction;
+  if(currentImageIndex < 0) currentImageIndex = activeScreenshots.length - 1;
+  else if(currentImageIndex >= activeScreenshots.length) currentImageIndex = 0;
+  updateLightboxDisplay();
+}
+function closeLightbox(){ document.getElementById("lightboxModal").classList.remove("active"); }
+function closeLightboxOnBg(e){ if(e.target.id === "lightboxModal") closeLightbox(); }
 
-    function openLightbox(buildIndex, imageIndex, type) {
-      if (type === 'features') {
-        activeScreenshots = buildsData[buildIndex].featureScreenshots || [];
-      } else {
-        activeScreenshots = buildsData[buildIndex].screenshots || [];
-      }
-      currentImageIndex = imageIndex;
-      updateLightboxDisplay();
-      document.getElementById("lightboxModal").classList.add("active");
-    }
+document.addEventListener("keydown", function(e){
+  var modal = document.getElementById("lightboxModal");
+  if(modal.classList.contains("active")){
+    if(e.key === "ArrowRight") navigateLightbox(1);
+    if(e.key === "ArrowLeft") navigateLightbox(-1);
+    if(e.key === "Escape") closeLightbox();
+  }
+});
 
-    function updateLightboxDisplay() {
-      if (activeScreenshots.length === 0) return;
-      var img = document.getElementById("lightboxImg");
-      var counter = document.getElementById("lightboxCounter");
-      img.src = activeScreenshots[currentImageIndex];
-      counter.innerText = (currentImageIndex + 1) + " / " + activeScreenshots.length;
-    }
+function getStatus(item){
+  var isEol = /EOL/i.test(item.title) || (item.Notice && /EOL/i.test(item.Notice));
+  var isUnofficial = item.flavor && item.flavor.some(function(f){ return /UNOFFICIAL/i.test(f); });
+  if(isEol) return { label:"EOL", cls:"" , color:"var(--warn-amber)"};
+  if(isUnofficial) return { label:"UNSTABLE", color:"var(--warn-amber)" };
+  return { label:"STABLE", color:"var(--solder-green-bright)" };
+}
 
-    function navigateLightbox(direction) {
-      if (activeScreenshots.length === 0) return;
-      currentImageIndex += direction;
-      if (currentImageIndex < 0) {
-        currentImageIndex = activeScreenshots.length - 1;
-      } else if (currentImageIndex >= activeScreenshots.length) {
-        currentImageIndex = 0;
-      }
-      updateLightboxDisplay();
-    }
+function createCardElement(item){
+  var realBuildIndex = buildsData.indexOf(item);
+  var cat = (item.category || "rom").toLowerCase();
+  var badgeClass = "badge-" + cat;
+  var status = getStatus(item);
 
-    function closeLightbox() {
-      document.getElementById("lightboxModal").classList.remove("active");
-    }
+  var maintainerHtml = "";
+  if(item.maintainer){
+    var githubUsername = item.maintainer.replace('@','');
+    maintainerHtml = '<div class="maintainer-row">MAINTAINER: <a href="https://github.com/' + githubUsername + '" target="_blank" class="maintainer-link">' + item.maintainer + '</a></div>';
+  }
 
-    function closeLightboxOnBg(e) {
-      if (e.target.id === "lightboxModal") {
-        closeLightbox();
-      }
-    }
+  var flavorHtml = "";
+  if(item.flavor){
+    var tagsArray = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
+    flavorHtml = '<div class="flavor-tags">' + tagsArray.map(function(t){ return '<span class="flavor-badge">' + t + '</span>'; }).join('') + '</div>';
+  }
 
-    document.addEventListener("keydown", function(e) {
-      var modal = document.getElementById("lightboxModal");
-      if (modal.classList.contains("active")) {
-        if (e.key === "ArrowRight") navigateLightbox(1);
-        if (e.key === "ArrowLeft") navigateLightbox(-1);
-        if (e.key === "Escape") closeLightbox();
-      }
+  var featuresHtml = "";
+  if(item.featureScreenshots && item.featureScreenshots.length){
+    featuresHtml = '<div class="gallery-wrapper"><div class="box-label">Feature Screenshots</div><div class="screenshots-gallery">';
+    item.featureScreenshots.forEach(function(src, f){
+      featuresHtml += '<img src="' + src + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + f + ', \'features\')" alt="Feature Screenshot">';
     });
+    featuresHtml += '</div></div>';
+  }
 
-    function createCardElement(item) {
-      var realBuildIndex = buildsData.indexOf(item);
-      var cat = (item.category || "rom").toLowerCase();
-      var badgeClass = "badge-" + cat;
+  var screenshotsHtml = "";
+  if(item.screenshots && item.screenshots.length){
+    screenshotsHtml = '<div class="gallery-wrapper"><div class="box-label">ROM Screenshots</div><div class="screenshots-gallery">';
+    item.screenshots.forEach(function(src, s){
+      screenshotsHtml += '<img src="' + src + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + s + ', \'rom\')" alt="Screenshot">';
+    });
+    screenshotsHtml += '</div></div>';
+  }
 
-      var maintainerHtml = '';
-      if (item.maintainer) {
-        var githubUsername = item.maintainer.replace('@', '');
-        var githubUrl = 'https://github.com/' + githubUsername;
-        maintainerHtml = '<div class="maintainer-row">Maintainer: ' + 
-          '<a href="' + githubUrl + '" target="_blank" class="maintainer-link">' + item.maintainer + '</a>' + 
-          '</div>';
-      }
+  var noticeHtml = item.Notice ? '<div class="notice-card"><strong>NOTICE:</strong>\n' + item.Notice + '</div>' : "";
 
-      var flavorHtml = '';
-      if (item.flavor) {
-        var tagsArray = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
-        flavorHtml = '<div class="flavor-tags">' + 
-            tagsArray.map(function(t) { return '<span class="flavor-badge">' + t + '</span>'; }).join('') + 
-            '</div>';
-      }
+  var card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML =
+    '<div class="card-header">' +
+      '<div class="build-title-row"><div class="build-title">' + item.title + '</div></div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">' +
+        '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
+        '<span class="status-tag"><span class="led" style="background:' + status.color + ';box-shadow:0 0 6px 1px ' + status.color + ';"></span>' + status.label + '</span>' +
+      '</div>' +
+    '</div>' +
+    flavorHtml +
+    '<div class="build-meta">' +
+      '<div><span class="k">DEVICE</span> <span class="v">' + item.device + '</span></div>' +
+      '<div><span class="k">TARGET</span> <span class="v">' + item.android + '</span></div>' +
+      '<div><span class="k">BUILD_DATE</span> <span class="v">' + item.date + '</span></div>' +
+    '</div>' +
+    maintainerHtml +
+    featuresHtml +
+    screenshotsHtml +
+    noticeHtml +
+    '<div class="changelog-box"><strong>CHANGELOG</strong>\n' + item.changelog + '</div>' +
+    '<a href="' + item.downloadUrl + '" target="_blank" class="btn-download">Flash this build</a>';
 
-      var featuresHtml = '';
-      if (item.featureScreenshots && item.featureScreenshots.length > 0) {
-        featuresHtml = '<div class="gallery-wrapper">' +
-          '<div class="box-label">Feature Screenshots</div>' +
-          '<div class="screenshots-gallery">';
-        for (var f = 0; f < item.featureScreenshots.length; f++) {
-          featuresHtml += '<img src="' + item.featureScreenshots[f] + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + f + ', \'features\')" alt="Feature Screenshot">';
-        }
-        featuresHtml += '</div></div>';
-      }
+  return card;
+}
 
-      var screenshotsHtml = '';
-      if (item.screenshots && item.screenshots.length > 0) {
-        screenshotsHtml = '<div class="gallery-wrapper">' +
-          '<div class="box-label">ROM Screenshots</div>' +
-          '<div class="screenshots-gallery">';
-        for (var s = 0; s < item.screenshots.length; s++) {
-          screenshotsHtml += '<img src="' + item.screenshots[s] + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + s + ', \'rom\')" alt="Screenshot">';
-        }
-        screenshotsHtml += '</div></div>';
-      }
-      
-      var noticeHtml = item.Notice 
-        ? '<div class="notice-card"><strong>Notice:</strong><br>' + item.Notice + '</div>' 
-        : '';
+function renderBuilds(){
+  var container = document.getElementById("buildsList");
+  if(!container) return;
 
-      var card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = 
-        '<div class="card-header">' +
-          '<div class="build-title">' + item.title + '</div>' +
-          '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
-        '</div>' +
-        flavorHtml +
-        '<div class="build-meta">' +
-          '<span>' + item.device + '</span> ' +
-          '<span>' + item.android + '</span> ' +
-          '<span>' + item.date + '</span>' +
-        '</div>' +
-        maintainerHtml +
-        featuresHtml +
-        screenshotsHtml +
-        noticeHtml +
-        '<div class="changelog-box">' +
-          '<strong style="color: var(--accent-purple); font-family: Plus Jakarta Sans;">Changelog:</strong><br>' + item.changelog +
-        '</div>' +
-        '<a href="' + item.downloadUrl + '" target="_blank" class="btn-download">Download Package</a>';
+  var searchInput = document.getElementById("searchInput");
+  var searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
+  container.innerHTML = "";
 
-      return card;
+  var filtered = buildsData.filter(function(item){
+    var cat = (item.category || "rom").toLowerCase();
+    var matchesCategory = (currentFilter === "all") || (cat === currentFilter);
+    var matchesSearch = (item.title || "").toLowerCase().indexOf(searchQuery) !== -1 ||
+                         (item.device || "").toLowerCase().indexOf(searchQuery) !== -1 ||
+                         (item.android || "").toLowerCase().indexOf(searchQuery) !== -1;
+    return matchesCategory && matchesSearch;
+  });
+
+  document.getElementById("totalBuildsCount").innerText = buildsData.length;
+
+  if(filtered.length === 0){
+    container.innerHTML = '<div class="empty-state">no builds match that query</div>';
+    return;
+  }
+
+  var sections = [
+    { title:"Android 16 ROMs", items: filtered.filter(function(i){ return (i.category||"rom").toLowerCase()==="rom" && (i.android||"").toLowerCase().indexOf("16")!==-1; }) },
+    { title:"Android 17 ROMs", items: filtered.filter(function(i){ return (i.category||"rom").toLowerCase()==="rom" && (i.android||"").toLowerCase().indexOf("17")!==-1; }) },
+    { title:"Kernels", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="kernel"; }) },
+    { title:"Google Apps (GApps)", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="gapps"; }) },
+    { title:"Recovery", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="recovery"; }) }
+  ];
+
+  sections.forEach(function(sec){
+    if(sec.items.length > 0){
+      var header = document.createElement("div");
+      header.className = "category-divider";
+      header.innerHTML = '<span class="category-title">' + sec.title + '</span><span class="category-count">' + sec.items.length + ' builds</span>';
+      container.appendChild(header);
+      sec.items.forEach(function(item){ container.appendChild(createCardElement(item)); });
     }
+  });
+}
 
-    function renderBuilds() {
-      var container = document.getElementById("buildsList");
-      if (!container) return;
-
-      var searchInput = document.getElementById("searchInput");
-      var searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
-      container.innerHTML = "";
-
-      var filtered = buildsData.filter(function(item) {
-        var cat = (item.category || "rom").toLowerCase();
-        var matchesCategory = (currentFilter === "all") || (cat === currentFilter);
-        var matchesSearch = (item.title || "").toLowerCase().indexOf(searchQuery) !== -1 || 
-                            (item.device || "").toLowerCase().indexOf(searchQuery) !== -1 ||
-                            (item.android || "").toLowerCase().indexOf(searchQuery) !== -1;
-        return matchesCategory && matchesSearch;
-      });
-
-      document.getElementById("totalBuildsCount").innerText = buildsData.length;
-
-      if (filtered.length === 0) {
-        container.innerHTML = '<div style="text-align:center; color: var(--text-muted); padding: 3rem; background: var(--surface-1); border-radius: 20px; border: 1px solid var(--border);">No builds found matching your search.</div>';
-        return;
-      }
-
-      var sections = [
-        {
-          title: "Android 16 ROMs",
-          items: filtered.filter(function(i) {
-            return (i.category || "rom").toLowerCase() === "rom" && (i.android || "").toLowerCase().indexOf("16") !== -1;
-          })
-        },
-        {
-          title: "Android 17 ROMs",
-          items: filtered.filter(function(i) {
-            return (i.category || "rom").toLowerCase() === "rom" && (i.android || "").toLowerCase().indexOf("17") !== -1;
-          })
-        },
-        {
-          title: "Kernels",
-          items: filtered.filter(function(i) {
-            return (i.category || "").toLowerCase() === "kernel";
-          })
-        },
-        {
-          title: "Google Apps (GApps)",
-          items: filtered.filter(function(i) {
-            return (i.category || "").toLowerCase() === "gapps";
-          })
-        },
-        {
-          title: "Recovery",
-          items: filtered.filter(function(i) {
-            return (i.category || "").toLowerCase() === "recovery";
-          })
-        }
-      ];
-
-      for (var s = 0; s < sections.length; s++) {
-        var sec = sections[s];
-        if (sec.items.length > 0) {
-          var header = document.createElement("div");
-          header.className = "category-divider";
-          header.innerHTML = '<span class="category-title">' + sec.title + '</span><span class="category-count">' + sec.items.length + ' Builds</span>';
-          container.appendChild(header);
-
-          for (var i = 0; i < sec.items.length; i++) {
-            container.appendChild(createCardElement(sec.items[i]));
-          }
-        }
-      }
-    }
-
-    renderBuilds();
-  </script>
+renderBuilds();
+</script>
 </body>
 </html>
