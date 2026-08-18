@@ -91,12 +91,8 @@
     }
 
     @keyframes floatEmblem {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-8px);
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
     @keyframes pulseDot {
@@ -249,6 +245,7 @@
       justify-content: center;
       align-items: center;
       animation: fadeInScale 0.9s var(--ease-out) 0.3s both;
+      position: relative;
     }
 
     .android-emblem-card {
@@ -263,12 +260,25 @@
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
       position: relative;
       animation: floatEmblem 5s ease-in-out infinite;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      will-change: transform;
+      z-index: 10;
     }
 
-    .android-emblem-card:hover {
+    .android-emblem-card.is-dragging {
+      cursor: grabbing !important;
+      animation: none !important;
+      transition: none !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 160, 126, 0.35);
       border-color: var(--bronze);
-      box-shadow: 0 20px 50px rgba(197, 160, 126, 0.15);
+      z-index: 1000;
+    }
+
+    .android-emblem-card.is-snapping {
+      transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+      animation: none !important;
     }
 
     .android-hero-logo {
@@ -276,12 +286,13 @@
       height: 130px;
       fill: var(--bronze);
       filter: drop-shadow(0 4px 12px rgba(197, 160, 126, 0.2));
-      transition: fill 0.3s ease, transform 0.3s var(--ease-out);
+      pointer-events: none;
+      transition: fill 0.3s ease;
     }
 
-    .android-emblem-card:hover .android-hero-logo {
+    .android-emblem-card:hover .android-hero-logo,
+    .android-emblem-card.is-dragging .android-hero-logo {
       fill: var(--silver-light);
-      transform: scale(1.05);
     }
 
     .emblem-label {
@@ -295,6 +306,7 @@
       padding: 0.25rem 0.75rem;
       border-radius: 4px;
       background: var(--bg);
+      pointer-events: none;
     }
 
     .telemetry {
@@ -596,6 +608,7 @@
       box-shadow: 0 6px 20px rgba(197, 160, 126, 0.25);
     }
 
+    /* Lightbox & Modals */
     .overlay {
       position: fixed;
       inset: 0;
@@ -744,7 +757,7 @@
         </div>
 
         <div class="hero-emblem-col">
-          <div class="android-emblem-card">
+          <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
             <svg class="android-hero-logo" viewBox="0 0 24 24">
               <path d="M17.523 15.3414C17.0601 15.3414 16.6873 14.9686 16.6873 14.5057C16.6873 14.0428 17.0601 13.67 17.523 13.67C17.9859 13.67 18.3587 14.0428 18.3587 14.5057C18.3587 14.9686 17.9859 15.3414 17.523 15.3414ZM6.47702 15.3414C6.01413 15.3414 5.64132 14.9686 5.64132 14.5057C5.64132 14.0428 6.01413 13.67 6.47702 13.67C6.93991 13.67 7.31272 14.0428 7.31272 14.5057C7.31272 14.9686 6.93991 15.3414 6.47702 15.3414ZM17.9234 10.3732L19.7891 7.142C19.9248 6.90696 19.8443 6.60627 19.6092 6.47057C19.3742 6.33486 19.0735 6.41539 18.9378 6.65042L17.0396 9.93836C15.5392 9.25464 13.8291 8.86877 12 8.86877C10.1709 8.86877 8.46083 9.25464 6.9604 9.93836L5.06223 6.65042C4.92652 6.41539 4.62583 6.33486 4.3908 6.47057C4.15576 6.60627 4.07524 6.90696 4.21095 7.142L6.07662 10.3732C2.71618 12.2036 0.435547 15.6881 0.435547 19.7578H23.5645C23.5645 15.6881 21.2838 12.2036 17.9234 10.3732Z"/>
             </svg>
@@ -1282,6 +1295,64 @@
 
     document.getElementById('stat-count').innerText = buildsData.length;
 
+    const emblem = document.getElementById('draggableEmblem');
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let currentX = 0, currentY = 0;
+
+    function onDragStart(e) {
+      isDragging = true;
+      emblem.classList.remove('is-snapping');
+      emblem.classList.add('is-dragging');
+      
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+      
+      startX = clientX - currentX;
+      startY = clientY - currentY;
+    }
+
+    function onDragMove(e) {
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+      
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+      
+      currentX = clientX - startX;
+      currentY = clientY - startY;
+      
+      const rotateDeg = Math.max(Math.min(currentX * 0.05, 18), -18);
+      emblem.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotateDeg}deg) scale(1.05)`;
+    }
+
+    function onDragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      emblem.classList.remove('is-dragging');
+      emblem.classList.add('is-snapping');
+      
+      currentX = 0;
+      currentY = 0;
+      emblem.style.transform = 'translate3d(0px, 0px, 0) rotate(0deg) scale(1)';
+      
+      setTimeout(() => {
+        emblem.classList.remove('is-snapping');
+        emblem.style.transform = '';
+      }, 650);
+    }
+
+    if (emblem) {
+      emblem.addEventListener('mousedown', onDragStart);
+      window.addEventListener('mousemove', onDragMove);
+      window.addEventListener('mouseup', onDragEnd);
+
+      emblem.addEventListener('touchstart', onDragStart, { passive: false });
+      window.addEventListener('touchmove', onDragMove, { passive: false });
+      window.addEventListener('touchend', onDragEnd);
+    }
+
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -1370,7 +1441,6 @@
 
       const card = document.createElement("div");
       card.className = "rom-card";
-     
       card.style.animationDelay = `${Math.min(idx * 0.08, 0.6)}s`;
 
       card.innerHTML = `
