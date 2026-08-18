@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
-  <!-- Google Fonts: Geometric Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,8 +14,7 @@
       --bg: #070709;
       --bg-panel: rgba(17, 17, 20, 0.85);
       --bg-card: rgba(20, 20, 24, 0.75);
-      
-      /* Metallic & Pastel Palette */
+
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-pastel: #d4a373;
@@ -62,7 +60,6 @@
       overflow-x: hidden;
     }
 
-    /* --- Dynamic Ambient Background Animation --- */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -111,12 +108,21 @@
       animation: driftThree 26s alternate infinite;
     }
 
+    #gridCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .cyber-grid {
       position: fixed;
       inset: 0;
       background-image: 
-        linear-gradient(to right, rgba(200, 205, 215, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(200, 205, 215, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(200, 205, 215, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(200, 205, 215, 0.035) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
       z-index: 0;
@@ -184,7 +190,6 @@
       z-index: 1;
     }
 
-    /* Navbar */
     nav {
       display: flex;
       justify-content: space-between;
@@ -235,7 +240,6 @@
       box-shadow: 0 4px 14px rgba(197, 160, 126, 0.25);
     }
 
-    /* Hero Section */
     .hero {
       display: flex;
       flex-direction: column;
@@ -300,7 +304,6 @@
       font-weight: 400;
     }
 
-    /* Compact Emblem Card */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -367,7 +370,6 @@
       pointer-events: none;
     }
 
-    /* Telemetry with Pastel Brown Link */
     .telemetry {
       display: flex;
       gap: 2.5rem;
@@ -400,7 +402,6 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* Controls */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -465,7 +466,6 @@
       box-shadow: 0 0 10px rgba(197, 160, 126, 0.2);
     }
 
-    /* Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -528,7 +528,6 @@
       line-height: 1.2;
     }
 
-    /* Bold, High-Contrast Metadata */
     .build-meta {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
@@ -597,7 +596,6 @@
       line-height: 1.55;
     }
 
-    /* Fixed Thumbnail Sizing & Track */
     .gallery-container { 
       width: 100%; 
       position: relative; 
@@ -660,7 +658,6 @@
       transform: translate3d(0, -2px, 0);
     }
 
-    /* Guide Modal */
     .overlay {
       position: fixed;
       inset: 0;
@@ -713,7 +710,6 @@
       font-size: 0.9rem;
     }
 
-    /* Hardware Accelerated Lightbox */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -828,12 +824,13 @@
 </head>
 <body>
 
-  <!-- Animated Glowing Mesh & Cyber Grid -->
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
     <div class="ambient-orb orb-3"></div>
   </div>
+
+  <canvas id="gridCanvas"></canvas>
   <div class="cyber-grid"></div>
 
   <div class="layout-grid">
@@ -886,7 +883,6 @@
 
   </div>
 
-  <!-- Flashing Guide Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
       <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
@@ -915,7 +911,6 @@
     </div>
   </div>
 
-  <!-- Lightbox Modal -->
   <div class="lightbox-overlay" id="lightboxModal">
     <button class="lb-ctrl-btn lb-close" onclick="closeLightbox()" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -948,9 +943,9 @@
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
         changelog: `1.sched/uclamp: Move tunables to cpuctl
-                    2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
+2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
         Notice: `1.Only support builds 25.07.2026 or newer
-                 2.crDroid not compatible`,
+2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
 
@@ -964,15 +959,15 @@
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
         changelog: `1.sched: fix uclamp_boosted()
-                    2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
-                    3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
-                    4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
-                    5.sched: Replace schedtune with uclamp
-                    6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
-                    7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
-                    8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
-                    9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
-                    10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
+2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
+3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
+4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
+5.sched: Replace schedtune with uclamp
+6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
+7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
+8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
+9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
+10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
 
@@ -1010,7 +1005,7 @@
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS INCLUDED"],
         changelog: `1.contain all previous commits
-                    2.OTA push`,
+2.OTA push`,
         screenshots: [
           "./screenshots/voltageos/infinity/v1.jpg",
           "./screenshots/voltageos/infinity/v2.jpg",
@@ -1035,14 +1030,14 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
         changelog: `1.Enable frame pacing
-                    2.Define screenRecorderAVCProfileLevel
-                    3.Decrease launch boost to 3sec
-                    4.Tune schedutil rate limits
-                    5.HWC Adapt from exynos9630 T BSP
-                    6.adapt struct decon_win_config_data to exynos9610
-                    7.fix missing dmabuf_trace_free call on buffer release path
-                    8.free exporter name on buffer release
-                    9.CONFIG_HZ to 300`,
+2.Define screenRecorderAVCProfileLevel
+3.Decrease launch boost to 3sec
+4.Tune schedutil rate limits
+5.HWC Adapt from exynos9630 T BSP
+6.adapt struct decon_win_config_data to exynos9610
+7.fix missing dmabuf_trace_free call on buffer release path
+8.free exporter name on buffer release
+9.CONFIG_HZ to 300`,
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
           "./screenshots/voltageos/afterlife/v2.jpg",
@@ -1081,8 +1076,8 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Refactor Powerhint.json
-                    2.Tune up/down frequency rate limits
-                    3.Cleanup task_profiles_30.json`,
+2.Tune up/down frequency rate limits
+3.Cleanup task_profiles_30.json`,
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
       },
 
@@ -1096,8 +1091,8 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Refactor Powerhint.json
-                    2.Add software c2 av1/dav1d decoder
-                    3.Move media codecs configurations on tree`,
+2.Add software c2 av1/dav1d decoder
+3.Move media codecs configurations on tree`,
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
       },
 
@@ -1111,14 +1106,14 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Powerhint: Re-tune for efficiency
-                    2.Powerhint: Cleanup
-                    3.Powerhint: Add UclampTAMin & UclampTALatency
-                    4.Powerhint: Add UclampTAMin to LAUNCH
-                    5.Powerhint: Refactor powerhint.json
-                    6.Update cpuset parameters
-                    7.Migrate from Schedtune to Uclamp
-                    8.Drop schedtune
-                    9.Refactor task_profiles for to reflect Uclamp changes`,
+2.Powerhint: Cleanup
+3.Powerhint: Add UclampTAMin & UclampTALatency
+4.Powerhint: Add UclampTAMin to LAUNCH
+5.Powerhint: Refactor powerhint.json
+6.Update cpuset parameters
+7.Migrate from Schedtune to Uclamp
+8.Drop schedtune
+9.Refactor task_profiles for to reflect Uclamp changes`,
         downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
       },
       
@@ -1132,8 +1127,8 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Re-tune POWERHINT for efficiency
-                    2.Boost CPU on EXPENSIVE_RENDERING
-                    3.set TARGET_CPU_VARIANT to cortex-a73`,
+2.Boost CPU on EXPENSIVE_RENDERING
+3.set TARGET_CPU_VARIANT to cortex-a73`,
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
       },
 
@@ -1147,15 +1142,15 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Blur Disabled
-                    2.Enable frame pacing
-                    3.Define screenRecorderAVCProfileLevel
-                    4.Decrease launch boost to 3sec
-                    5.Tune schedutil rate limits
-                    6.HWC Adapt from exynos9630 T BSP
-                    7.adapt struct decon_win_config_data to exynos9610
-                    8.fix missing dmabuf_trace_free call on buffer release path 
-                    9.free exporter name on buffer release
-                    10.CONFIG_HZ to 300`,
+2.Enable frame pacing
+3.Define screenRecorderAVCProfileLevel
+4.Decrease launch boost to 3sec
+5.Tune schedutil rate limits
+6.HWC Adapt from exynos9630 T BSP
+7.adapt struct decon_win_config_data to exynos9610
+8.fix missing dmabuf_trace_free call on buffer release path 
+9.free exporter name on buffer release
+10.CONFIG_HZ to 300`,
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
 
@@ -1169,12 +1164,12 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
         changelog: `1.Blur Disabled
-                    2.Decrease launch boost to 3sec
-                    3.Tune schedutil rate limits
-                    4.HWC Adapt from exynos9630 T BSP
-                    5.adapt struct decon_win_config_data to exynos9610
-                    6.fix missing dmabuf_trace_free call on buffer release path
-                    7.free exporter name on buffer release`,
+2.Decrease launch boost to 3sec
+3.Tune schedutil rate limits
+4.HWC Adapt from exynos9630 T BSP
+5.adapt struct decon_win_config_data to exynos9610
+6.fix missing dmabuf_trace_free call on buffer release path
+7.free exporter name on buffer release`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
           "./screenshots/voltageos/matrixos12.2/v2.jpg",
@@ -1199,8 +1194,8 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Remove unused /dev/freezer
-                    2.Tune up/down frequency transition rate limits
-                    3.Switch to AOSP task profiles`,
+2.Tune up/down frequency transition rate limits
+3.Switch to AOSP task profiles`,
         screenshots: [
           "./screenshots/voltageos/lunaris/v1.jpg",
           "./screenshots/voltageos/lunaris/v2.jpg",
@@ -1225,10 +1220,10 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Re-configure cpuset
-                    2.Remove cpuidle off node`,
+2.Remove cpuidle off node`,
         Notice: `1.EOL A16. Next update based on A17
-                 2.Mostly source side changes in this build
-                 3.No kernel changes`,
+2.Mostly source side changes in this build
+3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/lunaris12.3/v1.jpg",
           "./screenshots/voltageos/lunaris12.3/v2.jpg",
@@ -1253,10 +1248,10 @@
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
         changelog: `1.Re-configure cpuset
-                    2.Remove cpuidle off node`,
+2.Remove cpuidle off node`,
         Notice: `1.OTA Pushed
-                 2.EOL A16. Next update based on A17
-                 3.No kernel changes`,
+2.EOL A16. Next update based on A17
+3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/infinityx/v1.jpg",
           "./screenshots/voltageos/infinityx/v2.jpg",
@@ -1291,9 +1286,9 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Tune Powerhint.json
-                    2.Tune up/down frequency rate limits
-                    3.Switch to AOSP task profiles
-                    4.Remove unused /dev/freezer`,
+2.Tune up/down frequency rate limits
+3.Switch to AOSP task profiles
+4.Remove unused /dev/freezer`,
         screenshots: [
           "./screenshots/voltageos/lineageos23.2/v1.jpg",
           "./screenshots/voltageos/lineageos23.2/v2.jpg",
@@ -1318,9 +1313,9 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Tune Powerhint
-                    2.Tune up/down frequency rate limits
-                    3.Switch to AOSP task profiles
-                    4.Remove unused /dev/freezer`,
+2.Tune up/down frequency rate limits
+3.Switch to AOSP task profiles
+4.Remove unused /dev/freezer`,
         Notice: `1.Blur disabled`,
         screenshots: [
           "./screenshots/voltageos/voltageos5.11/v1.jpg",
@@ -1346,14 +1341,14 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
         changelog: `1.Update included soong namespaces
-                    2.Set legacy gralloc flag
-                    3.Remove apk_verity_prop from flags_health_check.te
-                    4.Remove duplicate sysfs_block
-                    5.Remove duplicate clean_scratch_files
-                    6.Use legacy libion implementation
-                    7.Disable app launch blur`,
+2.Set legacy gralloc flag
+3.Remove apk_verity_prop from flags_health_check.te
+4.Remove duplicate sysfs_block
+5.Remove duplicate clean_scratch_files
+6.Use legacy libion implementation
+7.Disable app launch blur`,
         Notice: `1.Initial A17 release
-                 2.Report bugs with proper log please`,
+2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
@@ -1378,14 +1373,14 @@
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
         changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset
-                    2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
-                    3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
-                    4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
-                    5.Removed old unnecessary uclamp commits and backports
-                    6.Merge 5.10 BPF from phoenix
-                    7.Add cgroup v2 freezer`,
+2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
+3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
+4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
+5.Removed old unnecessary uclamp commits and backports
+6.Merge 5.10 BPF from phoenix
+7.Add cgroup v2 freezer`,
         Notice: `1.crDroid not compatible
-                 2.Only support builds 26.07.2026 or newer`,
+2.Only support builds 26.07.2026 or newer`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
 
@@ -1399,15 +1394,15 @@
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
         changelog: `1.Update included soong namespaces
-                    2.Set legacy gralloc flag
-                    3.Remove apk_verity_prop from flags_health_check.te
-                    4.Remove duplicate sysfs_block
-                    5.Remove duplicate clean_scratch_files
-                    6.Use legacy libion implementation
-                    7.Disable app launch blur`,
+2.Set legacy gralloc flag
+3.Remove apk_verity_prop from flags_health_check.te
+4.Remove duplicate sysfs_block
+5.Remove duplicate clean_scratch_files
+6.Use legacy libion implementation
+7.Disable app launch blur`,
         Notice: `1.Initial Android 17 release
-                 2.Blur Disabled
-                 3.Report bugs with proper log please`,
+2.Blur Disabled
+3.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/v1.jpg",
           "./screenshots/voltageos/v2.jpg",
@@ -1490,6 +1485,99 @@
     let currentFilter = "all";
     let activeScreenshots = [];
     let currentImageIndex = 0;
+
+    const canvas = document.getElementById('gridCanvas');
+    const ctx = canvas.getContext('2d');
+    const GRID_SIZE = 48; 
+    let dpr = window.devicePixelRatio || 1;
+
+    const GLOW_COLORS = [
+      '#38bdf8', 
+      '#2dd4bf',
+      '#34d399', 
+      '#c5a07e', 
+      '#a855f7', 
+      '#f43f5e',
+      '#fbbf24', 
+      '#818cf8'  
+    ];
+
+    let activeTiles = [];
+    let isRendering = false;
+
+    function resizeCanvas() {
+      dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    resizeCanvas();
+
+    function triggerBox(clientX, clientY) {
+      const snapX = Math.floor(clientX / GRID_SIZE) * GRID_SIZE;
+      const snapY = Math.floor(clientY / GRID_SIZE) * GRID_SIZE;
+      const randomColor = GLOW_COLORS[Math.floor(Math.random() * GLOW_COLORS.length)];
+
+      const existingIndex = activeTiles.findIndex(t => t.x === snapX && t.y === snapY);
+      if (existingIndex > -1) {
+        activeTiles[existingIndex].alpha = 1.0;
+        activeTiles[existingIndex].color = randomColor;
+      } else {
+        activeTiles.push({
+          x: snapX,
+          y: snapY,
+          color: randomColor,
+          alpha: 1.0
+        });
+      }
+
+      if (!isRendering) {
+        isRendering = true;
+        requestAnimationFrame(renderGridGlow);
+      }
+    }
+
+    // High performance pointer capture
+    window.addEventListener('pointerdown', (e) => {
+      triggerBox(e.clientX, e.clientY);
+    }, { passive: true });
+
+    function renderGridGlow() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for (let i = activeTiles.length - 1; i >= 0; i--) {
+        const tile = activeTiles[i];
+        
+        ctx.save();
+        // Inner Box Illumination
+        ctx.globalAlpha = tile.alpha * 0.28;
+        ctx.fillStyle = tile.color;
+        ctx.fillRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+
+        // Outer Neon Border
+        ctx.globalAlpha = tile.alpha;
+        ctx.strokeStyle = tile.color;
+        ctx.lineWidth = 1.6;
+        ctx.shadowColor = tile.color;
+        ctx.shadowBlur = 10;
+        ctx.strokeRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+        ctx.restore();
+
+        tile.alpha -= 0.022; 
+
+        if (tile.alpha <= 0) {
+          activeTiles.splice(i, 1);
+        }
+      }
+
+      if (activeTiles.length > 0) {
+        requestAnimationFrame(renderGridGlow);
+      } else {
+        isRendering = false;
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      }
+    }
 
     const emblem = document.getElementById('draggableEmblem');
     let isDragging = false, startX = 0, startY = 0, currentX = 0, currentY = 0, dragRAF = null;
