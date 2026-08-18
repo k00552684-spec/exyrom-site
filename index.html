@@ -5,30 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
+  <!-- Google Fonts: Geometric Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #09090b;
-      --bg-panel: #111114;
-      --bg-card: #141418;
+      --bg: #070709;
+      --bg-panel: rgba(17, 17, 20, 0.85);
+      --bg-card: rgba(20, 20, 24, 0.75);
       
+      /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
+      --bronze-pastel: #d4a373;
       --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
-      --silver-light: #e5e7eb;
-      --silver-dark: #6b7280;
+      --silver-light: #e2e8f0;
+      --silver-dark: #64748b;
       
-      --border-silver: rgba(200, 205, 215, 0.22);
-      --border-bronze: rgba(197, 160, 126, 0.35);
+      --border-silver: rgba(200, 205, 215, 0.16);
+      --border-bronze: rgba(197, 160, 126, 0.28);
       --border-hover: #c5a07e;
       
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
-      --text-300: #64748b;
+      --text-300: #94a3b8;
       
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -55,15 +58,95 @@
       align-items: center;
       padding: 0 1.5rem 8rem 1.5rem;
       background-color: var(--bg);
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .noise-overlay {
+    /* --- Dynamic Ambient Background Animation --- */
+    .ambient-bg {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 9999;
-      opacity: 0.03;
-      background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+      z-index: 0;
+      overflow: hidden;
+      contain: strict;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.22;
+      will-change: transform;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    .orb-1 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
+      top: -10%;
+      left: -10%;
+      animation: driftOne 18s alternate infinite;
+    }
+
+    .orb-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
+      bottom: 10%;
+      right: -10%;
+      opacity: 0.14;
+      animation: driftTwo 22s alternate infinite;
+    }
+
+    .orb-3 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+      top: 45%;
+      left: 30%;
+      opacity: 0.12;
+      animation: driftThree 26s alternate infinite;
+    }
+
+    .cyber-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(200, 205, 215, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(200, 205, 215, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+    }
+
+    @keyframes driftOne {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(120px, 80px, 0) scale(1.15); }
+      100% { transform: translate3d(40px, 140px, 0) scale(0.95); }
+    }
+
+    @keyframes driftTwo {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-100px, -90px, 0) scale(1.1); }
+      100% { transform: translate3d(-40px, -160px, 0) scale(0.9); }
+    }
+
+    @keyframes driftThree {
+      0% { transform: translate3d(0, 0, 0) scale(0.9); }
+      50% { transform: translate3d(-60px, 70px, 0) scale(1.2); }
+      100% { transform: translate3d(80px, -50px, 0) scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      .ambient-orb { filter: blur(60px); }
+      .orb-1 { width: 320px; height: 320px; }
+      .orb-2 { width: 340px; height: 340px; }
+      .orb-3 { display: none; }
     }
 
     @keyframes fadeInUp {
@@ -101,12 +184,15 @@
       z-index: 1;
     }
 
+    /* Navbar */
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.25rem 1.5rem;
       background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
@@ -146,8 +232,10 @@
       border-color: var(--silver-light);
       color: #09090b;
       transform: translate3d(0, -2px, 0);
+      box-shadow: 0 4px 14px rgba(197, 160, 126, 0.25);
     }
 
+    /* Hero Section */
     .hero {
       display: flex;
       flex-direction: column;
@@ -185,6 +273,7 @@
       border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
+      backdrop-filter: blur(8px);
     }
 
     .status-dot {
@@ -211,6 +300,7 @@
       font-weight: 400;
     }
 
+    /* Compact Emblem Card */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -220,6 +310,8 @@
 
     .android-emblem-card {
       background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -234,6 +326,7 @@
       user-select: none;
       touch-action: none;
       width: fit-content;
+      transition: border-color 0.3s ease;
     }
 
     .android-emblem-card.is-dragging {
@@ -274,6 +367,7 @@
       pointer-events: none;
     }
 
+    /* Telemetry with Pastel Brown Link */
     .telemetry {
       display: flex;
       gap: 2.5rem;
@@ -287,15 +381,16 @@
       animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
     }
     
-    .telemetry a {
-      color: var(--bronze-light);
+    .maintainer-tag {
+      color: var(--bronze-pastel);
       font-weight: 700;
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
     }
 
-    .telemetry a:hover {
+    .maintainer-tag:hover {
       color: #fff;
+      text-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
       text-decoration: underline;
     }
 
@@ -305,6 +400,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
+    /* Controls */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -315,6 +411,8 @@
       top: 1rem;
       z-index: 50;
       background: var(--bg-panel);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
@@ -359,6 +457,7 @@
       font-size: 0.8rem;
       border-radius: 6px;
       outline: none;
+      transition: border-color 0.2s ease;
     }
 
     .search-box:focus {
@@ -366,6 +465,7 @@
       box-shadow: 0 0 10px rgba(197, 160, 126, 0.2);
     }
 
+    /* Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -392,6 +492,8 @@
       content-visibility: auto;
       contain-intrinsic-size: 800px;
       background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
       padding: 2rem;
@@ -400,12 +502,13 @@
       flex-direction: column;
       gap: 1.5rem;
       animation: fadeInUp 0.6s var(--ease-out) both;
-      transition: border-color 0.3s ease, transform 0.3s ease;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
       transform: translate3d(0, -4px, 0);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 126, 0.1);
     }
 
     .card-top {
@@ -425,16 +528,21 @@
       line-height: 1.2;
     }
 
-   .build-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  font-weight: 600; 
-  color: var(--text-200); 
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  letter-spacing: 0.02em;
-}
+    /* Bold, High-Contrast Metadata */
+    .build-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      letter-spacing: 0.02em;
+    }
+
+    .build-meta span {
+      color: #cbd5e1;
+    }
 
     .badge {
       font-family: 'JetBrains Mono', monospace;
@@ -474,21 +582,22 @@
 
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
-   .changelog-box {
-  background: var(--bg);
-  border: 1px solid var(--border-silver);
-  padding: 0.5rem 1rem; 
-  border-radius: 8px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 400;
-  color: var(--text-200);
-  white-space: pre-line;
-  max-height: 180px;
-  overflow-y: auto;
-  line-height: 1.5;
-}
+    .changelog-box {
+      background: var(--bg);
+      border: 1px solid var(--border-silver);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text-200);
+      white-space: pre-line;
+      max-height: 180px;
+      overflow-y: auto;
+      line-height: 1.55;
+    }
 
+    /* Fixed Thumbnail Sizing & Track */
     .gallery-container { 
       width: 100%; 
       position: relative; 
@@ -551,10 +660,11 @@
       transform: translate3d(0, -2px, 0);
     }
 
+    /* Guide Modal */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(9, 9, 11, 0.95);
+      background: rgba(7, 7, 9, 0.95);
       z-index: 2000;
       display: flex;
       justify-content: center;
@@ -568,7 +678,7 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: var(--bg-panel);
+      background: #111114;
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -603,6 +713,7 @@
       font-size: 0.9rem;
     }
 
+    /* Hardware Accelerated Lightbox */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -613,7 +724,9 @@
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.2s ease;
+      transform: translateZ(0);
+      will-change: opacity;
     }
 
     .lightbox-overlay.active {
@@ -646,23 +759,25 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(20, 20, 24, 0.85);
+      background: #141418;
       border: 1px solid var(--border-bronze);
       color: var(--silver-light);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      backdrop-filter: blur(10px);
       z-index: 100000;
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      transition: transform 0.15s ease, background 0.15s ease;
+      touch-action: manipulation;
     }
 
     .lb-ctrl-btn:hover {
       background: var(--bronze);
-      border-color: var(--bronze);
       color: #09090b;
-      transform: scale(1.08);
+    }
+
+    .lb-ctrl-btn:active {
+      transform: scale(0.92);
     }
 
     .lb-ctrl-btn svg {
@@ -677,36 +792,35 @@
     }
 
     .lb-close {
-      top: max(1.5rem, env(safe-area-inset-top));
-      right: max(1.5rem, env(safe-area-inset-right));
+      top: max(1.25rem, env(safe-area-inset-top));
+      right: max(1.25rem, env(safe-area-inset-right));
     }
 
     .lb-prev {
-      left: max(1.5rem, env(safe-area-inset-left));
+      left: max(1rem, env(safe-area-inset-left));
       top: 50%;
       transform: translateY(-50%);
     }
 
     .lb-next {
-      right: max(1.5rem, env(safe-area-inset-right));
+      right: max(1rem, env(safe-area-inset-right));
       top: 50%;
       transform: translateY(-50%);
     }
 
     .lb-counter {
       position: fixed;
-      bottom: max(1.5rem, env(safe-area-inset-bottom));
+      bottom: max(1.25rem, env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
       font-family: 'JetBrains Mono', monospace;
       color: var(--bronze);
       font-size: 0.85rem;
       font-weight: 700;
-      background: rgba(17, 17, 20, 0.9);
+      background: #111114;
       border: 1px solid var(--border-bronze);
       padding: 0.4rem 1.1rem;
       border-radius: 999px;
-      backdrop-filter: blur(8px);
       z-index: 100000;
       pointer-events: none;
     }
@@ -714,7 +828,13 @@
 </head>
 <body>
 
-  <div class="noise-overlay"></div>
+  <!-- Animated Glowing Mesh & Cyber Grid -->
+  <div class="ambient-bg">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+  <div class="cyber-grid"></div>
 
   <div class="layout-grid">
 
@@ -746,7 +866,7 @@
       </div>
 
       <div class="telemetry">
-        <div>MAINTAINER <br><a href="https://github.com/Parbindar7" target="_blank">PARBINDAR7</a></div>
+        <div>MAINTAINER <br><a href="https://github.com/Parbindar7" target="_blank" class="maintainer-tag">PARBINDAR7</a></div>
       </div>
     </section>
 
@@ -766,6 +886,7 @@
 
   </div>
 
+  <!-- Flashing Guide Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
       <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
@@ -794,6 +915,7 @@
     </div>
   </div>
 
+  <!-- Lightbox Modal -->
   <div class="lightbox-overlay" id="lightboxModal">
     <button class="lb-ctrl-btn lb-close" onclick="closeLightbox()" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -804,7 +926,7 @@
     </button>
 
     <div class="lightbox-img-wrap">
-      <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" decoding="async">
     </div>
 
     <button class="lb-ctrl-btn lb-next" onclick="navigateLightbox(1)" aria-label="Next Image">
