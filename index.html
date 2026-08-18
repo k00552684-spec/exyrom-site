@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
-  <!-- Google Fonts: Circular Geometric (Outfit) & JetBrains Mono -->
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,6 @@
       --bg-panel: #111114;
       --bg-card: #141418;
       
-      /* Metallic Bronze & Silver Accents */
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-dark: #8c6d4f;
@@ -24,12 +23,10 @@
       --silver-light: #e5e7eb;
       --silver-dark: #6b7280;
       
-      /* Solid Metallic Borders */
       --border-silver: rgba(200, 205, 215, 0.22);
       --border-bronze: rgba(197, 160, 126, 0.35);
       --border-hover: #c5a07e;
       
-      --sage-green: #94ad97;
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
       --text-300: #64748b;
@@ -43,7 +40,6 @@
       padding: 0;
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     html {
@@ -60,31 +56,7 @@
       align-items: center;
       padding: 0 1.5rem 8rem 1.5rem;
       background-color: var(--bg);
-      text-rendering: optimizeLegibility;
     }
-
-    .maintainer-link {
-  color: var(--bronze-light);
-  font-weight: 700;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.maintainer-link:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-.maintainer-card-link {
-  color: var(--text-200);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.maintainer-card-link:hover {
-  color: var(--bronze);
-  text-decoration: underline;
-}
 
     .noise-overlay {
       position: fixed;
@@ -93,10 +65,8 @@
       z-index: 9999;
       opacity: 0.03;
       background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-      will-change: transform;
     }
 
-    /* Hardware Accelerated Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translate3d(0, 24px, 0); }
       to { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -109,7 +79,7 @@
 
     @keyframes floatEmblem {
       0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -8px, 0); }
+      50% { transform: translate3d(0, -6px, 0); }
     }
 
     @keyframes pulseDot {
@@ -144,7 +114,6 @@
       margin-top: 1.5rem;
       margin-bottom: 1rem;
       animation: fadeInUp 0.7s var(--ease-out) forwards;
-      will-change: transform, opacity;
     }
 
     .logo {
@@ -156,10 +125,8 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: transform 0.25s ease;
     }
 
-    .logo:hover { transform: translate3d(3px, 0, 0); }
     .logo span { color: var(--bronze); }
 
     .nav-cta {
@@ -174,7 +141,6 @@
       padding: 0.5rem 1.1rem;
       border-radius: 6px;
       transition: all 0.25s var(--ease-out);
-      will-change: transform;
     }
 
     .nav-cta:hover {
@@ -182,7 +148,6 @@
       border-color: var(--silver-light);
       color: #09090b;
       transform: translate3d(0, -2px, 0);
-      box-shadow: 0 4px 12px rgba(200, 205, 215, 0.2);
     }
 
     /* Hero Section */
@@ -230,7 +195,6 @@
       background: var(--bronze);
       border-radius: 50%;
       animation: pulseDot 2s infinite;
-      will-change: transform, opacity;
     }
 
     .hero-title {
@@ -250,7 +214,7 @@
       font-weight: 400;
     }
 
-    /* Draggable Emblem Card */
+    /* Compact Emblem Card */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -259,95 +223,56 @@
     }
 
     .android-emblem-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-bronze);
-  border-radius: 18px;
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-  position: relative;
-  animation: floatEmblem 5s ease-in-out infinite;
-  cursor: grab;
-  user-select: none;
-  touch-action: none;
-  will-change: transform;
-  z-index: 10;
-  transition: border-color 0.3s ease;
-}
-
-.emblem-img-wrapper {
-  width: 125px;
-  height: 125px;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #181516;
-}
-
-.octocat-hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.65); 
-  pointer-events: none;
-  user-select: none;
-  display: block;
-
-@media (max-width: 820px) {
-  .android-emblem-card {
-    padding: 1rem 1.25rem;
-  }
-  .emblem-img-wrapper {
-    width: 100px;
-    height: 100px;
-  }
-}
+      background: var(--bg-card);
+      border: 1px solid var(--border-bronze);
+      border-radius: 16px;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      position: relative;
+      animation: floatEmblem 5s ease-in-out infinite;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      width: fit-content;
+    }
 
     .android-emblem-card.is-dragging {
       cursor: grabbing !important;
       animation: none !important;
-      transition: none !important;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 160, 126, 0.35);
       border-color: var(--bronze);
       z-index: 1000;
     }
 
     .android-emblem-card.is-snapping {
-      transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+      transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
       animation: none !important;
     }
 
     .octocat-hero-img {
-      width: 145px;
-      height: 145px;
-      border-radius: 14px;
+      width: 95px;
+      height: 95px;
+      border-radius: 12px;
       object-fit: cover;
       display: block;
       pointer-events: none;
       user-select: none;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
-    }
-
-    .android-emblem-card:hover .octocat-hero-img,
-    .android-emblem-card.is-dragging .octocat-hero-img {
-      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .emblem-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: var(--silver);
       text-transform: uppercase;
       border: 1px solid var(--border-silver);
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 4px;
       background: var(--bg);
       pointer-events: none;
@@ -366,13 +291,22 @@
       animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
     }
     
-    .telemetry span { color: var(--bronze-light); font-weight: 700; }
+    .telemetry a {
+      color: var(--bronze-light);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .telemetry a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
 
     @media (max-width: 820px) {
       .hero-split { flex-direction: column-reverse; align-items: flex-start; }
       .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
-      .android-emblem-card { padding: 1.25rem 1.5rem; }
-      .octocat-hero-img { width: 110px; height: 110px; }
+      .octocat-hero-img { width: 85px; height: 85px; }
     }
 
     /* Engine Controls */
@@ -411,14 +345,12 @@
     .tab-btn:hover {
       color: var(--silver-light);
       border-color: var(--border-silver);
-      transform: translate3d(0, -1px, 0);
     }
 
     .tab-btn.active {
       background: var(--bronze);
       border-color: var(--bronze);
       color: #09090b;
-      transform: translate3d(0, -1px, 0);
     }
 
     .search-box {
@@ -432,7 +364,6 @@
       font-size: 0.8rem;
       border-radius: 6px;
       outline: none;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
     .search-box:focus {
@@ -465,7 +396,7 @@
 
     .rom-card {
       content-visibility: auto;
-      contain-intrinsic-size: 1000px;
+      contain-intrinsic-size: 800px;
       background: var(--bg-card);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
@@ -475,14 +406,12 @@
       flex-direction: column;
       gap: 1.5rem;
       animation: fadeInUp 0.6s var(--ease-out) both;
-      transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
-      will-change: transform;
+      transition: border-color 0.3s ease, transform 0.3s ease;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
       transform: translate3d(0, -4px, 0);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 126, 0.1);
     }
 
     .card-top {
@@ -549,7 +478,6 @@
 
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
-    /* Changelog in Geometric Circular Font */
     .changelog-box {
       background: var(--bg);
       border: 1px solid var(--border-silver);
@@ -563,10 +491,14 @@
       max-height: 180px;
       overflow-y: auto;
       line-height: 1.65;
-      letter-spacing: 0.01em;
     }
 
-    .gallery-container { width: 100%; position: relative; }
+    /* Fixed Thumbnail Sizing & Container */
+    .gallery-container { 
+      width: 100%; 
+      position: relative; 
+      overflow: hidden;
+    }
 
     .gallery-track {
       display: flex;
@@ -574,21 +506,25 @@
       overflow-x: auto;
       padding-bottom: 0.5rem;
       scrollbar-width: none;
+      max-width: 100%;
     }
     .gallery-track::-webkit-scrollbar { display: none; }
 
     .img-thumb {
-      height: 165px;
+      height: 155px !important;
+      width: auto !important;
+      max-height: 155px !important;
       border-radius: 8px;
       cursor: pointer;
       border: 1px solid var(--border-silver);
-      transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-      will-change: transform;
+      object-fit: contain;
+      flex-shrink: 0;
+      transition: border-color 0.25s ease, transform 0.25s ease;
     }
 
     .img-thumb:hover {
       border-color: var(--bronze);
-      transform: scale3d(1.03, 1.03, 1);
+      transform: scale(1.03);
     }
 
     .card-footer {
@@ -611,7 +547,6 @@
       text-decoration: none;
       border: 1px solid var(--bronze);
       transition: all 0.25s var(--ease-out);
-      will-change: transform;
     }
 
     .download-btn:hover {
@@ -619,7 +554,6 @@
       border-color: var(--silver-light);
       color: #09090b;
       transform: translate3d(0, -2px, 0);
-      box-shadow: 0 6px 20px rgba(197, 160, 126, 0.25);
     }
 
     /* Modal / Flashing Guide */
@@ -646,12 +580,8 @@
       border-radius: 14px;
       max-width: 600px;
       width: 100%;
-      transform: translate3d(0, 30px, 0) scale3d(0.96, 0.96, 1);
-      transition: transform 0.35s var(--ease-out);
       position: relative;
     }
-    
-    .overlay.active .modal-content { transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
 
     .modal-title {
       font-size: 1.5rem;
@@ -678,9 +608,8 @@
       line-height: 1.8;
       font-size: 0.9rem;
     }
-    .guide-list b { color: var(--text-100); }
 
-    /* Clean Fixed-Anchor Lightbox Controls */
+    /* Fixed Lightbox Controls */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -732,7 +661,6 @@
       justify-content: center;
       cursor: pointer;
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       z-index: 100000;
       transition: background 0.2s, border-color 0.2s, transform 0.2s;
     }
@@ -742,10 +670,6 @@
       border-color: var(--bronze);
       color: #09090b;
       transform: scale(1.08);
-    }
-
-    .lb-ctrl-btn:active {
-      transform: scale(0.95);
     }
 
     .lb-ctrl-btn svg {
@@ -759,7 +683,6 @@
       pointer-events: none;
     }
 
-    /* Fixed Isolated Viewport Anchors */
     .lb-close {
       top: max(1.5rem, env(safe-area-inset-top));
       right: max(1.5rem, env(safe-area-inset-right));
@@ -771,26 +694,10 @@
       transform: translateY(-50%);
     }
 
-    .lb-prev:hover {
-      transform: translateY(-50%) scale(1.08);
-    }
-
-    .lb-prev:active {
-      transform: translateY(-50%) scale(0.95);
-    }
-
     .lb-next {
       right: max(1.5rem, env(safe-area-inset-right));
       top: 50%;
       transform: translateY(-50%);
-    }
-
-    .lb-next:hover {
-      transform: translateY(-50%) scale(1.08);
-    }
-
-    .lb-next:active {
-      transform: translateY(-50%) scale(0.95);
     }
 
     .lb-counter {
@@ -809,28 +716,6 @@
       backdrop-filter: blur(8px);
       z-index: 100000;
       pointer-events: none;
-    }
-
-    @media (max-width: 680px) {
-      .lb-close {
-        top: 1rem;
-        right: 1rem;
-        width: 42px;
-        height: 42px;
-      }
-      .lb-prev {
-        left: 0.6rem;
-        width: 42px;
-        height: 42px;
-      }
-      .lb-next {
-        right: 0.6rem;
-        width: 42px;
-        height: 42px;
-      }
-      .lb-counter {
-        bottom: 1rem;
-      }
     }
   </style>
 </head>
@@ -859,16 +744,17 @@
           </p>
         </div>
 
-       <div class="hero-emblem-col">
-  <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-    <div class="emblem-img-wrapper">
-      <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img">
-    </div>
-  </div>
-</div>
+        <div class="hero-emblem-col">
+          <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
+            <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img">
+            <div class="emblem-label">EXYNOS 9611</div>
+          </div>
+        </div>
+      </div>
+
       <div class="telemetry">
-  <div>MAINTAINER <br><a href="https://github.com/Parbindar7" target="_blank" class="maintainer-link">PARBINDAR7</a></div>
-</div>
+        <div>MAINTAINER <br><a href="https://github.com/Parbindar7" target="_blank">PARBINDAR7</a></div>
+      </div>
     </section>
 
     <div class="engine-controls">
@@ -1407,7 +1293,7 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    // --- High-Performance Drag Mechanics ---
+    // Draggable Mechanics
     const emblem = document.getElementById('draggableEmblem');
     let isDragging = false, startX = 0, startY = 0, currentX = 0, currentY = 0, dragRAF = null;
 
@@ -1457,7 +1343,6 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
-    // --- Data Rendering ---
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -1465,7 +1350,6 @@
       renderBuilds();
     }
 
-    // Debounced Search Setup
     let searchTimeout;
     document.getElementById("searchInput").addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
@@ -1476,7 +1360,6 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // Event delegation for lightbox clicks
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if(target) {
@@ -1522,7 +1405,7 @@
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
-      const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value"><a href="https://github.com/${item.maintainer}" target="_blank" class="maintainer-card-link">${item.maintainer}</a></div></div>` : '';
+      const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
       const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${(Array.isArray(item.flavor) ? item.flavor : [item.flavor]).join(', ')}</div></div>` : '';
       
       let featuresHtml = '';
