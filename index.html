@@ -227,7 +227,7 @@
       font-weight: 400;
     }
 
-    /* Draggable Octocat Emblem */
+    /* Draggable Emblem with Full Original Image */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -239,7 +239,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-bronze);
       border-radius: 20px;
-      padding: 2.25rem 2.5rem;
+      padding: 1.75rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -269,23 +269,21 @@
       animation: none !important;
     }
 
-    .octocat-hero-logo {
-      width: 140px;
-      height: 140px;
-      fill: none;
-      stroke: var(--bronze);
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 4px 12px rgba(197, 160, 126, 0.25));
+    .octocat-hero-img {
+      width: 145px;
+      height: 145px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
       pointer-events: none;
-      transition: stroke 0.3s ease, filter 0.3s ease;
+      user-select: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
     }
 
-    .android-emblem-card:hover .octocat-hero-logo,
-    .android-emblem-card.is-dragging .octocat-hero-logo {
-      stroke: var(--silver-light);
-      filter: drop-shadow(0 4px 16px rgba(200, 205, 215, 0.35));
+    .android-emblem-card:hover .octocat-hero-img,
+    .android-emblem-card.is-dragging .octocat-hero-img {
+      transform: scale(1.03);
     }
 
     .emblem-label {
@@ -320,8 +318,8 @@
     @media (max-width: 820px) {
       .hero-split { flex-direction: column-reverse; align-items: flex-start; }
       .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
-      .android-emblem-card { padding: 1.5rem 2rem; }
-      .octocat-hero-logo { width: 100px; height: 100px; }
+      .android-emblem-card { padding: 1.5rem 1.75rem; }
+      .octocat-hero-img { width: 110px; height: 110px; }
     }
 
     /* Engine Controls */
@@ -722,13 +720,10 @@
     }
 
     .lb-nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+      position: static;
+      width: 44px;
+      height: 44px;
     }
-
-    .lb-prev { left: max(1.5rem, env(safe-area-inset-left)); }
-    .lb-next { right: max(1.5rem, env(safe-area-inset-right)); }
 
     .lb-bottom-bar {
       position: absolute;
@@ -736,6 +731,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 1.25rem;
       z-index: 3100;
     }
 
@@ -749,25 +745,6 @@
       padding: 0.4rem 1.1rem;
       border-radius: 99px;
       backdrop-filter: blur(8px);
-    }
-
-    /* Mobile Single Dock */
-    @media (max-width: 680px) {
-      .lb-nav-btn {
-        position: static;
-        transform: none;
-        width: 44px;
-        height: 44px;
-      }
-      .lb-bottom-bar {
-        gap: 1.25rem;
-      }
-      .lightbox-content-wrap {
-        max-height: 70vh;
-      }
-      .lightbox-img {
-        max-height: 68vh;
-      }
     }
   </style>
 </head>
@@ -798,38 +775,8 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <!-- Exact GitHub Octocat Vector Silhouette -->
-            <svg class="octocat-hero-logo" viewBox="0 0 100 100">
-              <!-- Top-left 4-point sparkle star -->
-              <path d="M 43,14 C 43,17 41,18 39,18 C 41,18 43,19 43,22 C 43,19 45,18 47,18 C 45,18 43,17 43,14 Z" stroke-width="1.8" />
-              
-              <!-- Top-right '>' mark -->
-              <path d="M 68,26 L 73,30 L 68,34" stroke-width="2.2" />
-              
-              <!-- Mid-left sparkle -->
-              <path d="M 28,49 C 28,51 27,52 25,52 C 27,52 28,53 28,55 C 28,53 29,52 31,52 C 29,52 28,51 28,49 Z" stroke-width="1.6" />
-              
-              <!-- Mid-right circle ring -->
-              <circle cx="70" cy="59" r="2.8" stroke-width="1.8" />
-              
-              <!-- Lower-left dot/ring -->
-              <circle cx="34" cy="64" r="2.2" stroke-width="1.8" />
-              
-              <!-- Bottom-right bar -->
-              <line x1="64" y1="69" x2="72" y2="69" stroke-width="2.2" />
-
-              <!-- Octocat Silhouette: Pointed Cat Ears, Rounded Face, Curved Tail & 4 Tentacles -->
-              <path d="M 43,30 C 40,24 47,21 51,26 C 54,25 58,25 61,26 C 65,21 72,24 69,30 C 76,37 76,49 69,56 C 65,60 61,61 56,61 L 56,61 C 51,61 47,60 43,56 C 36,49 36,37 43,30 Z" stroke-width="2.4" />
-              
-              <!-- Left Curving Tail -->
-              <path d="M 43,54 C 37,53 31,56 33,62 C 34,66 40,66 44,60" stroke-width="2.4" />
-              
-              <!-- 4 Legs / Tentacles -->
-              <path d="M 48,61 L 48,73 C 48,76 46,77 44,77" stroke-width="2.4" />
-              <path d="M 52,61 L 52,75 C 52,77 50,78 49,78" stroke-width="2.4" />
-              <path d="M 56,61 L 56,75 C 56,77 58,78 59,78" stroke-width="2.4" />
-              <path d="M 60,61 L 60,73 C 60,76 62,77 64,77" stroke-width="2.4" />
-            </svg>
+            <!-- Exact full original image with background preserved -->
+            <img src="IMG_3642.jpg" alt="Exynos Emblem" class="octocat-hero-img">
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
         </div>
@@ -895,7 +842,7 @@
       <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
     </div>
 
-    <!-- Single Unified Navigation Dock (Switches to Side Arrows on Desktop, Bottom Dock on Mobile) -->
+    <!-- Single Unified Navigation Dock -->
     <div class="lb-bottom-bar">
       <button class="lb-btn lb-nav-btn lb-prev" onclick="navigateLightbox(-1)" aria-label="Previous Image">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
