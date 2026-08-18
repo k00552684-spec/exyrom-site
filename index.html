@@ -7,31 +7,28 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #070709;
-      --bg-panel: rgba(17, 17, 20, 0.85);
-      --bg-card: rgba(20, 20, 24, 0.75);
-
+      --bg: #08080a;
+      --bg-panel: #111114;
+      --bg-card: #141418;
+   
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-pastel: #d4a373;
-      --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(200, 205, 215, 0.16);
-      --border-bronze: rgba(197, 160, 126, 0.28);
+      --border-silver: rgba(200, 205, 215, 0.14);
+      --border-bronze: rgba(197, 160, 126, 0.25);
       --border-hover: #c5a07e;
       
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
       --text-300: #94a3b8;
-      
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -67,45 +64,36 @@
       z-index: 0;
       overflow: hidden;
       contain: strict;
+      transform: translateZ(0);
     }
 
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.22;
+      filter: blur(60px);
+      opacity: 0.18;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
     }
 
     .orb-1 {
-      width: 550px;
-      height: 550px;
+      width: 420px;
+      height: 420px;
       background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
-      top: -10%;
-      left: -10%;
-      animation: driftOne 18s alternate infinite;
+      top: -5%;
+      left: -5%;
+      animation: driftOne 20s alternate infinite;
     }
 
     .orb-2 {
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
-      bottom: 10%;
-      right: -10%;
-      opacity: 0.14;
-      animation: driftTwo 22s alternate infinite;
-    }
-
-    .orb-3 {
       width: 450px;
       height: 450px;
-      background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
-      top: 45%;
-      left: 30%;
+      background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
+      bottom: 5%;
+      right: -5%;
       opacity: 0.12;
-      animation: driftThree 26s alternate infinite;
+      animation: driftTwo 24s alternate infinite;
     }
 
     #gridCanvas {
@@ -121,48 +109,23 @@
       position: fixed;
       inset: 0;
       background-image: 
-        linear-gradient(to right, rgba(200, 205, 215, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(200, 205, 215, 0.035) 1px, transparent 1px);
+        linear-gradient(to right, rgba(200, 205, 215, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(200, 205, 215, 0.025) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
       z-index: 0;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+      -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
     }
 
     @keyframes driftOne {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(120px, 80px, 0) scale(1.15); }
-      100% { transform: translate3d(40px, 140px, 0) scale(0.95); }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(80px, 60px, 0); }
     }
 
     @keyframes driftTwo {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(-100px, -90px, 0) scale(1.1); }
-      100% { transform: translate3d(-40px, -160px, 0) scale(0.9); }
-    }
-
-    @keyframes driftThree {
-      0% { transform: translate3d(0, 0, 0) scale(0.9); }
-      50% { transform: translate3d(-60px, 70px, 0) scale(1.2); }
-      100% { transform: translate3d(80px, -50px, 0) scale(1); }
-    }
-
-    @media (max-width: 768px) {
-      .ambient-orb { filter: blur(60px); }
-      .orb-1 { width: 320px; height: 320px; }
-      .orb-2 { width: 340px; height: 340px; }
-      .orb-3 { display: none; }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translate3d(0, 24px, 0); }
-      to { opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: scale3d(0.92, 0.92, 1); }
-      to { opacity: 1; transform: scale3d(1, 1, 1); }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-70px, -60px, 0); }
     }
 
     @keyframes floatEmblem {
@@ -171,8 +134,8 @@
     }
 
     @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale3d(1, 1, 1); }
-      50% { opacity: 0.3; transform: scale3d(0.8, 0.8, 1); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -185,7 +148,7 @@
       max-width: 1040px;
       display: flex;
       flex-direction: column;
-      gap: 4.5rem;
+      gap: 4rem;
       position: relative;
       z-index: 1;
     }
@@ -194,15 +157,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 1.5rem;
+      padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
-      margin-bottom: 1rem;
-      animation: fadeInUp 0.7s var(--ease-out) forwards;
+      margin-bottom: 0.5rem;
     }
 
     .logo {
@@ -229,7 +189,7 @@
       border: 1px solid var(--bronze);
       padding: 0.5rem 1.1rem;
       border-radius: 6px;
-      transition: all 0.25s var(--ease-out);
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
     .nav-cta:hover {
@@ -237,14 +197,13 @@
       border-color: var(--silver-light);
       color: #09090b;
       transform: translate3d(0, -2px, 0);
-      box-shadow: 0 4px 14px rgba(197, 160, 126, 0.25);
     }
 
     .hero {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
-      padding: 2rem 0 1rem 0;
+      gap: 1.75rem;
+      padding: 1.5rem 0 0.5rem 0;
     }
 
     .hero-split {
@@ -259,7 +218,6 @@
       flex-direction: column;
       gap: 1.25rem;
       flex: 1;
-      animation: fadeInUp 0.8s var(--ease-out) 0.15s both;
     }
 
     .status-badge {
@@ -277,7 +235,6 @@
       border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      backdrop-filter: blur(8px);
     }
 
     .status-dot {
@@ -308,13 +265,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: fadeInScale 0.9s var(--ease-out) 0.3s both;
     }
 
     .android-emblem-card {
       background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -329,19 +283,18 @@
       user-select: none;
       touch-action: none;
       width: fit-content;
-      transition: border-color 0.3s ease;
+      transform: translateZ(0);
     }
 
     .android-emblem-card.is-dragging {
       cursor: grabbing !important;
       animation: none !important;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 160, 126, 0.35);
       border-color: var(--bronze);
       z-index: 1000;
     }
 
     .android-emblem-card.is-snapping {
-      transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
       animation: none !important;
     }
 
@@ -353,7 +306,6 @@
       display: block;
       pointer-events: none;
       user-select: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .emblem-label {
@@ -380,19 +332,17 @@
       border-top: 1px solid var(--border-silver);
       padding-top: 1.5rem;
       flex-wrap: wrap;
-      animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
     }
     
     .maintainer-tag {
       color: var(--bronze-pastel);
       font-weight: 700;
       text-decoration: none;
-      transition: color 0.2s ease, text-shadow 0.2s ease;
+      transition: color 0.2s ease;
     }
 
     .maintainer-tag:hover {
       color: #fff;
-      text-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
       text-decoration: underline;
     }
 
@@ -412,12 +362,9 @@
       top: 1rem;
       z-index: 50;
       background: var(--bg-panel);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
-      animation: fadeInUp 0.8s var(--ease-out) 0.5s both;
     }
 
     .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
@@ -432,7 +379,7 @@
       padding: 0.5rem 1rem;
       border-radius: 6px;
       cursor: pointer;
-      transition: all 0.25s var(--ease-out);
+      transition: background 0.15s ease, border-color 0.15s ease;
       white-space: nowrap;
     }
 
@@ -458,12 +405,10 @@
       font-size: 0.8rem;
       border-radius: 6px;
       outline: none;
-      transition: border-color 0.2s ease;
     }
 
     .search-box:focus {
       border-color: var(--bronze);
-      box-shadow: 0 0 10px rgba(197, 160, 126, 0.2);
     }
 
     .builds-container {
@@ -485,15 +430,12 @@
       margin-bottom: -0.75rem;
       display: flex;
       justify-content: space-between;
-      animation: fadeInUp 0.6s var(--ease-out) both;
     }
 
     .rom-card {
       content-visibility: auto;
-      contain-intrinsic-size: 800px;
+      contain-intrinsic-size: 500px;
       background: var(--bg-card);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
       padding: 2rem;
@@ -501,14 +443,12 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      animation: fadeInUp 0.6s var(--ease-out) both;
-      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      transform: translateZ(0);
+      transition: border-color 0.2s ease;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      transform: translate3d(0, -4px, 0);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 126, 0.1);
     }
 
     .card-top {
@@ -621,7 +561,8 @@
       border: 1px solid var(--border-silver);
       object-fit: contain;
       flex-shrink: 0;
-      transition: border-color 0.25s ease, transform 0.25s ease;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      content-visibility: auto;
     }
 
     .img-thumb:hover {
@@ -648,7 +589,7 @@
       border-radius: 6px;
       text-decoration: none;
       border: 1px solid var(--bronze);
-      transition: all 0.25s var(--ease-out);
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
     .download-btn:hover {
@@ -668,7 +609,7 @@
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.35s var(--ease-out);
+      transition: opacity 0.2s ease;
       padding: 1rem;
     }
 
@@ -722,7 +663,6 @@
       pointer-events: none;
       transition: opacity 0.2s ease;
       transform: translateZ(0);
-      will-change: opacity;
     }
 
     .lightbox-overlay.active {
@@ -746,7 +686,6 @@
       border-radius: 12px;
       border: 1px solid var(--border-bronze);
       object-fit: contain;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
       user-select: none;
     }
 
@@ -763,17 +702,12 @@
       justify-content: center;
       cursor: pointer;
       z-index: 100000;
-      transition: transform 0.15s ease, background 0.15s ease;
       touch-action: manipulation;
     }
 
     .lb-ctrl-btn:hover {
       background: var(--bronze);
       color: #09090b;
-    }
-
-    .lb-ctrl-btn:active {
-      transform: scale(0.92);
     }
 
     .lb-ctrl-btn svg {
@@ -827,7 +761,6 @@
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
-    <div class="ambient-orb orb-3"></div>
   </div>
 
   <canvas id="gridCanvas"></canvas>
@@ -856,7 +789,7 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img">
+            <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img" loading="eager" decoding="async">
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
         </div>
@@ -933,7 +866,6 @@
 
   <script>
     var buildsData = [
-      // 1. Everline kernel
       {
         title: "Everline kernel",
         category: "kernel",
@@ -942,14 +874,10 @@
         date: "26 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/uclamp: Move tunables to cpuctl
-2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
-        Notice: `1.Only support builds 25.07.2026 or newer
-2.crDroid not compatible`,
+        changelog: `1.sched/uclamp: Move tunables to cpuctl\n2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
+        Notice: `1.Only support builds 25.07.2026 or newer\n2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
-
-      // 2. Everline kernel
       {
         title: "Everline kernel",
         category: "kernel",
@@ -958,20 +886,9 @@
         date: "18 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched: fix uclamp_boosted()
-2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
-3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
-4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
-5.sched: Replace schedtune with uclamp
-6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
-7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
-8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
-9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
-10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
+        changelog: `1.sched: fix uclamp_boosted()\n2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp\n3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()\n4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive\n5.sched: Replace schedtune with uclamp\n6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware\n7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware\n8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()\n9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()\n10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
-
-      // 3. Project Matrixx os v12.3 (official)
       {
         title: "Project Matrixx os v12.3",
         category: "rom",
@@ -994,8 +911,6 @@
         ],
         downloadUrl: "https://sourceforge.net/projects/projectmatrixx/files/Android-16/"
       },
-
-      // 4. InfinityX v3.10
       {
         title: "InfinityX v3.10",
         category: "rom",
@@ -1004,8 +919,7 @@
         date: "05 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS INCLUDED"],
-        changelog: `1.contain all previous commits
-2.OTA push`,
+        changelog: `1.contain all previous commits\n2.OTA push`,
         screenshots: [
           "./screenshots/voltageos/infinity/v1.jpg",
           "./screenshots/voltageos/infinity/v2.jpg",
@@ -1019,8 +933,6 @@
         ],
         downloadUrl: "https://github.com/Parbindar7/OTA/releases/tag/InfinityX_06-05-2026"
       },
-      
-      // 7. Afterlife OS v8.4 (official)
       {
         title: "Afterlife OS v8.4",
         category: "rom",
@@ -1029,15 +941,7 @@
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Enable frame pacing
-2.Define screenRecorderAVCProfileLevel
-3.Decrease launch boost to 3sec
-4.Tune schedutil rate limits
-5.HWC Adapt from exynos9630 T BSP
-6.adapt struct decon_win_config_data to exynos9610
-7.fix missing dmabuf_trace_free call on buffer release path
-8.free exporter name on buffer release
-9.CONFIG_HZ to 300`,
+        changelog: `1.Enable frame pacing\n2.Define screenRecorderAVCProfileLevel\n3.Decrease launch boost to 3sec\n4.Tune schedutil rate limits\n5.HWC Adapt from exynos9630 T BSP\n6.adapt struct decon_win_config_data to exynos9610\n7.fix missing dmabuf_trace_free call on buffer release path\n8.free exporter name on buffer release\n9.CONFIG_HZ to 300`,
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
           "./screenshots/voltageos/afterlife/v2.jpg",
@@ -1065,8 +969,6 @@
         ],
         downloadUrl: "https://afterlifeos.com/download"
       },
-
-      // 8. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -1075,13 +977,9 @@
         date: "26 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json
-2.Tune up/down frequency rate limits
-3.Cleanup task_profiles_30.json`,
+        changelog: `1.Refactor Powerhint.json\n2.Tune up/down frequency rate limits\n3.Cleanup task_profiles_30.json`,
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
       },
-
-      // 9. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -1090,13 +988,9 @@
         date: "01 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json
-2.Add software c2 av1/dav1d decoder
-3.Move media codecs configurations on tree`,
+        changelog: `1.Refactor Powerhint.json\n2.Add software c2 av1/dav1d decoder\n3.Move media codecs configurations on tree`,
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
       },
-
-      // 10. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -1105,19 +999,9 @@
         date: "02 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Powerhint: Re-tune for efficiency
-2.Powerhint: Cleanup
-3.Powerhint: Add UclampTAMin & UclampTALatency
-4.Powerhint: Add UclampTAMin to LAUNCH
-5.Powerhint: Refactor powerhint.json
-6.Update cpuset parameters
-7.Migrate from Schedtune to Uclamp
-8.Drop schedtune
-9.Refactor task_profiles for to reflect Uclamp changes`,
+        changelog: `1.Powerhint: Re-tune for efficiency\n2.Powerhint: Cleanup\n3.Powerhint: Add UclampTAMin & UclampTALatency\n4.Powerhint: Add UclampTAMin to LAUNCH\n5.Powerhint: Refactor powerhint.json\n6.Update cpuset parameters\n7.Migrate from Schedtune to Uclamp\n8.Drop schedtune\n9.Refactor task_profiles for to reflect Uclamp changes`,
         downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
       },
-      
-      // 12. Voltage OS v5.8
       {
         title: "Voltage OS v5.8",
         category: "rom",
@@ -1126,13 +1010,9 @@
         date: "25 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-tune POWERHINT for efficiency
-2.Boost CPU on EXPENSIVE_RENDERING
-3.set TARGET_CPU_VARIANT to cortex-a73`,
+        changelog: `1.Re-tune POWERHINT for efficiency\n2.Boost CPU on EXPENSIVE_RENDERING\n3.set TARGET_CPU_VARIANT to cortex-a73`,
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
       },
-
-      // 13. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -1141,20 +1021,9 @@
         date: "20 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Blur Disabled
-2.Enable frame pacing
-3.Define screenRecorderAVCProfileLevel
-4.Decrease launch boost to 3sec
-5.Tune schedutil rate limits
-6.HWC Adapt from exynos9630 T BSP
-7.adapt struct decon_win_config_data to exynos9610
-8.fix missing dmabuf_trace_free call on buffer release path 
-9.free exporter name on buffer release
-10.CONFIG_HZ to 300`,
+        changelog: `1.Blur Disabled\n2.Enable frame pacing\n3.Define screenRecorderAVCProfileLevel\n4.Decrease launch boost to 3sec\n5.Tune schedutil rate limits\n6.HWC Adapt from exynos9630 T BSP\n7.adapt struct decon_win_config_data to exynos9610\n8.fix missing dmabuf_trace_free call on buffer release path\n9.free exporter name on buffer release\n10.CONFIG_HZ to 300`,
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
-
-      // 14. Matrixx OS v12.2 (official)
       {
         title: "Matrixx OS v12.2",
         category: "rom",
@@ -1163,13 +1032,7 @@
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Blur Disabled
-2.Decrease launch boost to 3sec
-3.Tune schedutil rate limits
-4.HWC Adapt from exynos9630 T BSP
-5.adapt struct decon_win_config_data to exynos9610
-6.fix missing dmabuf_trace_free call on buffer release path
-7.free exporter name on buffer release`,
+        changelog: `1.Blur Disabled\n2.Decrease launch boost to 3sec\n3.Tune schedutil rate limits\n4.HWC Adapt from exynos9630 T BSP\n5.adapt struct decon_win_config_data to exynos9610\n6.fix missing dmabuf_trace_free call on buffer release path\n7.free exporter name on buffer release`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
           "./screenshots/voltageos/matrixos12.2/v2.jpg",
@@ -1183,8 +1046,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1b_54tfSj5k1Ypmu07LL8pKS-JnuF9eXm?usp=sharing"
       },
-      
-      // 15. LunarisAOSP 
       {
         title: "LunarisAOSP v3.12 ",
         category: "rom",
@@ -1193,9 +1054,7 @@
         date: "01 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Remove unused /dev/freezer
-2.Tune up/down frequency transition rate limits
-3.Switch to AOSP task profiles`,
+        changelog: `1.Remove unused /dev/freezer\n2.Tune up/down frequency transition rate limits\n3.Switch to AOSP task profiles`,
         screenshots: [
           "./screenshots/voltageos/lunaris/v1.jpg",
           "./screenshots/voltageos/lunaris/v2.jpg",
@@ -1209,8 +1068,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1_RG0oDENhUGLcEh5kDkDNwOtc5VT5s3t"
       },
-
-      // 16. Lunaris
       {
         title: "LunarisAOSP 12.3 EOL",
         category: "rom",
@@ -1219,11 +1076,8 @@
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-configure cpuset
-2.Remove cpuidle off node`,
-        Notice: `1.EOL A16. Next update based on A17
-2.Mostly source side changes in this build
-3.No kernel changes`,
+        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
+        Notice: `1.EOL A16. Next update based on A17\n2.Mostly source side changes in this build\n3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/lunaris12.3/v1.jpg",
           "./screenshots/voltageos/lunaris12.3/v2.jpg",
@@ -1237,8 +1091,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1ZYYzDbaUuHe5nAPtg2ryV5afHvq6LACQ?usp=sharing"
       },
-
-      // 17. Infinity x
       {
         title: "InfinityX 12.3",
         category: "rom",
@@ -1247,11 +1099,8 @@
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
-        changelog: `1.Re-configure cpuset
-2.Remove cpuidle off node`,
-        Notice: `1.OTA Pushed
-2.EOL A16. Next update based on A17
-3.No kernel changes`,
+        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
+        Notice: `1.OTA Pushed\n2.EOL A16. Next update based on A17\n3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/infinityx/v1.jpg",
           "./screenshots/voltageos/infinityx/v2.jpg",
@@ -1275,8 +1124,6 @@
         ],
         downloadUrl: "https://github.com/Parbindar7/OTA/releases"
       },
-
-      // 18. Lineage OS v23.2
       {
         title: "Lineage OS v23.2",
         category: "rom",
@@ -1285,10 +1132,7 @@
         date: "09 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint.json
-2.Tune up/down frequency rate limits
-3.Switch to AOSP task profiles
-4.Remove unused /dev/freezer`,
+        changelog: `1.Tune Powerhint.json\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
         screenshots: [
           "./screenshots/voltageos/lineageos23.2/v1.jpg",
           "./screenshots/voltageos/lineageos23.2/v2.jpg",
@@ -1302,8 +1146,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1-M5lUH2KREBlKlmYeRi5mXcA1sdh48e4?usp=sharing"
       },
-
-      // 19. VoltageOS
       {
         title: "VoltageOS 5.11 EOL",
         category: "rom",
@@ -1312,10 +1154,7 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint
-2.Tune up/down frequency rate limits
-3.Switch to AOSP task profiles
-4.Remove unused /dev/freezer`,
+        changelog: `1.Tune Powerhint\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
         Notice: `1.Blur disabled`,
         screenshots: [
           "./screenshots/voltageos/voltageos5.11/v1.jpg",
@@ -1330,8 +1169,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/19QBt1_8HF0gyskg9fnHgojGY8s5MsnFm?usp=sharing"
       },
-
-      // 20. LineageOS
       {
         title: "LineageOS EXT",
         category: "rom",
@@ -1340,15 +1177,8 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Update included soong namespaces
-2.Set legacy gralloc flag
-3.Remove apk_verity_prop from flags_health_check.te
-4.Remove duplicate sysfs_block
-5.Remove duplicate clean_scratch_files
-6.Use legacy libion implementation
-7.Disable app launch blur`,
-        Notice: `1.Initial A17 release
-2.Report bugs with proper log please`,
+        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
+        Notice: `1.Initial A17 release\n2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
@@ -1362,8 +1192,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/11VAKKkzQEnQ-hCucJFv6She-AtUQNiDo?usp=sharing"
       },
-
-      // 21. Everline Kernel
       {
         title: "Everline Kernel",
         category: "kernel",
@@ -1372,19 +1200,10 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset
-2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
-3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
-4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
-5.Removed old unnecessary uclamp commits and backports
-6.Merge 5.10 BPF from phoenix
-7.Add cgroup v2 freezer`,
-        Notice: `1.crDroid not compatible
-2.Only support builds 26.07.2026 or newer`,
+        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset\n2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu\n3.sched/uclamp: Add util_fits_cpu and task_fits_cpu\n4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle\n5.Removed old unnecessary uclamp commits and backports\n6.Merge 5.10 BPF from phoenix\n7.Add cgroup v2 freezer`,
+        Notice: `1.crDroid not compatible\n2.Only support builds 26.07.2026 or newer`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
-
-      // 22. VoltageOS v6.0
       {
         title: "VoltageOS v6.0",
         category: "rom",
@@ -1393,16 +1212,8 @@
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
-        changelog: `1.Update included soong namespaces
-2.Set legacy gralloc flag
-3.Remove apk_verity_prop from flags_health_check.te
-4.Remove duplicate sysfs_block
-5.Remove duplicate clean_scratch_files
-6.Use legacy libion implementation
-7.Disable app launch blur`,
-        Notice: `1.Initial Android 17 release
-2.Blur Disabled
-3.Report bugs with proper log please`,
+        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
+        Notice: `1.Initial Android 17 release\n2.Blur Disabled\n3.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/v1.jpg",
           "./screenshots/voltageos/v2.jpg",
@@ -1442,8 +1253,6 @@
         ],
         downloadUrl: "https://drive.google.com/drive/folders/1D-w32e6LOOtJuwNrJ_0rTNRPlI34Y6IA"
       },
-      
-      // 23. TWRP Recovery
       {
         title: "TWRP Recovery v3.7.1",
         category: "recovery",
@@ -1455,8 +1264,6 @@
         Notice: `1.Flash via Odin (.tar) or existing recovery (.img)`,
         downloadUrl: "https://twrp.me/Devices/"
       },
-
-      // 24. litegapps
       {
         title: "litegapp",
         category: "gapps",
@@ -1468,8 +1275,6 @@
         Notice: `1.Only compatible for android 17`,
         downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
       },
-
-      // 25. NikGApps
       {
         title: "NikGApps — Official Builds",
         category: "gapps",
@@ -1487,29 +1292,16 @@
     let currentImageIndex = 0;
 
     const canvas = document.getElementById('gridCanvas');
-    const ctx = canvas.getContext('2d');
-    const GRID_SIZE = 48; 
-    let dpr = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+    const GRID_SIZE = 48;
 
-    const GLOW_COLORS = [
-      '#38bdf8', 
-      '#2dd4bf',
-      '#34d399', 
-      '#c5a07e', 
-      '#a855f7', 
-      '#f43f5e',
-      '#fbbf24', 
-      '#818cf8'  
-    ];
-
+    const GLOW_COLORS = ['#38bdf8', '#2dd4bf', '#34d399', '#c5a07e', '#a855f7', '#f43f5e', '#fbbf24', '#818cf8'];
     let activeTiles = [];
     let isRendering = false;
 
     function resizeCanvas() {
-      dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resizeCanvas, { passive: true });
     resizeCanvas();
@@ -1519,17 +1311,12 @@
       const snapY = Math.floor(clientY / GRID_SIZE) * GRID_SIZE;
       const randomColor = GLOW_COLORS[Math.floor(Math.random() * GLOW_COLORS.length)];
 
-      const existingIndex = activeTiles.findIndex(t => t.x === snapX && t.y === snapY);
-      if (existingIndex > -1) {
-        activeTiles[existingIndex].alpha = 1.0;
-        activeTiles[existingIndex].color = randomColor;
+      const existing = activeTiles.find(t => t.x === snapX && t.y === snapY);
+      if (existing) {
+        existing.alpha = 1.0;
+        existing.color = randomColor;
       } else {
-        activeTiles.push({
-          x: snapX,
-          y: snapY,
-          color: randomColor,
-          alpha: 1.0
-        });
+        activeTiles.push({ x: snapX, y: snapY, color: randomColor, alpha: 1.0 });
       }
 
       if (!isRendering) {
@@ -1538,33 +1325,26 @@
       }
     }
 
-    // High performance pointer capture
     window.addEventListener('pointerdown', (e) => {
       triggerBox(e.clientX, e.clientY);
     }, { passive: true });
 
     function renderGridGlow() {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = activeTiles.length - 1; i >= 0; i--) {
         const tile = activeTiles[i];
         
-        ctx.save();
-        // Inner Box Illumination
-        ctx.globalAlpha = tile.alpha * 0.28;
+        ctx.globalAlpha = tile.alpha * 0.3;
         ctx.fillStyle = tile.color;
         ctx.fillRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
 
-        // Outer Neon Border
         ctx.globalAlpha = tile.alpha;
         ctx.strokeStyle = tile.color;
-        ctx.lineWidth = 1.6;
-        ctx.shadowColor = tile.color;
-        ctx.shadowBlur = 10;
+        ctx.lineWidth = 1.5;
         ctx.strokeRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
-        ctx.restore();
 
-        tile.alpha -= 0.022; 
+        tile.alpha -= 0.025;
 
         if (tile.alpha <= 0) {
           activeTiles.splice(i, 1);
@@ -1575,7 +1355,7 @@
         requestAnimationFrame(renderGridGlow);
       } else {
         isRendering = false;
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     }
 
@@ -1593,38 +1373,35 @@
 
     function onDragMove(e) {
       if (!isDragging) return;
-      if (e.cancelable) e.preventDefault();
       const touch = e.type.includes('touch') ? e.touches[0] : e;
       currentX = touch.clientX - startX;
       currentY = touch.clientY - startY;
       
-      if(dragRAF) cancelAnimationFrame(dragRAF);
+      if (dragRAF) cancelAnimationFrame(dragRAF);
       dragRAF = requestAnimationFrame(() => {
-        const rotateDeg = Math.max(Math.min(currentX * 0.05, 18), -18);
-        emblem.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotateDeg}deg) scale3d(1.05, 1.05, 1)`;
+        const rotateDeg = Math.max(Math.min(currentX * 0.04, 15), -15);
+        emblem.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotateDeg}deg) scale(1.05)`;
       });
     }
 
     function onDragEnd() {
       if (!isDragging) return;
       isDragging = false;
-      if(dragRAF) cancelAnimationFrame(dragRAF);
+      if (dragRAF) cancelAnimationFrame(dragRAF);
       
       emblem.classList.remove('is-dragging');
       emblem.classList.add('is-snapping');
-      
       currentX = 0; currentY = 0;
-      emblem.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale3d(1, 1, 1)';
-      
-      setTimeout(() => emblem.classList.remove('is-snapping'), 650);
+      emblem.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale(1)';
+      setTimeout(() => emblem.classList.remove('is-snapping'), 500);
     }
 
     if (emblem) {
       emblem.addEventListener('mousedown', onDragStart, { passive: true });
-      window.addEventListener('mousemove', onDragMove, { passive: false });
+      window.addEventListener('mousemove', onDragMove, { passive: true });
       window.addEventListener('mouseup', onDragEnd, { passive: true });
-      emblem.addEventListener('touchstart', onDragStart, { passive: false });
-      window.addEventListener('touchmove', onDragMove, { passive: false });
+      emblem.addEventListener('touchstart', onDragStart, { passive: true });
+      window.addEventListener('touchmove', onDragMove, { passive: true });
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
@@ -1640,14 +1417,14 @@
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         renderBuilds(e.target.value.toLowerCase());
-      }, 150);
+      }, 120);
     });
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
-      if(target) {
+      if (target) {
         openLightbox(
           parseInt(target.dataset.bidx),
           parseInt(target.dataset.imgidx),
@@ -1686,7 +1463,7 @@
       }
     });
 
-    function createCardHTML(item, globalIdx) {
+    function createCardHTML(item) {
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
@@ -1696,14 +1473,14 @@
       let featuresHtml = '';
       if (item.featureScreenshots?.length) {
         featuresHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">Feature Screenshots</div><div class="gallery-track">` +
-          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
+          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
           `</div></div>`;
       }
 
       let screensHtml = '';
       if (item.screenshots?.length) {
         screensHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">System Previews</div><div class="gallery-track">` +
-          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
+          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
           `</div></div>`;
       }
 
@@ -1711,7 +1488,7 @@
       const noticeHtml = item.Notice ? `<div style="color:var(--bronze); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--bronze); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
 
       return `
-        <div class="rom-card" style="animation-delay: ${Math.min(globalIdx * 0.08, 0.6)}s">
+        <div class="rom-card">
           <div class="card-top">
             <div class="card-title-group">
               <div class="build-name">${item.title}</div>
@@ -1753,7 +1530,7 @@
       });
 
       if (!filtered.length) {
-        container.innerHTML = `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300); animation: fadeInUp 0.5s var(--ease-out) both;">[ SYSTEM: No matching packages found ]</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
         return;
       }
 
@@ -1766,14 +1543,13 @@
       ];
 
       let htmlBuffer = "";
-      let globalCardIdx = 0;
       
       sections.forEach(sec => {
         const items = filtered.filter(sec.filter);
         if (items.length) {
           htmlBuffer += `<div class="section-label"><span>// ${sec.t}</span><span>[${items.length}]</span></div>`;
           items.forEach(item => {
-            htmlBuffer += createCardHTML(item, globalCardIdx++);
+            htmlBuffer += createCardHTML(item);
           });
         }
       });
