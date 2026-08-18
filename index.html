@@ -227,7 +227,7 @@
       font-weight: 400;
     }
 
-    /* Draggable Emblem with Full Original Image */
+    /* Draggable Emblem Card */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -239,7 +239,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-bronze);
       border-radius: 20px;
-      padding: 1.75rem 2rem;
+      padding: 1.5rem 1.75rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -318,7 +318,7 @@
     @media (max-width: 820px) {
       .hero-split { flex-direction: column-reverse; align-items: flex-start; }
       .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
-      .android-emblem-card { padding: 1.5rem 1.75rem; }
+      .android-emblem-card { padding: 1.25rem 1.5rem; }
       .octocat-hero-img { width: 110px; height: 110px; }
     }
 
@@ -627,20 +627,18 @@
     }
     .guide-list b { color: var(--text-100); }
 
-    /* Single-Set Responsive Lightbox */
+    /* Clean Fixed-Anchor Lightbox Controls */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
       background: rgba(5, 5, 7, 0.96);
-      z-index: 3000;
+      z-index: 99999;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s var(--ease-out);
-      padding: max(1.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+      transition: opacity 0.25s ease;
     }
 
     .lightbox-overlay.active {
@@ -648,51 +646,56 @@
       pointer-events: all;
     }
 
-    .lightbox-content-wrap {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      max-width: 92vw;
+    .lightbox-img-wrap {
+      max-width: 88vw;
       max-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .lightbox-img {
-      max-width: 90vw;
-      max-height: 78vh;
+      max-width: 88vw;
+      max-height: 80vh;
+      width: auto;
+      height: auto;
       border-radius: 12px;
       border: 1px solid var(--border-bronze);
       object-fit: contain;
-      transform: scale3d(0.94, 0.94, 1);
-      transition: transform 0.3s var(--ease-out);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      user-select: none;
     }
 
-    .lightbox-overlay.active .lightbox-img {
-      transform: scale3d(1, 1, 1);
-    }
-
-    /* Tactile Control Buttons */
-    .lb-btn {
+    .lb-ctrl-btn {
+      position: fixed;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
       background: rgba(20, 20, 24, 0.85);
       border: 1px solid var(--border-bronze);
       color: var(--silver-light);
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      z-index: 3100;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100000;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
     }
 
-    .lb-btn svg {
+    .lb-ctrl-btn:hover {
+      background: var(--bronze);
+      border-color: var(--bronze);
+      color: #09090b;
+      transform: scale(1.08);
+    }
+
+    .lb-ctrl-btn:active {
+      transform: scale(0.95);
+    }
+
+    .lb-ctrl-btn svg {
       width: 22px;
       height: 22px;
       fill: none;
@@ -700,42 +703,48 @@
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
+      pointer-events: none;
     }
 
-    .lb-btn:hover {
-      background: var(--bronze);
-      color: #09090b;
-      border-color: var(--bronze);
-      transform: scale(1.08);
+    /* Fixed Isolated Viewport Anchors */
+    .lb-close {
+      top: max(1.5rem, env(safe-area-inset-top));
+      right: max(1.5rem, env(safe-area-inset-right));
     }
 
-    .lb-btn:active {
-      transform: scale(0.92);
+    .lb-prev {
+      left: max(1.5rem, env(safe-area-inset-left));
+      top: 50%;
+      transform: translateY(-50%);
     }
 
-    .lb-close-btn {
-      position: absolute;
-      top: max(1.25rem, env(safe-area-inset-top));
-      right: max(1.25rem, env(safe-area-inset-right));
+    .lb-prev:hover {
+      transform: translateY(-50%) scale(1.08);
     }
 
-    .lb-nav-btn {
-      position: static;
-      width: 44px;
-      height: 44px;
+    .lb-prev:active {
+      transform: translateY(-50%) scale(0.95);
     }
 
-    .lb-bottom-bar {
-      position: absolute;
-      bottom: max(1.5rem, env(safe-area-inset-bottom));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.25rem;
-      z-index: 3100;
+    .lb-next {
+      right: max(1.5rem, env(safe-area-inset-right));
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lb-next:hover {
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .lb-next:active {
+      transform: translateY(-50%) scale(0.95);
     }
 
     .lb-counter {
+      position: fixed;
+      bottom: max(1.5rem, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
       font-family: 'JetBrains Mono', monospace;
       color: var(--bronze);
       font-size: 0.85rem;
@@ -743,8 +752,32 @@
       background: rgba(17, 17, 20, 0.9);
       border: 1px solid var(--border-bronze);
       padding: 0.4rem 1.1rem;
-      border-radius: 99px;
+      border-radius: 999px;
       backdrop-filter: blur(8px);
+      z-index: 100000;
+      pointer-events: none;
+    }
+
+    @media (max-width: 680px) {
+      .lb-close {
+        top: 1rem;
+        right: 1rem;
+        width: 42px;
+        height: 42px;
+      }
+      .lb-prev {
+        left: 0.6rem;
+        width: 42px;
+        height: 42px;
+      }
+      .lb-next {
+        right: 0.6rem;
+        width: 42px;
+        height: 42px;
+      }
+      .lb-counter {
+        bottom: 1rem;
+      }
     }
   </style>
 </head>
@@ -775,7 +808,6 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <!-- Exact full original image with background preserved -->
             <img src="IMG_3642.jpg" alt="Exynos Emblem" class="octocat-hero-img">
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
@@ -806,7 +838,7 @@
   <!-- Flashing Guide Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
-      <button class="lb-btn lb-close-btn" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
+      <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
       <h2 class="modal-title">Deployment Protocol</h2>
@@ -832,26 +864,25 @@
     </div>
   </div>
 
-  <!-- Single-Set Clean Responsive Lightbox -->
+  <!-- Glitch-Free Lightbox Modal -->
   <div class="lightbox-overlay" id="lightboxModal">
-    <button class="lb-btn lb-close-btn" onclick="closeLightbox()" aria-label="Close Lightbox">
+    <button class="lb-ctrl-btn lb-close" onclick="closeLightbox()" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
 
-    <div class="lightbox-content-wrap">
+    <button class="lb-ctrl-btn lb-prev" onclick="navigateLightbox(-1)" aria-label="Previous Image">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+
+    <div class="lightbox-img-wrap">
       <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
     </div>
 
-    <!-- Single Unified Navigation Dock -->
-    <div class="lb-bottom-bar">
-      <button class="lb-btn lb-nav-btn lb-prev" onclick="navigateLightbox(-1)" aria-label="Previous Image">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-      </button>
-      <div class="lb-counter" id="lightboxCounter">1 / 1</div>
-      <button class="lb-btn lb-nav-btn lb-next" onclick="navigateLightbox(1)" aria-label="Next Image">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-    </div>
+    <button class="lb-ctrl-btn lb-next" onclick="navigateLightbox(1)" aria-label="Next Image">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <div class="lb-counter" id="lightboxCounter">1 / 1</div>
   </div>
 
   <script>
