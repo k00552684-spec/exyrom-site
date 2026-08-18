@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
+  <!-- Google Fonts: Circular Geometric (Outfit) & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,14 +15,16 @@
       --bg: #09090b;
       --bg-panel: #111114;
       --bg-card: #141418;
-
+      
+      /* Metallic Bronze & Silver Accents */
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
       --silver-light: #e5e7eb;
       --silver-dark: #6b7280;
-
+      
+      /* Solid Metallic Borders */
       --border-silver: rgba(200, 205, 215, 0.22);
       --border-bronze: rgba(197, 160, 126, 0.35);
       --border-hover: #c5a07e;
@@ -70,6 +73,7 @@
       will-change: transform;
     }
 
+    /* Hardware Accelerated Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translate3d(0, 24px, 0); }
       to { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -105,6 +109,7 @@
       z-index: 1;
     }
 
+    /* Navbar */
     nav {
       display: flex;
       justify-content: space-between;
@@ -157,6 +162,7 @@
       box-shadow: 0 4px 12px rgba(200, 205, 215, 0.2);
     }
 
+    /* Hero Section */
     .hero {
       display: flex;
       flex-direction: column;
@@ -225,6 +231,7 @@
       font-weight: 400;
     }
 
+    /* Draggable Octocat Emblem */
     .hero-emblem-col {
       display: flex;
       justify-content: center;
@@ -267,16 +274,16 @@
     }
 
     .octocat-hero-logo {
-      width: 125px;
-      height: 125px;
+      width: 130px;
+      height: 130px;
       fill: none;
       stroke: var(--bronze);
-      stroke-width: 1.8;
+      stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
       filter: drop-shadow(0 4px 12px rgba(197, 160, 126, 0.25));
       pointer-events: none;
-      transition: stroke 0.3s ease, transform 0.3s ease;
+      transition: stroke 0.3s ease, filter 0.3s ease;
     }
 
     .android-emblem-card:hover .octocat-hero-logo,
@@ -318,9 +325,10 @@
       .hero-split { flex-direction: column-reverse; align-items: flex-start; }
       .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
       .android-emblem-card { padding: 1.5rem 2rem; }
-      .octocat-hero-logo { width: 90px; height: 90px; }
+      .octocat-hero-logo { width: 95px; height: 95px; }
     }
 
+    /* Engine Controls */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -385,6 +393,7 @@
       box-shadow: 0 0 10px rgba(197, 160, 126, 0.2);
     }
 
+    /* Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -493,18 +502,21 @@
 
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
+    /* Changelog in Geometric Circular Font */
     .changelog-box {
       background: var(--bg);
       border: 1px solid var(--border-silver);
-      padding: 1rem;
+      padding: 1rem 1.15rem;
       border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 400;
       color: var(--text-200);
       white-space: pre-line;
       max-height: 180px;
       overflow-y: auto;
-      line-height: 1.6;
+      line-height: 1.65;
+      letter-spacing: 0.01em;
     }
 
     .gallery-container { width: 100%; position: relative; }
@@ -563,6 +575,7 @@
       box-shadow: 0 6px 20px rgba(197, 160, 126, 0.25);
     }
 
+    /* Modal / Flashing Guide */
     .overlay {
       position: fixed;
       inset: 0;
@@ -620,6 +633,7 @@
     }
     .guide-list b { color: var(--text-100); }
 
+    /* Redesigned Mobile-First Lightbox */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -664,6 +678,7 @@
       transform: scale3d(1, 1, 1);
     }
 
+    /* Tactile Control Buttons */
     .lb-btn {
       background: rgba(20, 20, 24, 0.85);
       border: 1px solid var(--border-bronze);
@@ -740,6 +755,7 @@
       backdrop-filter: blur(8px);
     }
 
+    /* Mobile Lightbox Docked Navigation */
     @media (max-width: 680px) {
       .lb-nav-btn {
         position: static;
@@ -792,14 +808,17 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <!-- GitHub Octocat Silhouette Outline Logo -->
-            <svg class="octocat-hero-logo" viewBox="0 0 48 48">
-              <path d="M14 18 C11 12, 16 7, 20 10 C22 9.5, 26 9.5, 28 10 C32 7, 37 12, 34 18 C37 22, 36 29, 32 33 C30 35, 27 36, 24 36 C21 36, 18 35, 16 33 C12 29, 11 22, 14 18 Z" />
-              <path d="M18 35 C17 38, 16 41, 16 44" />
-              <path d="M22 36 C22 39, 22 41, 21 44" />
-              <path d="M26 36 C26 39, 26 41, 27 44" />
-              <path d="M30 35 C31 38, 32 41, 32 44" />
-              <path d="M13 31 C10 32, 8 30, 9 27 C10 24, 13 25, 14 28" />
+            <!-- Exact GitHub Octocat Vector Silhouette -->
+            <svg class="octocat-hero-logo" viewBox="0 0 100 100">
+              <!-- Surrounding Decorative Accents from Original Vector -->
+              <path d="M42 16 L44 20 L48 22 L44 24 L42 28 L40 24 L36 22 L40 20 Z" stroke-width="1.4" />
+              <path d="M64 26 L67 28 L64 30" stroke-width="1.5" />
+              <circle cx="62" cy="46" r="2" stroke-width="1.4" />
+              <circle cx="34" cy="38" r="1.4" stroke-width="1.2" />
+              <line x1="57" y1="54" x2="63" y2="54" stroke-width="1.8" />
+              
+              <!-- Octocat Body Silhouette with Pointed Ears, Curved Left Tail & 4 Tentacles -->
+              <path d="M 40 28 C 36 21 43 18 47 21 C 49 20.5 51 20.5 53 21 C 57 18 64 21 60 28 C 63.5 32 64 39 60 44 C 58 46.5 55 48 50 48.5 L 50 51.5 C 50 54 49 55 49 57 C 49 58 50 59 51 59 L 51 51 C 51 50 52 49 53 49 C 54 49 55 50 55 51 L 55 59 C 56 59 57 58 57 57 C 57 55 56 54 56 51.5 C 58 50.5 60 49 61 46.5 C 64 42.5 63.5 35 60.5 31 M 40 28 C 36.5 32 36 39 40 44 C 42 46.5 45 48 50 48.5 M 40 42.5 C 38.5 43 36 41 37 38 C 38 35.5 41 36.5 42 39.5 L 42.5 40.5 M 45 51.5 C 45 54 44 55 44 57 C 44 58 45 59 46 59 L 46 51 C 46 50 47 49 48 49 C 49 49 50 50 50 51 L 50 59" stroke-width="2.2" />
             </svg>
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
@@ -829,6 +848,7 @@
 
   </div>
 
+  <!-- Flashing Guide Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
       <button class="lb-btn lb-close-btn" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
@@ -857,6 +877,7 @@
     </div>
   </div>
 
+  <!-- Redesigned High-End Lightbox -->
   <div class="lightbox-overlay" id="lightboxModal">
     <button class="lb-btn lb-close-btn" onclick="closeLightbox()" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -866,6 +887,7 @@
       <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
     </div>
 
+    <!-- Desktop Floating Nav Arrows -->
     <button class="lb-btn lb-nav-btn lb-prev d-none-mobile" onclick="navigateLightbox(-1)" aria-label="Previous Image">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
@@ -873,6 +895,7 @@
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
 
+    <!-- Bottom Dock for Mobile Navigation & Counter -->
     <div class="lb-bottom-bar">
       <button class="lb-btn lb-nav-btn lb-prev-mobile" onclick="navigateLightbox(-1)" aria-label="Previous Image">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -895,10 +918,8 @@
         date: "26 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/uclamp: Move tunables to cpuctl
-                    2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
-        Notice: `1.Only support builds 25.07.2026 or newer
-                 2.crDroid not compatible`,
+        changelog: `1.sched/uclamp: Move tunables to cpuctl\n2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
+        Notice: `1.Only support builds 25.07.2026 or newer\n2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
 
@@ -911,16 +932,7 @@
         date: "18 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched: fix uclamp_boosted()
-                    2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
-                    3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
-                    4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
-                    5.sched: Replace schedtune with uclamp
-                    6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
-                    7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
-                    8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
-                    9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
-                    10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
+        changelog: `1.sched: fix uclamp_boosted()\n2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp\n3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()\n4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive\n5.sched: Replace schedtune with uclamp\n6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware\n7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware\n8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()\n9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()\n10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
 
@@ -957,8 +969,7 @@
         date: "05 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS INCLUDED"],
-        changelog: `1.contain all previous commits
-                    2.OTA push`,
+        changelog: `1.contain all previous commits\n2.OTA push`,
         screenshots: [
           "./screenshots/voltageos/infinity/v1.jpg",
           "./screenshots/voltageos/infinity/v2.jpg",
@@ -982,15 +993,7 @@
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Enable frame pacing
-                    2.Define screenRecorderAVCProfileLevel
-                    3.Decrease launch boost to 3sec
-                    4.Tune schedutil rate limits
-                    5.HWC Adapt from exynos9630 T BSP
-                    6.adapt struct decon_win_config_data to exynos9610
-                    7.fix missing dmabuf_trace_free call on buffer release path
-                    8.free exporter name on buffer release
-                    9.CONFIG_HZ to 300`,
+        changelog: `1.Enable frame pacing\n2.Define screenRecorderAVCProfileLevel\n3.Decrease launch boost to 3sec\n4.Tune schedutil rate limits\n5.HWC Adapt from exynos9630 T BSP\n6.adapt struct decon_win_config_data to exynos9610\n7.fix missing dmabuf_trace_free call on buffer release path\n8.free exporter name on buffer release\n9.CONFIG_HZ to 300`,
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
           "./screenshots/voltageos/afterlife/v2.jpg",
@@ -1028,9 +1031,7 @@
         date: "26 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json
-                    2.Tune up/down frequency rate limits
-                    3.Cleanup task_profiles_30.json`,
+        changelog: `1.Refactor Powerhint.json\n2.Tune up/down frequency rate limits\n3.Cleanup task_profiles_30.json`,
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
       },
 
@@ -1043,9 +1044,7 @@
         date: "01 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json
-                    2.Add software c2 av1/dav1d decoder
-                    3.Move media codecs configurations on tree`,
+        changelog: `1.Refactor Powerhint.json\n2.Add software c2 av1/dav1d decoder\n3.Move media codecs configurations on tree`,
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
       },
 
@@ -1058,15 +1057,7 @@
         date: "02 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Powerhint: Re-tune for efficiency
-                    2.Powerhint: Cleanup
-                    3.Powerhint: Add UclampTAMin & UclampTALatency
-                    4.Powerhint: Add UclampTAMin to LAUNCH
-                    5.Powerhint: Refactor powerhint.json
-                    6.Update cpuset parameters
-                    7.Migrate from Schedtune to Uclamp
-                    8.Drop schedtune
-                    9.Refactor task_profiles for to reflect Uclamp changes`,
+        changelog: `1.Powerhint: Re-tune for efficiency\n2.Powerhint: Cleanup\n3.Powerhint: Add UclampTAMin & UclampTALatency\n4.Powerhint: Add UclampTAMin to LAUNCH\n5.Powerhint: Refactor powerhint.json\n6.Update cpuset parameters\n7.Migrate from Schedtune to Uclamp\n8.Drop schedtune\n9.Refactor task_profiles for to reflect Uclamp changes`,
         downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
       },
       
@@ -1079,9 +1070,7 @@
         date: "25 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-tune POWERHINT for efficiency
-                    2.Boost CPU on EXPENSIVE_RENDERING
-                    3.set TARGET_CPU_VARIANT to cortex-a73`,
+        changelog: `1.Re-tune POWERHINT for efficiency\n2.Boost CPU on EXPENSIVE_RENDERING\n3.set TARGET_CPU_VARIANT to cortex-a73`,
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
       },
 
@@ -1094,16 +1083,7 @@
         date: "20 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Blur Disabled
-                    2.Enable frame pacing
-                    3.Define screenRecorderAVCProfileLevel
-                    4.Decrease launch boost to 3sec
-                    5.Tune schedutil rate limits
-                    6.HWC Adapt from exynos9630 T BSP
-                    7.adapt struct decon_win_config_data to exynos9610
-                    8.fix missing dmabuf_trace_free call on buffer release path 
-                    9.free exporter name on buffer release
-                    10.CONFIG_HZ to 300`,
+        changelog: `1.Blur Disabled\n2.Enable frame pacing\n3.Define screenRecorderAVCProfileLevel\n4.Decrease launch boost to 3sec\n5.Tune schedutil rate limits\n6.HWC Adapt from exynos9630 T BSP\n7.adapt struct decon_win_config_data to exynos9610\n8.fix missing dmabuf_trace_free call on buffer release path \n9.free exporter name on buffer release\n10.CONFIG_HZ to 300`,
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
 
@@ -1116,13 +1096,7 @@
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Blur Disabled
-                    2.Decrease launch boost to 3sec
-                    3.Tune schedutil rate limits
-                    4.HWC Adapt from exynos9630 T BSP
-                    5.adapt struct decon_win_config_data to exynos9610
-                    6.fix missing dmabuf_trace_free call on buffer release path
-                    7.free exporter name on buffer release`,
+        changelog: `1.Blur Disabled\n2.Decrease launch boost to 3sec\n3.Tune schedutil rate limits\n4.HWC Adapt from exynos9630 T BSP\n5.adapt struct decon_win_config_data to exynos9610\n6.fix missing dmabuf_trace_free call on buffer release path\n7.free exporter name on buffer release`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
           "./screenshots/voltageos/matrixos12.2/v2.jpg",
@@ -1146,9 +1120,7 @@
         date: "01 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Remove unused /dev/freezer
-                    2.Tune up/down frequency transition rate limits
-                    3.Switch to AOSP task profiles`,
+        changelog: `1.Remove unused /dev/freezer\n2.Tune up/down frequency transition rate limits\n3.Switch to AOSP task profiles`,
         screenshots: [
           "./screenshots/voltageos/lunaris/v1.jpg",
           "./screenshots/voltageos/lunaris/v2.jpg",
@@ -1172,11 +1144,8 @@
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-configure cpuset
-                    2.Remove cpuidle off node`,
-        Notice: `1.EOL A16. Next update based on A17
-                 2.Mostly source side changes in this build
-                 3.No kernel changes`,
+        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
+        Notice: `1.EOL A16. Next update based on A17\n2.Mostly source side changes in this build\n3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/lunaris12.3/v1.jpg",
           "./screenshots/voltageos/lunaris12.3/v2.jpg",
@@ -1200,11 +1169,8 @@
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
-        changelog: `1.Re-configure cpuset
-                    2.Remove cpuidle off node`,
-        Notice: `1.OTA Pushed
-                 2.EOL A16. Next update based on A17
-                 3.No kernel changes`,
+        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
+        Notice: `1.OTA Pushed\n2.EOL A16. Next update based on A17\n3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/infinityx/v1.jpg",
           "./screenshots/voltageos/infinityx/v2.jpg",
@@ -1238,10 +1204,7 @@
         date: "09 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint.json
-                    2.Tune up/down frequency rate limits
-                    3.Switch to AOSP task profiles
-                    4.Remove unused /dev/freezer`,
+        changelog: `1.Tune Powerhint.json\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
         screenshots: [
           "./screenshots/voltageos/lineageos23.2/v1.jpg",
           "./screenshots/voltageos/lineageos23.2/v2.jpg",
@@ -1265,10 +1228,7 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint
-                    2.Tune up/down frequency rate limits
-                    3.Switch to AOSP task profiles
-                    4.Remove unused /dev/freezer`,
+        changelog: `1.Tune Powerhint\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
         Notice: `1.Blur disabled`,
         screenshots: [
           "./screenshots/voltageos/voltageos5.11/v1.jpg",
@@ -1293,15 +1253,8 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Update included soong namespaces
-                    2.Set legacy gralloc flag
-                    3.Remove apk_verity_prop from flags_health_check.te
-                    4.Remove duplicate sysfs_block
-                    5.Remove duplicate clean_scratch_files
-                    6.Use legacy libion implementation
-                    7.Disable app launch blur`,
-        Notice: `1.Initial A17 release
-                 2.Report bugs with proper log please`,
+        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
+        Notice: `1.Initial A17 release\n2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
@@ -1325,15 +1278,8 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset
-                    2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
-                    3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
-                    4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
-                    5.Removed old unnecessary uclamp commits and backports
-                    6.Merge 5.10 BPF from phoenix
-                    7.Add cgroup v2 freezer`,
-        Notice: `1.crDroid not compatible
-                 2.Only support builds 26.07.2026 or newer`,
+        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset\n2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu\n3.sched/uclamp: Add util_fits_cpu and task_fits_cpu\n4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle\n5.Removed old unnecessary uclamp commits and backports\n6.Merge 5.10 BPF from phoenix\n7.Add cgroup v2 freezer`,
+        Notice: `1.crDroid not compatible\n2.Only support builds 26.07.2026 or newer`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
 
@@ -1346,16 +1292,8 @@
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
-        changelog: `1.Update included soong namespaces
-                    2.Set legacy gralloc flag
-                    3.Remove apk_verity_prop from flags_health_check.te
-                    4.Remove duplicate sysfs_block
-                    5.Remove duplicate clean_scratch_files
-                    6.Use legacy libion implementation
-                    7.Disable app launch blur`,
-        Notice: `1.Initial Android 17 release
-                 2.Blur Disabled
-                 3.Report bugs with proper log please`,
+        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
+        Notice: `1.Initial Android 17 release\n2.Blur Disabled\n3.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/v1.jpg",
           "./screenshots/voltageos/v2.jpg",
