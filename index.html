@@ -14,14 +14,14 @@
       --bg: #09090b;
       --bg-panel: #111114;
       --bg-card: #141418;
-
+      
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
       --silver-light: #e5e7eb;
       --silver-dark: #6b7280;
-
+      
       --border-silver: rgba(200, 205, 215, 0.22);
       --border-bronze: rgba(197, 160, 126, 0.35);
       --border-hover: #c5a07e;
@@ -55,52 +55,41 @@
       flex-direction: column;
       align-items: center;
       padding: 0 1.5rem 8rem 1.5rem;
-      position: relative;
       background-color: var(--bg);
+      text-rendering: optimizeLegibility;
     }
 
     .noise-overlay {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      inset: 0;
       pointer-events: none;
       z-index: 9999;
       opacity: 0.03;
       background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+      will-change: transform;
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translate3d(0, 24px, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
     }
 
     @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.92);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale3d(0.92, 0.92, 1); }
+      to { opacity: 1; transform: scale3d(1, 1, 1); }
     }
 
     @keyframes floatEmblem {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -8px, 0); }
     }
 
     @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.8); }
+      0%, 100% { opacity: 1; transform: scale3d(1, 1, 1); }
+      50% { opacity: 0.3; transform: scale3d(0.8, 0.8, 1); }
     }
 
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border-silver); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--bronze); }
@@ -126,6 +115,7 @@
       margin-top: 1.5rem;
       margin-bottom: 1rem;
       animation: fadeInUp 0.7s var(--ease-out) forwards;
+      will-change: transform, opacity;
     }
 
     .logo {
@@ -141,13 +131,8 @@
       transition: transform 0.25s ease;
     }
 
-    .logo:hover {
-      transform: translateX(3px);
-    }
-
-    .logo span {
-      color: var(--bronze);
-    }
+    .logo:hover { transform: translate3d(3px, 0, 0); }
+    .logo span { color: var(--bronze); }
 
     .nav-cta {
       font-family: 'JetBrains Mono', monospace;
@@ -161,13 +146,14 @@
       padding: 0.5rem 1.1rem;
       border-radius: 6px;
       transition: all 0.25s var(--ease-out);
+      will-change: transform;
     }
 
     .nav-cta:hover {
       background: var(--silver-light);
       border-color: var(--silver-light);
       color: #09090b;
-      transform: translateY(-2px);
+      transform: translate3d(0, -2px, 0);
       box-shadow: 0 4px 12px rgba(200, 205, 215, 0.2);
     }
 
@@ -215,16 +201,15 @@
       background: var(--bronze);
       border-radius: 50%;
       animation: pulseDot 2s infinite;
+      will-change: transform, opacity;
     }
 
     .hero-title {
-      font-family: 'Poppins', sans-serif;
       font-size: clamp(2.8rem, 6.5vw, 4.5rem);
       font-weight: 900;
       line-height: 0.95;
       letter-spacing: -0.04em;
       text-transform: uppercase;
-      color: var(--text-100);
     }
 
     .title-outline {
@@ -245,7 +230,6 @@
       justify-content: center;
       align-items: center;
       animation: fadeInScale 0.9s var(--ease-out) 0.3s both;
-      position: relative;
     }
 
     .android-emblem-card {
@@ -265,6 +249,7 @@
       touch-action: none;
       will-change: transform;
       z-index: 10;
+      transition: border-color 0.3s ease;
     }
 
     .android-emblem-card.is-dragging {
@@ -291,9 +276,7 @@
     }
 
     .android-emblem-card:hover .android-hero-logo,
-    .android-emblem-card.is-dragging .android-hero-logo {
-      fill: var(--silver-light);
-    }
+    .android-emblem-card.is-dragging .android-hero-logo { fill: var(--silver-light); }
 
     .emblem-label {
       font-family: 'JetBrains Mono', monospace;
@@ -325,21 +308,10 @@
     .telemetry span { color: var(--bronze-light); font-weight: 700; }
 
     @media (max-width: 820px) {
-      .hero-split {
-        flex-direction: column-reverse;
-        align-items: flex-start;
-      }
-      .hero-emblem-col {
-        align-self: center;
-        margin-bottom: 1rem;
-      }
-      .android-emblem-card {
-        padding: 1.5rem 2rem;
-      }
-      .android-hero-logo {
-        width: 90px;
-        height: 90px;
-      }
+      .hero-split { flex-direction: column-reverse; align-items: flex-start; }
+      .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
+      .android-emblem-card { padding: 1.5rem 2rem; }
+      .android-hero-logo { width: 90px; height: 90px; }
     }
 
     .engine-controls {
@@ -358,11 +330,8 @@
       animation: fadeInUp 0.8s var(--ease-out) 0.5s both;
     }
 
-    .tabs {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-    }
+    .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
 
     .tab-btn {
       background: transparent;
@@ -375,19 +344,20 @@
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.25s var(--ease-out);
+      white-space: nowrap;
     }
 
     .tab-btn:hover {
       color: var(--silver-light);
       border-color: var(--border-silver);
-      transform: translateY(-1px);
+      transform: translate3d(0, -1px, 0);
     }
 
     .tab-btn.active {
       background: var(--bronze);
       border-color: var(--bronze);
       color: #09090b;
-      transform: translateY(-1px);
+      transform: translate3d(0, -1px, 0);
     }
 
     .search-box {
@@ -413,6 +383,7 @@
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      width: 100%;
     }
 
     .section-label {
@@ -431,21 +402,24 @@
     }
 
     .rom-card {
+      content-visibility: auto;
+      contain-intrinsic-size: 1000px;
       background: var(--bg-card);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
       padding: 2rem;
       position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 1.5rem;
       animation: fadeInUp 0.6s var(--ease-out) both;
       transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+      will-change: transform;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      transform: translateY(-4px);
+      transform: translate3d(0, -4px, 0);
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 126, 0.1);
     }
 
@@ -457,19 +431,13 @@
       padding-bottom: 1.25rem;
     }
 
-    .card-title-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
+    .card-title-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
     .build-name {
-      font-family: 'Poppins', sans-serif;
       font-size: 1.65rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.2;
-      color: var(--text-100);
     }
 
     .build-meta {
@@ -489,11 +457,6 @@
       text-transform: uppercase;
       font-weight: 700;
       letter-spacing: 0.05em;
-      transition: transform 0.2s ease;
-    }
-
-    .badge:hover {
-      transform: scale(1.05);
     }
 
     .badge-rom { background: var(--bronze); color: #09090b; }
@@ -507,19 +470,11 @@
       gap: 2rem;
     }
     
-    .card-middle.full-width {
-      grid-template-columns: 1fr;
-    }
+    .card-middle.full-width { grid-template-columns: 1fr; }
 
-    @media (max-width: 768px) {
-      .card-middle { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 768px) { .card-middle { grid-template-columns: 1fr; } }
 
-    .data-block {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
+    .data-block { display: flex; flex-direction: column; gap: 0.35rem; }
 
     .data-label {
       font-family: 'JetBrains Mono', monospace;
@@ -530,11 +485,7 @@
       font-weight: 700;
     }
 
-    .data-value {
-      font-size: 0.9rem;
-      color: var(--text-200);
-      line-height: 1.5;
-    }
+    .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
     .changelog-box {
       background: var(--bg);
@@ -550,10 +501,7 @@
       line-height: 1.6;
     }
 
-    .gallery-container {
-      width: 100%;
-      position: relative;
-    }
+    .gallery-container { width: 100%; position: relative; }
 
     .gallery-track {
       display: flex;
@@ -570,11 +518,12 @@
       cursor: pointer;
       border: 1px solid var(--border-silver);
       transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+      will-change: transform;
     }
 
     .img-thumb:hover {
       border-color: var(--bronze);
-      transform: scale(1.03);
+      transform: scale3d(1.03, 1.03, 1);
     }
 
     .card-footer {
@@ -598,17 +547,17 @@
       text-decoration: none;
       border: 1px solid var(--bronze);
       transition: all 0.25s var(--ease-out);
+      will-change: transform;
     }
 
     .download-btn:hover {
       background: var(--silver-light);
       border-color: var(--silver-light);
       color: #09090b;
-      transform: translateY(-2px);
+      transform: translate3d(0, -2px, 0);
       box-shadow: 0 6px 20px rgba(197, 160, 126, 0.25);
     }
 
-    /* Lightbox & Modals */
     .overlay {
       position: fixed;
       inset: 0;
@@ -622,23 +571,18 @@
       transition: opacity 0.35s var(--ease-out);
     }
 
-    .overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .overlay.active { opacity: 1; pointer-events: all; }
 
     .lightbox-img {
       max-width: 90vw;
       max-height: 90vh;
       border-radius: 8px;
       border: 1px solid var(--border-bronze);
-      transform: scale(0.92);
+      transform: scale3d(0.92, 0.92, 1);
       transition: transform 0.35s var(--ease-out);
     }
 
-    .overlay.active .lightbox-img {
-      transform: scale(1);
-    }
+    .overlay.active .lightbox-img { transform: scale3d(1, 1, 1); }
 
     .close-btn {
       position: absolute;
@@ -648,13 +592,9 @@
       color: var(--silver);
       font-size: 2rem;
       cursor: pointer;
-      font-family: 'Poppins';
       transition: color 0.2s, transform 0.2s;
     }
-    .close-btn:hover {
-      color: #fff;
-      transform: scale(1.1);
-    }
+    .close-btn:hover { color: #fff; transform: scale3d(1.1, 1.1, 1); }
 
     .nav-arrow {
       position: absolute;
@@ -666,12 +606,8 @@
       font-size: 3rem;
       cursor: pointer;
       transition: color 0.2s, transform 0.2s;
-      font-family: 'Poppins';
     }
-    .nav-arrow:hover {
-      color: var(--bronze);
-      transform: translateY(-50%) scale(1.15);
-    }
+    .nav-arrow:hover { color: var(--bronze); transform: translateY(-50%) scale3d(1.15, 1.15, 1); }
     .arrow-left { left: 2rem; }
     .arrow-right { right: 2rem; }
     
@@ -690,17 +626,14 @@
       border-radius: 14px;
       max-width: 600px;
       width: 100%;
-      transform: translateY(30px) scale(0.96);
+      transform: translate3d(0, 30px, 0) scale3d(0.96, 0.96, 1);
       transition: transform 0.35s var(--ease-out);
       position: relative;
     }
     
-    .overlay.active .modal-content {
-      transform: translateY(0) scale(1);
-    }
+    .overlay.active .modal-content { transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
 
     .modal-title {
-      font-family: 'Poppins', sans-serif;
       font-size: 1.5rem;
       font-weight: 800;
       margin-bottom: 1.5rem;
@@ -782,7 +715,7 @@
         <button class="tab-btn" onclick="setFilter('recovery', this)">RECOVERY</button>
         <button class="tab-btn" onclick="toggleGuideModal()" style="color: var(--bronze);">FLASH GUIDE</button>
       </div>
-      <input type="text" id="searchInput" class="search-box" placeholder="> grep -i 'build_name'" oninput="renderBuilds()">
+      <input type="text" id="searchInput" class="search-box" placeholder="> grep -i 'build_name'">
     </div>
 
     <main class="builds-container" id="buildsList"></main>
@@ -818,7 +751,7 @@
   <div class="overlay" id="lightboxModal">
     <button class="close-btn" onclick="closeLightbox()">×</button>
     <button class="nav-arrow arrow-left" onclick="navigateLightbox(-1)">‹</button>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
     <button class="nav-arrow arrow-right" onclick="navigateLightbox(1)">›</button>
     <div class="lb-counter" id="lightboxCounter">1 / 1</div>
   </div>
@@ -834,8 +767,12 @@
         date: "26 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/uclamp: Move tunables to cpuctl\n2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
-        Notice: `1.Only support builds 25.07.2026 or newer\n2.crDroid not compatible`,
+        changelog: `
+                    1.sched/uclamp: Move tunables to cpuct
+                    n2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
+        Notice: `
+                 1.Only support builds 25.07.2026 or newer
+                 2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
 
@@ -848,7 +785,17 @@
         date: "18 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched: fix uclamp_boosted()\n2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp\n3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()\n4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive\n5.sched: Replace schedtune with uclamp\n6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware\n7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware\n8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()\n9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()\n10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
+        changelog: `
+                    1.sched: fix uclamp_boosted()
+                    2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
+                    3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
+                    4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
+                    5.sched: Replace schedtune with uclamp
+                    6.BACKPORT: sched/cpufreq_schedutil: Make iowait boost uclamp-aware
+                    7.BACKPORT: sched/fair: Make cpu_overutilized() uclamp-aware
+                    8.BACKPORT: sched/uclamp: Simplify uclamp_tg_restrict() using clamp()
+                    9.sched/cpufreq_schedutil: Fix undefined uclamp_rq_util_with()
+                    10.Fixup: sched/cpufreq: remove rq-level uclamp_min floor`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2018-05-2026/"
       },
 
@@ -909,7 +856,16 @@
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Enable frame pacing\n2.Define screenRecorderAVCProfileLevel\n3.Decrease launch boost to 3sec\n4.Tune schedutil rate limits\n5.HWC Adapt from exynos9630 T BSP\n6.adapt struct decon_win_config_data to exynos9610\n7.fix missing dmabuf_trace_free call on buffer release path\n8.free exporter name on buffer release\n9.CONFIG_HZ to 300`,
+        changelog: `
+                    1.Enable frame pacing
+                    2.Define screenRecorderAVCProfileLevel
+                    3.Decrease launch boost to 3sec
+                    4.Tune schedutil rate limits
+                    5.HWC Adapt from exynos9630 T BSP
+                    6.adapt struct decon_win_config_data to exynos9610
+                    7.fix missing dmabuf_trace_free call on buffer release path
+                    8.free exporter name on buffer release
+                    9.CONFIG_HZ to 300`,
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
           "./screenshots/voltageos/afterlife/v2.jpg",
@@ -947,7 +903,10 @@
         date: "26 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json\n2.Tune up/down frequency rate limits\n3.Cleanup task_profiles_30.json`,
+        changelog: `
+                    1.Refactor Powerhint.json
+                    2.Tune up/down frequency rate limits
+                    3.Cleanup task_profiles_30.json`,
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
       },
 
@@ -960,7 +919,10 @@
         date: "01 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Refactor Powerhint.json\n2.Add software c2 av1/dav1d decoder\n3.Move media codecs configurations on tree`,
+        changelog: `
+                    1.Refactor Powerhint.json
+                    2.Add software c2 av1/dav1d decoder
+                    3.Move media codecs configurations on tree`,
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
       },
 
@@ -973,7 +935,16 @@
         date: "02 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Powerhint: Re-tune for efficiency\n2.Powerhint: Cleanup\n3.Powerhint: Add UclampTAMin & UclampTALatency\n4.Powerhint: Add UclampTAMin to LAUNCH\n5.Powerhint: Refactor powerhint.json\n6.Update cpuset parameters\n7.Migrate from Schedtune to Uclamp\n8.Drop schedtune\n9.Refactor task_profiles for to reflect Uclamp changes`,
+        changelog: `
+                    1.Powerhint: Re-tune for efficiency
+                    2.Powerhint: Cleanup
+                    3.Powerhint: Add UclampTAMin & UclampTALatency
+                    4.Powerhint: Add UclampTAMin to LAUNCH
+                    5.Powerhint: Refactor powerhint.json
+                    6.Update cpuset parameters
+                    7.Migrate from Schedtune to Uclamp
+                    8.Drop schedtune
+                    9.Refactor task_profiles for to reflect Uclamp changes`,
         downloadUrl: "https://drive.google.com/drive/folders/1quhVFJwp1_wL0WKlpM4YqvpQs_oq9yvM?usp=sharing"
       },
       
@@ -986,7 +957,10 @@
         date: "25 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-tune POWERHINT for efficiency\n2.Boost CPU on EXPENSIVE_RENDERING\n3.set TARGET_CPU_VARIANT to cortex-a73`,
+        changelog: `
+                    1.Re-tune POWERHINT for efficiency
+                    2.Boost CPU on EXPENSIVE_RENDERING
+                    3.set TARGET_CPU_VARIANT to cortex-a73`,
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
       },
 
@@ -999,7 +973,17 @@
         date: "20 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Blur Disabled\n2.Enable frame pacing\n3.Define screenRecorderAVCProfileLevel\n4.Decrease launch boost to 3sec\n5.Tune schedutil rate limits\n6.HWC Adapt from exynos9630 T BSP\n7.adapt struct decon_win_config_data to exynos9610\n8.fix missing dmabuf_trace_free call on buffer release path \n9.free exporter name on buffer release\n10.CONFIG_HZ to 300`,
+        changelog: `
+                    1.Blur Disabled
+                    2.Enable frame pacing
+                    3.Define screenRecorderAVCProfileLevel
+                    4.Decrease launch boost to 3sec
+                    5.Tune schedutil rate limits
+                    6.HWC Adapt from exynos9630 T BSP
+                    7.adapt struct decon_win_config_data to exynos9610
+                    8.fix missing dmabuf_trace_free call on buffer release path 
+                    9.free exporter name on buffer release
+                    10.CONFIG_HZ to 300`,
         downloadUrl: "https://drive.google.com/drive/folders/1coT6KSsNsyvF5VHY57uvHnj7pNAfHQo_?usp=drive_link"
       },
 
@@ -1012,7 +996,14 @@
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `1.Blur Disabled\n2.Decrease launch boost to 3sec\n3.Tune schedutil rate limits\n4.HWC Adapt from exynos9630 T BSP\n5.adapt struct decon_win_config_data to exynos9610\n6.fix missing dmabuf_trace_free call on buffer release path\n7.free exporter name on buffer release`,
+        changelog: `
+                    1.Blur Disabled
+                    2.Decrease launch boost to 3sec
+                    3.Tune schedutil rate limits
+                    4.HWC Adapt from exynos9630 T BSP
+                    5.adapt struct decon_win_config_data to exynos9610
+                    6.fix missing dmabuf_trace_free call on buffer release path
+                    7.free exporter name on buffer release`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
           "./screenshots/voltageos/matrixos12.2/v2.jpg",
@@ -1036,7 +1027,10 @@
         date: "01 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Remove unused /dev/freezer\n2.Tune up/down frequency transition rate limits\n3.Switch to AOSP task profiles`,
+        changelog: `
+                    1.Remove unused /dev/freezer
+                    2.Tune up/down frequency transition rate limits
+                    3.Switch to AOSP task profiles`,
         screenshots: [
           "./screenshots/voltageos/lunaris/v1.jpg",
           "./screenshots/voltageos/lunaris/v2.jpg",
@@ -1060,8 +1054,13 @@
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
-        Notice: `1.EOL A16. Next update based on A17\n2.Mostly source side changes in this build\n3.No kernel changes`,
+        changelog: `
+                    1.Re-configure cpuset
+                    2.Remove cpuidle off node`,
+        Notice: `
+                 1.EOL A16. Next update based on A17
+                 2.Mostly source side changes in this build
+                 3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/lunaris12.3/v1.jpg",
           "./screenshots/voltageos/lunaris12.3/v2.jpg",
@@ -1085,8 +1084,13 @@
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
-        changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
-        Notice: `1.OTA Pushed\n2.EOL A16. Next update based on A17\n3.No kernel changes`,
+        changelog: `
+                    1.Re-configure cpuset
+                    2.Remove cpuidle off node`,
+        Notice: `
+                 1.OTA Pushed
+                 2.EOL A16. Next update based on A17
+                 3.No kernel changes`,
         screenshots: [
           "./screenshots/voltageos/infinityx/v1.jpg",
           "./screenshots/voltageos/infinityx/v2.jpg",
@@ -1120,7 +1124,11 @@
         date: "09 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint.json\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
+        changelog: `
+                    1.Tune Powerhint.json
+                    2.Tune up/down frequency rate limits
+                    3.Switch to AOSP task profiles
+                    4.Remove unused /dev/freezer`,
         screenshots: [
           "./screenshots/voltageos/lineageos23.2/v1.jpg",
           "./screenshots/voltageos/lineageos23.2/v2.jpg",
@@ -1144,8 +1152,13 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Tune Powerhint\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
-        Notice: `1.Blur disabled`,
+        changelog: `
+                    1.Tune Powerhint
+                    2.Tune up/down frequency rate limits
+                    3.Switch to AOSP task profiles
+                    4.Remove unused /dev/freezer`,
+        Notice: `
+                 1.Blur disabled`,
         screenshots: [
           "./screenshots/voltageos/voltageos5.11/v1.jpg",
           "./screenshots/voltageos/voltageos5.11/v2.jpg",
@@ -1169,8 +1182,17 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
-        Notice: `1.Initial A17 release\n2.Report bugs with proper log please`,
+        changelog: `
+                    1.Update included soong namespaces
+                    2.Set legacy gralloc flag
+                    3.Remove apk_verity_prop from flags_health_check.te
+                    4.Remove duplicate sysfs_block
+                    5.Remove duplicate clean_scratch_files
+                    6.Use legacy libion implementation
+                    7.Disable app launch blur`,
+        Notice: `
+                 1.Initial A17 release
+                 2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
           "./screenshots/voltageos/lineageos/v2.jpg",
@@ -1182,7 +1204,7 @@
           "./screenshots/voltageos/lineageos/v8.jpg",
           "./screenshots/voltageos/lineageos/v9.jpg"
         ],
-        downloadUrl: "https://drive.google.com/drive/folders/11VAKKkzQEnQ-hCucJFv6She-AtUQNiDo?usp=sharing",
+        downloadUrl: "https://drive.google.com/drive/folders/11VAKKkzQEnQ-hCucJFv6She-AtUQNiDo?usp=sharing"
       },
 
       // 21. Everline Kernel
@@ -1194,8 +1216,17 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset\n2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu\n3.sched/uclamp: Add util_fits_cpu and task_fits_cpu\n4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle\n5.Removed old unnecessary uclamp commits and backports\n6.Merge 5.10 BPF from phoenix\n7.Add cgroup v2 freezer`,
-        Notice: `1.crDroid not compatible\n2.Only support builds 26.07.2026 or newer`,
+        changelog: `
+                    1.sched/cpufreq_schedutil: Add sugov_iowait_reset
+                    2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
+                    3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
+                    4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
+                    5.Removed old unnecessary uclamp commits and backports
+                    6.Merge 5.10 BPF from phoenix
+                    7.Add cgroup v2 freezer`,
+        Notice: `
+                 1.crDroid not compatible
+                 2.Only support builds 26.07.2026 or newer`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
 
@@ -1208,8 +1239,18 @@
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
-        changelog: `1.Update included soong namespaces\n2.Set legacy gralloc flag\n3.Remove apk_verity_prop from flags_health_check.te\n4.Remove duplicate sysfs_block\n5.Remove duplicate clean_scratch_files\n6.Use legacy libion implementation\n7.Disable app launch blur`,
-        Notice: `1.Initial Android 17 release\n2.Blur Disabled\n3.Report bugs with proper log please`,
+        changelog: `
+                    1.Update included soong namespaces
+                    2.Set legacy gralloc flag
+                    3.Remove apk_verity_prop from flags_health_check.te
+                    4.Remove duplicate sysfs_block
+                    5.Remove duplicate clean_scratch_files
+                    6.Use legacy libion implementation
+                    7.Disable app launch blur`,
+        Notice: `
+                 1.Initial Android 17 release
+                 2.Blur Disabled
+                 3.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/v1.jpg",
           "./screenshots/voltageos/v2.jpg",
@@ -1258,8 +1299,10 @@
         android: "Android 13 to 17",
         date: "2026",
         flavor: ["FLASHABLE ZIP/TAR"],
-        changelog: `1.Fully compatible with Android 16 & 17 custom ROMs`,
-        Notice: `1.Flash via Odin (.tar) or existing recovery (.img)`,
+        changelog: `
+                    1.Fully compatible with Android 16 & 17 custom ROMs`,
+        Notice: `
+                 1.Flash via Odin (.tar) or existing recovery (.img)`,
         downloadUrl: "https://twrp.me/Devices/"
       },
 
@@ -1271,8 +1314,10 @@
         android: "Android 17",
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
-        changelog: `1.Official litegapps release packages for custom rom android 17`,
-        Notice: `1.Only compatible for android 17`,
+        changelog: `
+                    1.Official litegapps release packages for custom rom android 17`,
+        Notice: `
+                 1.Only compatible for android 17`,
         downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
       },
 
@@ -1284,7 +1329,8 @@
         android: "Android 16",
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
-        changelog: `1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
+        changelog: `
+                    1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
         downloadUrl: "https://nikgapps.com/downloads"
       }
     ];
@@ -1296,61 +1342,52 @@
     document.getElementById('stat-count').innerText = buildsData.length;
 
     const emblem = document.getElementById('draggableEmblem');
-    let isDragging = false;
-    let startX = 0, startY = 0;
-    let currentX = 0, currentY = 0;
+    let isDragging = false, startX = 0, startY = 0, currentX = 0, currentY = 0, dragRAF = null;
 
     function onDragStart(e) {
       isDragging = true;
       emblem.classList.remove('is-snapping');
       emblem.classList.add('is-dragging');
-      
-      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-      
-      startX = clientX - currentX;
-      startY = clientY - currentY;
+      const touch = e.type.includes('touch') ? e.touches[0] : e;
+      startX = touch.clientX - currentX;
+      startY = touch.clientY - currentY;
     }
 
     function onDragMove(e) {
       if (!isDragging) return;
       if (e.cancelable) e.preventDefault();
+      const touch = e.type.includes('touch') ? e.touches[0] : e;
+      currentX = touch.clientX - startX;
+      currentY = touch.clientY - startY;
       
-      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-      
-      currentX = clientX - startX;
-      currentY = clientY - startY;
-      
-      const rotateDeg = Math.max(Math.min(currentX * 0.05, 18), -18);
-      emblem.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotateDeg}deg) scale(1.05)`;
+      if(dragRAF) cancelAnimationFrame(dragRAF);
+      dragRAF = requestAnimationFrame(() => {
+        const rotateDeg = Math.max(Math.min(currentX * 0.05, 18), -18);
+        emblem.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotateDeg}deg) scale3d(1.05, 1.05, 1)`;
+      });
     }
 
     function onDragEnd() {
       if (!isDragging) return;
       isDragging = false;
+      if(dragRAF) cancelAnimationFrame(dragRAF);
       
       emblem.classList.remove('is-dragging');
       emblem.classList.add('is-snapping');
       
-      currentX = 0;
-      currentY = 0;
-      emblem.style.transform = 'translate3d(0px, 0px, 0) rotate(0deg) scale(1)';
+      currentX = 0; currentY = 0;
+      emblem.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale3d(1, 1, 1)';
       
-      setTimeout(() => {
-        emblem.classList.remove('is-snapping');
-        emblem.style.transform = '';
-      }, 650);
+      setTimeout(() => emblem.classList.remove('is-snapping'), 650);
     }
 
     if (emblem) {
-      emblem.addEventListener('mousedown', onDragStart);
-      window.addEventListener('mousemove', onDragMove);
-      window.addEventListener('mouseup', onDragEnd);
-
+      emblem.addEventListener('mousedown', onDragStart, { passive: true });
+      window.addEventListener('mousemove', onDragMove, { passive: false });
+      window.addEventListener('mouseup', onDragEnd, { passive: true });
       emblem.addEventListener('touchstart', onDragStart, { passive: false });
       window.addEventListener('touchmove', onDragMove, { passive: false });
-      window.addEventListener('touchend', onDragEnd);
+      window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
     function setFilter(filter, btn) {
@@ -1360,10 +1397,26 @@
       renderBuilds();
     }
 
-    function toggleGuideModal() {
-      const el = document.getElementById("guideModal");
-      el.classList.toggle('active');
-    }
+    let searchTimeout;
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        renderBuilds(e.target.value.toLowerCase());
+      }, 150);
+    });
+
+    function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
+
+    document.getElementById("buildsList").addEventListener('click', (e) => {
+      const target = e.target.closest('.img-thumb');
+      if(target) {
+        openLightbox(
+          parseInt(target.dataset.bidx),
+          parseInt(target.dataset.imgidx),
+          target.dataset.type
+        );
+      }
+    });
 
     function openLightbox(buildIndex, imageIndex, type) {
       const build = buildsData[buildIndex];
@@ -1379,15 +1432,13 @@
       document.getElementById("lightboxCounter").innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
     }
 
-    function navigateLightbox(direction) {
+    function navigateLightbox(dir) {
       if (!activeScreenshots.length) return;
-      currentImageIndex = (currentImageIndex + direction + activeScreenshots.length) % activeScreenshots.length;
+      currentImageIndex = (currentImageIndex + dir + activeScreenshots.length) % activeScreenshots.length;
       updateLightboxDisplay();
     }
 
-    function closeLightbox() {
-      document.getElementById("lightboxModal").classList.remove("active");
-    }
+    function closeLightbox() { document.getElementById("lightboxModal").classList.remove("active"); }
 
     document.addEventListener("keydown", e => {
       if (document.getElementById("lightboxModal").classList.contains("active")) {
@@ -1397,104 +1448,70 @@
       }
     });
 
-    function createCardElement(item, idx) {
+    function createCardHTML(item, globalIdx) {
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
-      let maintainerHtml = '';
-      if (item.maintainer) {
-        maintainerHtml = `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>`;
-      }
-
-      let flavorHtml = '';
-      if (item.flavor) {
-        const arr = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
-        flavorHtml = `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${arr.join(', ')}</div></div>`;
-      }
-
+      const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
+      const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${(Array.isArray(item.flavor) ? item.flavor : [item.flavor]).join(', ')}</div></div>` : '';
+      
       let featuresHtml = '';
       if (item.featureScreenshots?.length) {
-        featuresHtml = `
-          <div class="gallery-container">
-            <div class="data-label" style="margin-bottom:0.75rem;">Feature Screenshots</div>
-            <div class="gallery-track">
-              ${item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" class="img-thumb" onclick="openLightbox(${realIndex}, ${f}, 'features')">`).join('')}
-            </div>
-          </div>`;
+        featuresHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">Feature Screenshots</div><div class="gallery-track">` +
+          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
+          `</div></div>`;
       }
 
       let screensHtml = '';
       if (item.screenshots?.length) {
-        screensHtml = `
-          <div class="gallery-container">
-            <div class="data-label" style="margin-bottom:0.75rem;">System Previews</div>
-            <div class="gallery-track">
-              ${item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" class="img-thumb" onclick="openLightbox(${realIndex}, ${s}, 'rom')">`).join('')}
-            </div>
-          </div>`;
+        screensHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">System Previews</div><div class="gallery-track">` +
+          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
+          `</div></div>`;
       }
 
-      const hasMedia = (item.featureScreenshots && item.featureScreenshots.length > 0) || 
-                       (item.screenshots && item.screenshots.length > 0);
+      const hasMedia = featuresHtml !== '' || screensHtml !== '';
+      const noticeHtml = item.Notice ? `<div style="color:var(--bronze); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--bronze); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
 
-      let noticeHtml = item.Notice ? `<div style="color:var(--bronze); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--bronze); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
-
-      const card = document.createElement("div");
-      card.className = "rom-card";
-      card.style.animationDelay = `${Math.min(idx * 0.08, 0.6)}s`;
-
-      card.innerHTML = `
-        <div class="card-top">
-          <div class="card-title-group">
-            <div class="build-name">${item.title}</div>
-            <div class="build-meta">
-              <span>[ ${item.date || 'LATEST'} ]</span>
-              <span>[ ${item.device} ]</span>
+      return `
+        <div class="rom-card" style="animation-delay: ${Math.min(globalIdx * 0.08, 0.6)}s">
+          <div class="card-top">
+            <div class="card-title-group">
+              <div class="build-name">${item.title}</div>
+              <div class="build-meta"><span>[ ${item.date || 'LATEST'} ]</span><span>[ ${item.device} ]</span></div>
             </div>
+            <span class="badge badge-${cat}">${cat}</span>
           </div>
-          <span class="badge badge-${cat}">${cat}</span>
-        </div>
-        
-        <div class="card-middle ${hasMedia ? '' : 'full-width'}">
-          <div style="display:flex; flex-direction:column; gap:1.5rem;">
-            <div style="display:flex; gap:2rem; flex-wrap:wrap;">
-              <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
-              ${flavorHtml}
-              ${maintainerHtml}
+          <div class="card-middle ${hasMedia ? '' : 'full-width'}">
+            <div style="display:flex; flex-direction:column; gap:1.5rem;">
+              <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+                <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
+                ${flavorHtml}${maintainerHtml}
+              </div>
+              ${noticeHtml}
+              <div class="data-block">
+                <div class="data-label" style="margin-bottom:0.5rem;">Changelog</div>
+                <div class="changelog-box">${item.changelog}</div>
+              </div>
             </div>
-            ${noticeHtml}
-            <div class="data-block">
-              <div class="data-label" style="margin-bottom:0.5rem;">Changelog</div>
-              <div class="changelog-box">${item.changelog}</div>
-            </div>
+            ${hasMedia ? `<div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">${featuresHtml}${screensHtml}</div>` : ''}
           </div>
-          ${hasMedia ? `
-            <div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">
-              ${featuresHtml}
-              ${screensHtml}
-            </div>
-          ` : ''}
-        </div>
-
-        <div class="card-footer">
-          <a href="${item.downloadUrl}" target="_blank" class="download-btn">INITIATE DOWNLOAD ➔</a>
-        </div>
-      `;
-      return card;
+          <div class="card-footer">
+            <a href="${item.downloadUrl}" target="_blank" class="download-btn">INITIATE DOWNLOAD ➔</a>
+          </div>
+        </div>`;
     }
 
-    function renderBuilds() {
+    function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
-      const search = document.getElementById("searchInput").value.toLowerCase();
-      container.innerHTML = "";
-
+      
       const filtered = buildsData.filter(item => {
         const cat = (item.category || "rom").toLowerCase();
         const mCat = currentFilter === "all" || cat === currentFilter;
-        const mSearch = (item.title||"").toLowerCase().includes(search) || 
-                        (item.device||"").toLowerCase().includes(search) ||
-                        (item.android||"").toLowerCase().includes(search);
-        return mCat && mSearch;
+        if (!mCat) return false;
+        if (!searchTerm) return true;
+        return (item.title||"").toLowerCase().includes(searchTerm) || 
+               (item.device||"").toLowerCase().includes(searchTerm) ||
+               (item.android||"").toLowerCase().includes(searchTerm);
       });
 
       if (!filtered.length) {
@@ -1510,22 +1527,23 @@
         { t: "SYSTEM RECOVERY", filter: i => i.category === "recovery" }
       ];
 
+      let htmlBuffer = "";
       let globalCardIdx = 0;
+      
       sections.forEach(sec => {
         const items = filtered.filter(sec.filter);
         if (items.length) {
-          const sLabel = document.createElement("div");
-          sLabel.className = "section-label";
-          sLabel.innerHTML = `<span>// ${sec.t}</span><span>[${items.length}]</span>`;
-          container.appendChild(sLabel);
+          htmlBuffer += `<div class="section-label"><span>// ${sec.t}</span><span>[${items.length}]</span></div>`;
           items.forEach(item => {
-            container.appendChild(createCardElement(item, globalCardIdx));
-            globalCardIdx++;
+            htmlBuffer += createCardHTML(item, globalCardIdx++);
           });
         }
       });
+      
+      container.innerHTML = htmlBuffer;
     }
 
+    // Initial render
     renderBuilds();
   </script>
 </body>
