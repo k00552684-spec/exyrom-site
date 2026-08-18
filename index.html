@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #09090b;
       --bg-panel: #111114;
       --bg-card: #141418;
-      
+
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
       --silver-light: #e5e7eb;
       --silver-dark: #6b7280;
-      
+
       --border-silver: rgba(200, 205, 215, 0.22);
       --border-bronze: rgba(197, 160, 126, 0.35);
       --border-hover: #c5a07e;
@@ -38,6 +38,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -49,7 +50,7 @@
 
     body {
       color: var(--text-100);
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Outfit', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -119,9 +120,8 @@
     }
 
     .logo {
-      font-family: 'Poppins', sans-serif;
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       letter-spacing: -0.02em;
       color: var(--silver-light);
       text-decoration: none;
@@ -240,7 +240,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 1.25rem;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
       position: relative;
       animation: floatEmblem 5s ease-in-out infinite;
@@ -266,17 +266,24 @@
       animation: none !important;
     }
 
-    .android-hero-logo {
-      width: 130px;
-      height: 130px;
-      fill: var(--bronze);
-      filter: drop-shadow(0 4px 12px rgba(197, 160, 126, 0.2));
+    .octocat-hero-logo {
+      width: 125px;
+      height: 125px;
+      fill: none;
+      stroke: var(--bronze);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 4px 12px rgba(197, 160, 126, 0.25));
       pointer-events: none;
-      transition: fill 0.3s ease;
+      transition: stroke 0.3s ease, transform 0.3s ease;
     }
 
-    .android-emblem-card:hover .android-hero-logo,
-    .android-emblem-card.is-dragging .android-hero-logo { fill: var(--silver-light); }
+    .android-emblem-card:hover .octocat-hero-logo,
+    .android-emblem-card.is-dragging .octocat-hero-logo {
+      stroke: var(--silver-light);
+      filter: drop-shadow(0 4px 16px rgba(200, 205, 215, 0.35));
+    }
 
     .emblem-label {
       font-family: 'JetBrains Mono', monospace;
@@ -311,7 +318,7 @@
       .hero-split { flex-direction: column-reverse; align-items: flex-start; }
       .hero-emblem-col { align-self: center; margin-bottom: 1rem; }
       .android-emblem-card { padding: 1.5rem 2rem; }
-      .android-hero-logo { width: 90px; height: 90px; }
+      .octocat-hero-logo { width: 90px; height: 90px; }
     }
 
     .engine-controls {
@@ -337,8 +344,7 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-200);
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 600;
       padding: 0.5rem 1rem;
       border-radius: 6px;
@@ -539,7 +545,6 @@
       gap: 0.5rem;
       background: var(--bronze);
       color: #09090b;
-      font-family: 'Poppins', sans-serif;
       font-weight: 700;
       font-size: 0.88rem;
       padding: 0.75rem 1.8rem;
@@ -569,55 +574,10 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.35s var(--ease-out);
+      padding: 1rem;
     }
 
     .overlay.active { opacity: 1; pointer-events: all; }
-
-    .lightbox-img {
-      max-width: 90vw;
-      max-height: 90vh;
-      border-radius: 8px;
-      border: 1px solid var(--border-bronze);
-      transform: scale3d(0.92, 0.92, 1);
-      transition: transform 0.35s var(--ease-out);
-    }
-
-    .overlay.active .lightbox-img { transform: scale3d(1, 1, 1); }
-
-    .close-btn {
-      position: absolute;
-      top: 2rem; right: 2rem;
-      background: transparent;
-      border: none;
-      color: var(--silver);
-      font-size: 2rem;
-      cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .close-btn:hover { color: #fff; transform: scale3d(1.1, 1.1, 1); }
-
-    .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--text-300);
-      font-size: 3rem;
-      cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .nav-arrow:hover { color: var(--bronze); transform: translateY(-50%) scale3d(1.15, 1.15, 1); }
-    .arrow-left { left: 2rem; }
-    .arrow-right { right: 2rem; }
-    
-    .lb-counter {
-      position: absolute;
-      bottom: 2rem;
-      font-family: 'JetBrains Mono';
-      color: var(--bronze);
-      font-size: 0.85rem;
-    }
 
     .modal-content {
       background: var(--bg-panel);
@@ -659,6 +619,147 @@
       font-size: 0.9rem;
     }
     .guide-list b { color: var(--text-100); }
+
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 7, 0.96);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-out);
+      padding: max(1.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-content-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 92vw;
+      max-height: 80vh;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 78vh;
+      border-radius: 12px;
+      border: 1px solid var(--border-bronze);
+      object-fit: contain;
+      transform: scale3d(0.94, 0.94, 1);
+      transition: transform 0.3s var(--ease-out);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale3d(1, 1, 1);
+    }
+
+    .lb-btn {
+      background: rgba(20, 20, 24, 0.85);
+      border: 1px solid var(--border-bronze);
+      color: var(--silver-light);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 3100;
+    }
+
+    .lb-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .lb-btn:hover {
+      background: var(--bronze);
+      color: #09090b;
+      border-color: var(--bronze);
+      transform: scale(1.08);
+    }
+
+    .lb-btn:active {
+      transform: scale(0.92);
+    }
+
+    .lb-close-btn {
+      position: absolute;
+      top: max(1.25rem, env(safe-area-inset-top));
+      right: max(1.25rem, env(safe-area-inset-right));
+    }
+
+    .lb-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lb-prev { left: max(1.25rem, env(safe-area-inset-left)); }
+    .lb-next { right: max(1.25rem, env(safe-area-inset-right)); }
+
+    .lb-bottom-bar {
+      position: absolute;
+      bottom: max(1.25rem, env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      z-index: 3100;
+    }
+
+    .lb-counter {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--bronze);
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: rgba(17, 17, 20, 0.9);
+      border: 1px solid var(--border-bronze);
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 680px) {
+      .lb-nav-btn {
+        position: static;
+        transform: none;
+        width: 44px;
+        height: 44px;
+      }
+      .lb-bottom-bar {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        gap: 1.25rem;
+      }
+      .lightbox-content-wrap {
+        max-height: 70vh;
+      }
+      .lightbox-img {
+        max-height: 68vh;
+      }
+    }
   </style>
 </head>
 <body>
@@ -691,8 +792,14 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <svg class="android-hero-logo" viewBox="0 0 24 24">
-              <path d="M17.523 15.3414C17.0601 15.3414 16.6873 14.9686 16.6873 14.5057C16.6873 14.0428 17.0601 13.67 17.523 13.67C17.9859 13.67 18.3587 14.0428 18.3587 14.5057C18.3587 14.9686 17.9859 15.3414 17.523 15.3414ZM6.47702 15.3414C6.01413 15.3414 5.64132 14.9686 5.64132 14.5057C5.64132 14.0428 6.01413 13.67 6.47702 13.67C6.93991 13.67 7.31272 14.0428 7.31272 14.5057C7.31272 14.9686 6.93991 15.3414 6.47702 15.3414ZM17.9234 10.3732L19.7891 7.142C19.9248 6.90696 19.8443 6.60627 19.6092 6.47057C19.3742 6.33486 19.0735 6.41539 18.9378 6.65042L17.0396 9.93836C15.5392 9.25464 13.8291 8.86877 12 8.86877C10.1709 8.86877 8.46083 9.25464 6.9604 9.93836L5.06223 6.65042C4.92652 6.41539 4.62583 6.33486 4.3908 6.47057C4.15576 6.60627 4.07524 6.90696 4.21095 7.142L6.07662 10.3732C2.71618 12.2036 0.435547 15.6881 0.435547 19.7578H23.5645C23.5645 15.6881 21.2838 12.2036 17.9234 10.3732Z"/>
+            <!-- GitHub Octocat Silhouette Outline Logo -->
+            <svg class="octocat-hero-logo" viewBox="0 0 48 48">
+              <path d="M14 18 C11 12, 16 7, 20 10 C22 9.5, 26 9.5, 28 10 C32 7, 37 12, 34 18 C37 22, 36 29, 32 33 C30 35, 27 36, 24 36 C21 36, 18 35, 16 33 C12 29, 11 22, 14 18 Z" />
+              <path d="M18 35 C17 38, 16 41, 16 44" />
+              <path d="M22 36 C22 39, 22 41, 21 44" />
+              <path d="M26 36 C26 39, 26 41, 27 44" />
+              <path d="M30 35 C31 38, 32 41, 32 44" />
+              <path d="M13 31 C10 32, 8 30, 9 27 C10 24, 13 25, 14 28" />
             </svg>
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
@@ -724,13 +831,15 @@
 
   <div class="overlay" id="guideModal">
     <div class="modal-content">
-      <button class="close-btn" style="position: absolute; top: 1.5rem; right: 1.5rem;" onclick="toggleGuideModal()">×</button>
+      <button class="lb-btn lb-close-btn" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
       <h2 class="modal-title">Deployment Protocol</h2>
       
       <div class="guide-step-title">// CLEAN FLASH (NEW INSTALL)</div>
       <ol class="guide-list">
         <li>Boot device into <b>TWRP Recovery</b>.</li>
-        <li>Navigate: <b>Wipe > Advanced Wipe</b>.</li>
+        <li>Navigate: <b>Wipe &gt; Advanced Wipe</b>.</li>
         <li>Format: <b>Dalvik/ART, Cache, Metadata, Data</b>.</li>
         <li>Install target <b>ROM.zip</b> package.</li>
         <li>(Optional) Inject <b>GApps</b> and <b>Everline Kernel</b>.</li>
@@ -748,12 +857,31 @@
     </div>
   </div>
 
-  <div class="overlay" id="lightboxModal">
-    <button class="close-btn" onclick="closeLightbox()">×</button>
-    <button class="nav-arrow arrow-left" onclick="navigateLightbox(-1)">‹</button>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
-    <button class="nav-arrow arrow-right" onclick="navigateLightbox(1)">›</button>
-    <div class="lb-counter" id="lightboxCounter">1 / 1</div>
+  <div class="lightbox-overlay" id="lightboxModal">
+    <button class="lb-btn lb-close-btn" onclick="closeLightbox()" aria-label="Close Lightbox">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+
+    <div class="lightbox-content-wrap">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" loading="lazy">
+    </div>
+
+    <button class="lb-btn lb-nav-btn lb-prev d-none-mobile" onclick="navigateLightbox(-1)" aria-label="Previous Image">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button class="lb-btn lb-nav-btn lb-next d-none-mobile" onclick="navigateLightbox(1)" aria-label="Next Image">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <div class="lb-bottom-bar">
+      <button class="lb-btn lb-nav-btn lb-prev-mobile" onclick="navigateLightbox(-1)" aria-label="Previous Image">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="lb-counter" id="lightboxCounter">1 / 1</div>
+      <button class="lb-btn lb-nav-btn lb-next-mobile" onclick="navigateLightbox(1)" aria-label="Next Image">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
   </div>
 
   <script>
@@ -767,11 +895,9 @@
         date: "26 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `
-                    1.sched/uclamp: Move tunables to cpuct
-                    n2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
-        Notice: `
-                 1.Only support builds 25.07.2026 or newer
+        changelog: `1.sched/uclamp: Move tunables to cpuctl
+                    2.sched/uclamp: Expose latency_sensitive and uclamp.boosted`,
+        Notice: `1.Only support builds 25.07.2026 or newer
                  2.crDroid not compatible`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2025-07-2026/"
       },
@@ -785,8 +911,7 @@
         date: "18 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `
-                    1.sched: fix uclamp_boosted()
+        changelog: `1.sched: fix uclamp_boosted()
                     2.BACKPORT: Add min_task_util_for_boost and min_task_util_for_uclamp
                     3.sched/cpufreq_schedutil: use UCLAMP_MIN in sugov_need_slack_timer()
                     4.Fixup: sched/uclamp: sched: Fix cpuset_cgrp_id in uclamp_latency_sensitive
@@ -832,7 +957,8 @@
         date: "05 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS INCLUDED"],
-        changelog: `1.contain all previous commits\n2.OTA push`,
+        changelog: `1.contain all previous commits
+                    2.OTA push`,
         screenshots: [
           "./screenshots/voltageos/infinity/v1.jpg",
           "./screenshots/voltageos/infinity/v2.jpg",
@@ -856,8 +982,7 @@
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `
-                    1.Enable frame pacing
+        changelog: `1.Enable frame pacing
                     2.Define screenRecorderAVCProfileLevel
                     3.Decrease launch boost to 3sec
                     4.Tune schedutil rate limits
@@ -903,8 +1028,7 @@
         date: "26 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Refactor Powerhint.json
+        changelog: `1.Refactor Powerhint.json
                     2.Tune up/down frequency rate limits
                     3.Cleanup task_profiles_30.json`,
         downloadUrl: "https://drive.google.com/drive/folders/1sUjnPe88Q6sRX2-8nxYO37ac-MDAmhyj?usp=sharing"
@@ -919,8 +1043,7 @@
         date: "01 Jun 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Refactor Powerhint.json
+        changelog: `1.Refactor Powerhint.json
                     2.Add software c2 av1/dav1d decoder
                     3.Move media codecs configurations on tree`,
         downloadUrl: "https://drive.google.com/drive/folders/1OvkxJulj3QWW-0S4u0Kq8DKxLjsmJs_Y?usp=sharing"
@@ -935,8 +1058,7 @@
         date: "02 May 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Powerhint: Re-tune for efficiency
+        changelog: `1.Powerhint: Re-tune for efficiency
                     2.Powerhint: Cleanup
                     3.Powerhint: Add UclampTAMin & UclampTALatency
                     4.Powerhint: Add UclampTAMin to LAUNCH
@@ -957,8 +1079,7 @@
         date: "25 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Re-tune POWERHINT for efficiency
+        changelog: `1.Re-tune POWERHINT for efficiency
                     2.Boost CPU on EXPENSIVE_RENDERING
                     3.set TARGET_CPU_VARIANT to cortex-a73`,
         downloadUrl: "https://drive.google.com/drive/folders/16UW_O8Megsh4MpqPprNJgv4JV1j4taP5?usp=sharing"
@@ -973,8 +1094,7 @@
         date: "20 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Blur Disabled
+        changelog: `1.Blur Disabled
                     2.Enable frame pacing
                     3.Define screenRecorderAVCProfileLevel
                     4.Decrease launch boost to 3sec
@@ -996,8 +1116,7 @@
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "OFFICIAL"],
-        changelog: `
-                    1.Blur Disabled
+        changelog: `1.Blur Disabled
                     2.Decrease launch boost to 3sec
                     3.Tune schedutil rate limits
                     4.HWC Adapt from exynos9630 T BSP
@@ -1027,8 +1146,7 @@
         date: "01 July 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Remove unused /dev/freezer
+        changelog: `1.Remove unused /dev/freezer
                     2.Tune up/down frequency transition rate limits
                     3.Switch to AOSP task profiles`,
         screenshots: [
@@ -1054,11 +1172,9 @@
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Re-configure cpuset
+        changelog: `1.Re-configure cpuset
                     2.Remove cpuidle off node`,
-        Notice: `
-                 1.EOL A16. Next update based on A17
+        Notice: `1.EOL A16. Next update based on A17
                  2.Mostly source side changes in this build
                  3.No kernel changes`,
         screenshots: [
@@ -1084,11 +1200,9 @@
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["GAPPS"],
-        changelog: `
-                    1.Re-configure cpuset
+        changelog: `1.Re-configure cpuset
                     2.Remove cpuidle off node`,
-        Notice: `
-                 1.OTA Pushed
+        Notice: `1.OTA Pushed
                  2.EOL A16. Next update based on A17
                  3.No kernel changes`,
         screenshots: [
@@ -1124,8 +1238,7 @@
         date: "09 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Tune Powerhint.json
+        changelog: `1.Tune Powerhint.json
                     2.Tune up/down frequency rate limits
                     3.Switch to AOSP task profiles
                     4.Remove unused /dev/freezer`,
@@ -1152,13 +1265,11 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Tune Powerhint
+        changelog: `1.Tune Powerhint
                     2.Tune up/down frequency rate limits
                     3.Switch to AOSP task profiles
                     4.Remove unused /dev/freezer`,
-        Notice: `
-                 1.Blur disabled`,
+        Notice: `1.Blur disabled`,
         screenshots: [
           "./screenshots/voltageos/voltageos5.11/v1.jpg",
           "./screenshots/voltageos/voltageos5.11/v2.jpg",
@@ -1182,16 +1293,14 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA"],
-        changelog: `
-                    1.Update included soong namespaces
+        changelog: `1.Update included soong namespaces
                     2.Set legacy gralloc flag
                     3.Remove apk_verity_prop from flags_health_check.te
                     4.Remove duplicate sysfs_block
                     5.Remove duplicate clean_scratch_files
                     6.Use legacy libion implementation
                     7.Disable app launch blur`,
-        Notice: `
-                 1.Initial A17 release
+        Notice: `1.Initial A17 release
                  2.Report bugs with proper log please`,
         screenshots: [
           "./screenshots/voltageos/lineageos/v1.jpg",
@@ -1216,16 +1325,14 @@
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["BALANCED"],
-        changelog: `
-                    1.sched/cpufreq_schedutil: Add sugov_iowait_reset
+        changelog: `1.sched/cpufreq_schedutil: Add sugov_iowait_reset
                     2.sched/uclamp: Use uclamp_rq_is_idle in task_fits_cpu
                     3.sched/uclamp: Add util_fits_cpu and task_fits_cpu
                     4.sched/uclamp: Add uclamp_rq_get, uclamp_rq_set and uclamp_rq_is_idle
                     5.Removed old unnecessary uclamp commits and backports
                     6.Merge 5.10 BPF from phoenix
                     7.Add cgroup v2 freezer`,
-        Notice: `
-                 1.crDroid not compatible
+        Notice: `1.crDroid not compatible
                  2.Only support builds 26.07.2026 or newer`,
         downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2010-08-2026/"
       },
@@ -1239,16 +1346,14 @@
         date: "11 August 2026",
         maintainer: "PARBINDAR7",
         flavor: ["VANILLA", "UNOFFICIAL"],
-        changelog: `
-                    1.Update included soong namespaces
+        changelog: `1.Update included soong namespaces
                     2.Set legacy gralloc flag
                     3.Remove apk_verity_prop from flags_health_check.te
                     4.Remove duplicate sysfs_block
                     5.Remove duplicate clean_scratch_files
                     6.Use legacy libion implementation
                     7.Disable app launch blur`,
-        Notice: `
-                 1.Initial Android 17 release
+        Notice: `1.Initial Android 17 release
                  2.Blur Disabled
                  3.Report bugs with proper log please`,
         screenshots: [
@@ -1299,10 +1404,8 @@
         android: "Android 13 to 17",
         date: "2026",
         flavor: ["FLASHABLE ZIP/TAR"],
-        changelog: `
-                    1.Fully compatible with Android 16 & 17 custom ROMs`,
-        Notice: `
-                 1.Flash via Odin (.tar) or existing recovery (.img)`,
+        changelog: `1.Fully compatible with Android 16 & 17 custom ROMs`,
+        Notice: `1.Flash via Odin (.tar) or existing recovery (.img)`,
         downloadUrl: "https://twrp.me/Devices/"
       },
 
@@ -1314,10 +1417,8 @@
         android: "Android 17",
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
-        changelog: `
-                    1.Official litegapps release packages for custom rom android 17`,
-        Notice: `
-                 1.Only compatible for android 17`,
+        changelog: `1.Official litegapps release packages for custom rom android 17`,
+        Notice: `1.Only compatible for android 17`,
         downloadUrl: "https://sourceforge.net/projects/litegapps/files/litegapps/arm64/37/core/2026-05-13/"
       },
 
@@ -1329,8 +1430,7 @@
         android: "Android 16",
         date: "2026",
         flavor: ["GOOGLE APPS PACKAGE"],
-        changelog: `
-                    1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
+        changelog: `1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
         downloadUrl: "https://nikgapps.com/downloads"
       }
     ];
@@ -1341,6 +1441,7 @@
 
     document.getElementById('stat-count').innerText = buildsData.length;
 
+    // --- High-Performance Drag Mechanics ---
     const emblem = document.getElementById('draggableEmblem');
     let isDragging = false, startX = 0, startY = 0, currentX = 0, currentY = 0, dragRAF = null;
 
@@ -1390,6 +1491,7 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
+    // --- Data Rendering ---
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -1397,6 +1499,7 @@
       renderBuilds();
     }
 
+    // Debounced Search Setup
     let searchTimeout;
     document.getElementById("searchInput").addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
@@ -1407,6 +1510,7 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
+    // Event delegation for lightbox clicks
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if(target) {
@@ -1496,7 +1600,7 @@
             ${hasMedia ? `<div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">${featuresHtml}${screensHtml}</div>` : ''}
           </div>
           <div class="card-footer">
-            <a href="${item.downloadUrl}" target="_blank" class="download-btn">INITIATE DOWNLOAD ➔</a>
+            <a href="${item.downloadUrl}" target="_blank" class="download-btn">DOWNLOAD</a>
           </div>
         </div>`;
     }
@@ -1543,7 +1647,6 @@
       container.innerHTML = htmlBuffer;
     }
 
-    // Initial render
     renderBuilds();
   </script>
 </body>
