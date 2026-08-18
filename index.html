@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
+  <!-- Preload Critical Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -14,7 +15,8 @@
       --bg: #08080a;
       --bg-panel: #111114;
       --bg-card: #141418;
-   
+      
+      /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-pastel: #d4a373;
@@ -29,6 +31,8 @@
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
       --text-300: #94a3b8;
+
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -57,6 +61,7 @@
       overflow-x: hidden;
     }
 
+    /* Ambient Lighting */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -153,6 +158,7 @@
       z-index: 1;
     }
 
+    /* Navbar */
     nav {
       display: flex;
       justify-content: space-between;
@@ -199,6 +205,7 @@
       transform: translate3d(0, -2px, 0);
     }
 
+    /* Hero Section */
     .hero {
       display: flex;
       flex-direction: column;
@@ -352,6 +359,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
+    /* Controls */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -411,6 +419,7 @@
       border-color: var(--bronze);
     }
 
+    /* Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -599,6 +608,7 @@
       transform: translate3d(0, -2px, 0);
     }
 
+    /* Modal */
     .overlay {
       position: fixed;
       inset: 0;
@@ -651,23 +661,34 @@
       font-size: 0.9rem;
     }
 
+    /* --- High-Performance Animated Lightbox with Background Blur --- */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(5, 5, 7, 0.96);
+      background: rgba(5, 5, 7, 0.82);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.28s var(--ease-spring), 
+                  backdrop-filter 0.28s var(--ease-spring), 
+                  -webkit-backdrop-filter 0.28s var(--ease-spring), 
+                  visibility 0.28s;
+      will-change: opacity, backdrop-filter;
       transform: translateZ(0);
     }
 
     .lightbox-overlay.active {
       opacity: 1;
+      visibility: visible;
       pointer-events: all;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .lightbox-img-wrap {
@@ -676,6 +697,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      perspective: 1000px;
     }
 
     .lightbox-img {
@@ -687,6 +709,22 @@
       border: 1px solid var(--border-bronze);
       object-fit: contain;
       user-select: none;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      transform: scale3d(0.85, 0.85, 1);
+      opacity: 0;
+      transition: transform 0.3s var(--ease-spring), opacity 0.25s ease;
+      will-change: transform, opacity;
+    }
+
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale3d(1, 1, 1);
+      opacity: 1;
+    }
+
+    /* Switch animation pop */
+    .lightbox-img.img-switching {
+      transform: scale3d(0.96, 0.96, 1);
+      opacity: 0.5;
     }
 
     .lb-ctrl-btn {
@@ -703,11 +741,25 @@
       cursor: pointer;
       z-index: 100000;
       touch-action: manipulation;
+      transition: transform 0.15s ease, background 0.15s ease;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .lightbox-overlay.active .lb-ctrl-btn {
+      opacity: 1;
+      transform: scale(1);
+      transition: transform 0.25s var(--ease-spring), opacity 0.25s ease;
     }
 
     .lb-ctrl-btn:hover {
       background: var(--bronze);
       color: #09090b;
+      transform: scale(1.08);
+    }
+
+    .lb-ctrl-btn:active {
+      transform: scale(0.92);
     }
 
     .lb-ctrl-btn svg {
@@ -732,17 +784,33 @@
       transform: translateY(-50%);
     }
 
+    .lightbox-overlay.active .lb-prev {
+      transform: translateY(-50%) scale(1);
+    }
+
+    .lb-prev:hover {
+      transform: translateY(-50%) scale(1.08) !important;
+    }
+
     .lb-next {
       right: max(1rem, env(safe-area-inset-right));
       top: 50%;
       transform: translateY(-50%);
     }
 
+    .lightbox-overlay.active .lb-next {
+      transform: translateY(-50%) scale(1);
+    }
+
+    .lb-next:hover {
+      transform: translateY(-50%) scale(1.08) !important;
+    }
+
     .lb-counter {
       position: fixed;
       bottom: max(1.25rem, env(safe-area-inset-bottom));
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) scale(0.8);
       font-family: 'JetBrains Mono', monospace;
       color: var(--bronze);
       font-size: 0.85rem;
@@ -753,11 +821,19 @@
       border-radius: 999px;
       z-index: 100000;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s var(--ease-spring);
+    }
+
+    .lightbox-overlay.active .lb-counter {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
     }
   </style>
 </head>
 <body>
 
+  <!-- Background Orbs -->
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
@@ -816,9 +892,10 @@
 
   </div>
 
+  <!-- Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
-      <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px;" onclick="toggleGuideModal()" aria-label="Close">
+      <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px; opacity: 1; transform: scale(1);" onclick="toggleGuideModal()" aria-label="Close">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
       <h2 class="modal-title">Deployment Protocol</h2>
@@ -844,7 +921,8 @@
     </div>
   </div>
 
-  <div class="lightbox-overlay" id="lightboxModal">
+  <!-- Animated Lightbox Modal with Blur Background -->
+  <div class="lightbox-overlay" id="lightboxModal" onclick="handleLightboxBackdropClick(event)">
     <button class="lb-ctrl-btn lb-close" onclick="closeLightbox()" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
@@ -1036,7 +1114,7 @@
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
           "./screenshots/voltageos/matrixos12.2/v2.jpg",
-          "./screenshots/voltageos/matrixos12.2/v3.jpg",
+          "./screenshots/voltageos/matrixos12.3/v3.jpg",
           "./screenshots/voltageos/matrixos12.2/v4.jpg",
           "./screenshots/voltageos/matrixos12.2/v5.jpg",
           "./screenshots/voltageos/matrixos12.2/v6.jpg",
@@ -1291,6 +1369,7 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
+    // --- Interactive Grid Box Lighting Engine ---
     const canvas = document.getElementById('gridCanvas');
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
     const GRID_SIZE = 48;
@@ -1359,6 +1438,7 @@
       }
     }
 
+    // --- Emblem Card Drag Mechanics ---
     const emblem = document.getElementById('draggableEmblem');
     let isDragging = false, startX = 0, startY = 0, currentX = 0, currentY = 0, dragRAF = null;
 
@@ -1400,8 +1480,8 @@
       emblem.addEventListener('mousedown', onDragStart, { passive: true });
       window.addEventListener('mousemove', onDragMove, { passive: true });
       window.addEventListener('mouseup', onDragEnd, { passive: true });
-      emblem.addEventListener('touchstart', onDragStart, { passive: true });
-      window.addEventListener('touchmove', onDragMove, { passive: true });
+      emblem.addEventListener('touchstart', onDragStart, { passive: false });
+      window.addEventListener('touchmove', onDragMove, { passive: false });
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
@@ -1422,6 +1502,11 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
+    // --- Optimized Lightbox Logic with Smooth Animations ---
+    const lightboxModal = document.getElementById("lightboxModal");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCounter = document.getElementById("lightboxCounter");
+
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if (target) {
@@ -1437,14 +1522,23 @@
       const build = buildsData[buildIndex];
       activeScreenshots = type === 'features' ? (build.featureScreenshots || []) : (build.screenshots || []);
       currentImageIndex = imageIndex;
-      updateLightboxDisplay();
-      document.getElementById("lightboxModal").classList.add("active");
+      
+      lightboxImg.src = activeScreenshots[currentImageIndex];
+      lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
+      
+      lightboxModal.classList.add("active");
+      document.body.style.overflow = "hidden"; // Lock background scrolling
     }
 
     function updateLightboxDisplay() {
       if (!activeScreenshots.length) return;
-      document.getElementById("lightboxImg").src = activeScreenshots[currentImageIndex];
-      document.getElementById("lightboxCounter").innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
+      
+      lightboxImg.classList.add('img-switching');
+      setTimeout(() => {
+        lightboxImg.src = activeScreenshots[currentImageIndex];
+        lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
+        lightboxImg.classList.remove('img-switching');
+      }, 120);
     }
 
     function navigateLightbox(dir) {
@@ -1453,10 +1547,19 @@
       updateLightboxDisplay();
     }
 
-    function closeLightbox() { document.getElementById("lightboxModal").classList.remove("active"); }
+    function closeLightbox() {
+      lightboxModal.classList.remove("active");
+      document.body.style.overflow = ""; // Unlock scrolling
+    }
+
+    function handleLightboxBackdropClick(e) {
+      if (e.target === lightboxModal || e.target.classList.contains('lightbox-img-wrap')) {
+        closeLightbox();
+      }
+    }
 
     document.addEventListener("keydown", e => {
-      if (document.getElementById("lightboxModal").classList.contains("active")) {
+      if (lightboxModal.classList.contains("active")) {
         if (e.key === "ArrowRight") navigateLightbox(1);
         if (e.key === "ArrowLeft") navigateLightbox(-1);
         if (e.key === "Escape") closeLightbox();
