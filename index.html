@@ -8,7 +8,7 @@
   <!-- Preload Critical Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -32,7 +32,8 @@
       --text-200: #cbd5e1;
       --text-300: #94a3b8;
 
-      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --spring-in: cubic-bezier(0.34, 1.4, 0.64, 1);
+      --spring-out: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -61,7 +62,7 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Lighting */
+    /* Ambient GPU Lighting */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -661,11 +662,11 @@
       font-size: 0.9rem;
     }
 
-    /* --- High-Performance Animated Lightbox with Background Blur --- */
+    /* --- Expressive Opening & Closing Lightbox Animations --- */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(5, 5, 7, 0.82);
+      background: rgba(5, 5, 7, 0.75);
       backdrop-filter: blur(0px);
       -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
@@ -675,20 +676,23 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.28s var(--ease-spring), 
-                  backdrop-filter 0.28s var(--ease-spring), 
-                  -webkit-backdrop-filter 0.28s var(--ease-spring), 
-                  visibility 0.28s;
-      will-change: opacity, backdrop-filter;
+      transition: opacity 0.32s var(--spring-out), 
+                  backdrop-filter 0.32s var(--spring-out), 
+                  -webkit-backdrop-filter 0.32s var(--spring-out), 
+                  visibility 0.32s;
       transform: translateZ(0);
+      will-change: opacity, backdrop-filter;
     }
 
     .lightbox-overlay.active {
       opacity: 1;
       visibility: visible;
       pointer-events: all;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: opacity 0.38s var(--spring-in), 
+                  backdrop-filter 0.38s var(--spring-in), 
+                  -webkit-backdrop-filter 0.38s var(--spring-in);
     }
 
     .lightbox-img-wrap {
@@ -697,7 +701,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
+      perspective: 1200px;
     }
 
     .lightbox-img {
@@ -709,22 +713,24 @@
       border: 1px solid var(--border-bronze);
       object-fit: contain;
       user-select: none;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-      transform: scale3d(0.85, 0.85, 1);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
       opacity: 0;
-      transition: transform 0.3s var(--ease-spring), opacity 0.25s ease;
+      transform: scale3d(0.78, 0.78, 1) translateY(24px) rotateX(8deg);
+      transition: transform 0.28s var(--spring-out), opacity 0.22s ease;
       will-change: transform, opacity;
     }
 
     .lightbox-overlay.active .lightbox-img {
-      transform: scale3d(1, 1, 1);
       opacity: 1;
+      transform: scale3d(1, 1, 1) translateY(0) rotateX(0deg);
+      transition: transform 0.42s var(--spring-in), opacity 0.3s ease;
     }
 
-    /* Switch animation pop */
+    /* Switch transition */
     .lightbox-img.img-switching {
-      transform: scale3d(0.96, 0.96, 1);
-      opacity: 0.5;
+      transform: scale3d(0.92, 0.92, 1) translateY(6px);
+      opacity: 0.35;
+      transition: transform 0.12s ease-out, opacity 0.12s ease-out;
     }
 
     .lb-ctrl-btn {
@@ -741,25 +747,25 @@
       cursor: pointer;
       z-index: 100000;
       touch-action: manipulation;
-      transition: transform 0.15s ease, background 0.15s ease;
       opacity: 0;
-      transform: scale(0.8);
+      transform: scale(0.6);
+      transition: transform 0.22s var(--spring-out), opacity 0.2s ease, background 0.15s ease;
     }
 
     .lightbox-overlay.active .lb-ctrl-btn {
       opacity: 1;
       transform: scale(1);
-      transition: transform 0.25s var(--ease-spring), opacity 0.25s ease;
+      transition: transform 0.35s var(--spring-in) 0.05s, opacity 0.3s ease 0.05s;
     }
 
     .lb-ctrl-btn:hover {
       background: var(--bronze);
       color: #09090b;
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     .lb-ctrl-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.9);
     }
 
     .lb-ctrl-btn svg {
@@ -781,7 +787,7 @@
     .lb-prev {
       left: max(1rem, env(safe-area-inset-left));
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%) scale(0.6);
     }
 
     .lightbox-overlay.active .lb-prev {
@@ -789,13 +795,13 @@
     }
 
     .lb-prev:hover {
-      transform: translateY(-50%) scale(1.08) !important;
+      transform: translateY(-50%) scale(1.1) !important;
     }
 
     .lb-next {
       right: max(1rem, env(safe-area-inset-right));
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%) scale(0.6);
     }
 
     .lightbox-overlay.active .lb-next {
@@ -803,14 +809,14 @@
     }
 
     .lb-next:hover {
-      transform: translateY(-50%) scale(1.08) !important;
+      transform: translateY(-50%) scale(1.1) !important;
     }
 
     .lb-counter {
       position: fixed;
       bottom: max(1.25rem, env(safe-area-inset-bottom));
       left: 50%;
-      transform: translateX(-50%) scale(0.8);
+      transform: translateX(-50%) translateY(16px) scale(0.8);
       font-family: 'JetBrains Mono', monospace;
       color: var(--bronze);
       font-size: 0.85rem;
@@ -822,18 +828,19 @@
       z-index: 100000;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.25s ease, transform 0.25s var(--ease-spring);
+      transition: opacity 0.2s ease, transform 0.28s var(--spring-out);
     }
 
     .lightbox-overlay.active .lb-counter {
       opacity: 1;
-      transform: translateX(-50%) scale(1);
+      transform: translateX(-50%) translateY(0) scale(1);
+      transition: opacity 0.3s ease 0.08s, transform 0.35s var(--spring-in) 0.08s;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Orbs -->
+  <!-- Ambient Lighting Elements -->
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
@@ -892,7 +899,7 @@
 
   </div>
 
-  <!-- Modal -->
+  <!-- Guide Modal -->
   <div class="overlay" id="guideModal">
     <div class="modal-content">
       <button class="lb-ctrl-btn lb-close" style="position: absolute; top: 1.25rem; right: 1.25rem; width: 40px; height: 40px; opacity: 1; transform: scale(1);" onclick="toggleGuideModal()" aria-label="Close">
@@ -1502,7 +1509,7 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // --- Optimized Lightbox Logic with Smooth Animations ---
+    // --- Enhanced Animated Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCounter = document.getElementById("lightboxCounter");
@@ -1527,7 +1534,7 @@
       lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
       
       lightboxModal.classList.add("active");
-      document.body.style.overflow = "hidden"; // Lock background scrolling
+      document.body.style.overflow = "hidden";
     }
 
     function updateLightboxDisplay() {
@@ -1549,7 +1556,7 @@
 
     function closeLightbox() {
       lightboxModal.classList.remove("active");
-      document.body.style.overflow = ""; // Unlock scrolling
+      document.body.style.overflow = "";
     }
 
     function handleLightboxBackdropClick(e) {
@@ -1570,6 +1577,7 @@
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
+      const dateHtml = item.date ? `<div class="data-block"><div class="data-label">Date</div><div class="data-value">${item.date}</div></div>` : '';
       const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
       const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${(Array.isArray(item.flavor) ? item.flavor : [item.flavor]).join(', ')}</div></div>` : '';
       
@@ -1595,7 +1603,7 @@
           <div class="card-top">
             <div class="card-title-group">
               <div class="build-name">${item.title}</div>
-              <div class="build-meta"><span>[ ${item.date || 'LATEST'} ]</span><span>[ ${item.device} ]</span></div>
+              <div class="build-meta"><span>[ ${item.device} ]</span></div>
             </div>
             <span class="badge badge-${cat}">${cat}</span>
           </div>
@@ -1603,7 +1611,7 @@
             <div style="display:flex; flex-direction:column; gap:1.5rem;">
               <div style="display:flex; gap:2rem; flex-wrap:wrap;">
                 <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
-                ${flavorHtml}${maintainerHtml}
+                ${dateHtml}${flavorHtml}${maintainerHtml}
               </div>
               ${noticeHtml}
               <div class="data-block">
