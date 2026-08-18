@@ -478,20 +478,20 @@
 
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
-    .changelog-box {
-      background: var(--bg);
-      border: 1px solid var(--border-silver);
-      padding: 1rem 1.15rem;
-      border-radius: 8px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 400;
-      color: var(--text-200);
-      white-space: pre-line;
-      max-height: 180px;
-      overflow-y: auto;
-      line-height: 1.65;
-    }
+   .changelog-box {
+  background: var(--bg);
+  border: 1px solid var(--border-silver);
+  padding: 0.5rem 1rem; 
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--text-200);
+  white-space: pre-line;
+  max-height: 180px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
 
     /* Fixed Thumbnail Sizing & Container */
     .gallery-container { 
@@ -1443,7 +1443,7 @@
               ${noticeHtml}
               <div class="data-block">
                 <div class="data-label" style="margin-bottom:0.5rem;">Changelog</div>
-                <div class="changelog-box">${item.changelog}</div>
+                <div class="changelog-box">${(item.changelog || '').trim()}</div>
               </div>
             </div>
             ${hasMedia ? `<div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">${featuresHtml}${screensHtml}</div>` : ''}
