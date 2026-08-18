@@ -815,8 +815,8 @@
       </div>
 
       <div class="telemetry">
-        <div>MAINTAINER <br><span>PARBINDAR7</span></div>
-      </div>
+  <div>MAINTAINER <br><a href="https://github.com/Parbindar7" target="_blank" class="maintainer-link">PARBINDAR7</a></div>
+</div>
     </section>
 
     <div class="engine-controls">
@@ -1470,7 +1470,7 @@
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
-      const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
+      const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value"><a href="https://github.com/${item.maintainer}" target="_blank" class="maintainer-card-link">${item.maintainer}</a></div></div>` : '';
       const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${(Array.isArray(item.flavor) ? item.flavor : [item.flavor]).join(', ')}</div></div>` : '';
       
       let featuresHtml = '';
