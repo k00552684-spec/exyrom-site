@@ -14,14 +14,14 @@
       --bg: #09090b;
       --bg-panel: #111114;
       --bg-card: #141418;
-
+ 
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
       --bronze-dark: #8c6d4f;
       --silver: #c8cdd5;
       --silver-light: #e5e7eb;
       --silver-dark: #6b7280;
-
+ 
       --border-silver: rgba(200, 205, 215, 0.22);
       --border-bronze: rgba(197, 160, 126, 0.35);
       --border-hover: #c5a07e;
@@ -83,7 +83,6 @@
       z-index: 1;
     }
 
-    /* Navbar */
     nav {
       display: flex;
       justify-content: space-between;
@@ -132,7 +131,6 @@
       color: #09090b;
     }
 
-    /* Hero */
     .hero {
       display: flex;
       flex-direction: column;
@@ -203,7 +201,6 @@
     
     .telemetry span { color: var(--bronze-light); font-weight: 700; }
 
-    /* Controls */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -265,7 +262,6 @@
 
     .search-box:focus { border-color: var(--bronze); }
 
-    /* Data Containers */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -286,7 +282,6 @@
       justify-content: space-between;
     }
 
-    /* Cards */
     .rom-card {
       background: var(--bg-card);
       border: 1px solid var(--border-silver);
@@ -357,6 +352,10 @@
       gap: 2rem;
     }
     
+    .card-middle.full-width {
+      grid-template-columns: 1fr;
+    }
+
     @media (max-width: 768px) {
       .card-middle { grid-template-columns: 1fr; }
     }
@@ -391,7 +390,7 @@
       font-size: 0.75rem;
       color: var(--text-200);
       white-space: pre-line;
-      max-height: 150px;
+      max-height: 180px;
       overflow-y: auto;
       line-height: 1.6;
     }
@@ -452,7 +451,6 @@
       color: #09090b;
     }
 
-    /* Lightbox & Modals */
     .overlay {
       position: fixed;
       inset: 0;
@@ -1196,6 +1194,9 @@
           </div>`;
       }
 
+      const hasMedia = (item.featureScreenshots && item.featureScreenshots.length > 0) || 
+                       (item.screenshots && item.screenshots.length > 0);
+
       let noticeHtml = item.Notice ? `<div style="color:var(--bronze); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--bronze); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
 
       const card = document.createElement("div");
@@ -1212,7 +1213,7 @@
           <span class="badge badge-${cat}">${cat}</span>
         </div>
         
-        <div class="card-middle">
+        <div class="card-middle ${hasMedia ? '' : 'full-width'}">
           <div style="display:flex; flex-direction:column; gap:1.5rem;">
             <div style="display:flex; gap:2rem; flex-wrap:wrap;">
               <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
@@ -1225,10 +1226,12 @@
               <div class="changelog-box">${item.changelog}</div>
             </div>
           </div>
-          <div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">
-            ${featuresHtml}
-            ${screensHtml}
-          </div>
+          ${hasMedia ? `
+            <div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">
+              ${featuresHtml}
+              ${screensHtml}
+            </div>
+          ` : ''}
         </div>
 
         <div class="card-footer">
