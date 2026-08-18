@@ -1,698 +1,647 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project-ExyROMs // Firmware Lab</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project-ExyROMs</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
 
-<style>
-  :root{
-    --bg:#0a0d10;
-    --bg-2:#0d1114;
-    --surface-1: rgba(19,25,28,0.72);
-    --surface-2: rgba(24,31,35,0.9);
-    --border: rgba(212,166,120,0.14);
-    --border-strong: rgba(212,166,120,0.32);
+  <style>
 
-    --copper:#c98a4b;
-    --copper-bright:#e3a464;
-    --solder-green:#5fb87a;
-    --solder-green-bright:#7ed99a;
-    --odin-blue:#5b8fc7;
-    --warn-amber:#d9a441;
+    :root {
+      --bg: #030303;
+      --bg-panel: #0a0a0a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 69, 0, 0.5);
+      
+      --accent: #ff4500;
+      --accent-glow: rgba(255, 69, 0, 0.2);
+      
+      --text-100: #ffffff;
+      --text-200: #a1a1aa;
+      --text-300: #52525b;
+      
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
+    }
 
-    --text-main:#edf1ee;
-    --text-dim:#93a09a;
-    --text-faint:#5a6a63;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-    --font-display:'Big Shoulders Display', sans-serif;
-    --font-mono:'IBM Plex Mono', monospace;
-    --font-body:'IBM Plex Sans', sans-serif;
-  }
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+    }
 
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:
-      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,138,75,0.08), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(91,143,199,0.06), transparent 60%),
-      var(--bg);
-    color:var(--text-main);
-    font-family:var(--font-body);
-    min-height:100vh;
-    padding:0 1.25rem 5rem 1.25rem;
-    position:relative;
-  }
+    body {
+      color: var(--text-100);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1.5rem 8rem 1.5rem;
+      position: relative;
+    }
 
-  /* faint PCB grid texture */
-  body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    background-image:
-      linear-gradient(rgba(212,166,120,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(212,166,120,0.035) 1px, transparent 1px);
-    background-size:42px 42px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
-  }
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    }
 
-  ::selection{background:var(--copper); color:#0a0d10;}
-  ::-webkit-scrollbar{width:6px;}
-  ::-webkit-scrollbar-track{background:var(--bg);}
-  ::-webkit-scrollbar-thumb{background:var(--border-strong); border-radius:99px;}
+    .ambient-glow {
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 50vh;
+      background: radial-gradient(ellipse at top, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(80px);
+    }
 
-  a{color:inherit;}
-  :focus-visible{outline:2px solid var(--solder-green-bright); outline-offset:3px; border-radius:4px;}
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-300); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-  /* signature: signal trace running down the page edge */
-  .signal-rail{
-    position:fixed;
-    left:14px;
-    top:0;
-    bottom:0;
-    width:2px;
-    z-index:1;
-    background:linear-gradient(to bottom, transparent, var(--border-strong) 8%, var(--border-strong) 92%, transparent);
-    display:block;
-  }
-  .signal-rail::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:-40px;
-    width:9px; height:9px;
-    margin-left:-4.5px;
-    border-radius:50%;
-    background:var(--solder-green-bright);
-    box-shadow:0 0 12px 3px rgba(126,217,154,0.7);
-    animation: pulse-travel 7s linear infinite;
-  }
-  @media (max-width:900px){ .signal-rail{display:none;} }
-  @media (prefers-reduced-motion: reduce){ .signal-rail::after{animation:none; top:50%;} }
+    .layout-grid {
+      width: 100%;
+      max-width: 1040px;
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+      position: relative;
+      z-index: 1;
+    }
 
-  @keyframes pulse-travel{
-    0%{ top:-2%; opacity:0; }
-    5%{ opacity:1; }
-    95%{ opacity:1; }
-    100%{ top:102%; opacity:0; }
-  }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
 
-  .container{
-    width:100%;
-    max-width:960px;
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-    gap:3.75rem;
-    padding-left: clamp(0px, 2vw, 28px);
-  }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: -0.04em;
+      color: var(--text-100);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-  /* NAV */
-  .navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:1rem;
-    background:rgba(10,13,16,0.75);
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
-    border:1px solid var(--border);
-    padding:0.7rem 1.1rem;
-    border-radius:10px;
-    position:sticky;
-    top:1rem;
-    z-index:100;
-    margin-top:1rem;
-  }
-  .nav-brand{
-    font-family:var(--font-mono);
-    font-weight:600;
-    font-size:0.92rem;
-    letter-spacing:0.02em;
-    text-decoration:none;
-    color:#fff;
-    display:flex; align-items:center; gap:0.55rem;
-  }
-  .led{
-    width:7px; height:7px; border-radius:50%;
-    background:var(--solder-green-bright);
-    box-shadow:0 0 8px 2px rgba(126,217,154,0.65);
-    flex-shrink:0;
-  }
-  @media (prefers-reduced-motion: no-preference){
-    .led.blink{ animation: blink 2.4s ease-in-out infinite; }
-  }
-  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+    .logo span {
+      color: var(--accent);
+    }
 
-  .nav-links{display:flex; gap:1.4rem; align-items:center;}
-  .nav-link{
-    font-family:var(--font-mono);
-    color:var(--text-dim); text-decoration:none; font-size:0.78rem;
-    letter-spacing:0.03em;
-  }
-  .nav-link:hover{color:#fff;}
-  .btn-nav{
-    background:var(--solder-green);
-    color:#08110b;
-    padding:0.4rem 0.9rem;
-    border-radius:5px;
-    font-family:var(--font-mono);
-    font-weight:600;
-    font-size:0.76rem;
-    text-decoration:none;
-  }
-  .btn-nav:hover{background:var(--solder-green-bright);}
+    .nav-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-200);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s var(--ease-out);
+    }
 
-  /* HERO */
-  .hero{ padding:2.5rem 0 0.5rem 0; display:flex; flex-direction:column; gap:1.4rem;}
-  .boot-log{
-    font-family:var(--font-mono);
-    font-size:0.74rem;
-    color:var(--text-faint);
-    display:flex; flex-direction:column; gap:0.18rem;
-    line-height:1.5;
-  }
-  .boot-log .ok{color:var(--solder-green);}
-  .boot-log .tag{color:var(--copper);}
-  .cursor-blink{display:inline-block; width:7px; background:var(--solder-green-bright); margin-left:2px;}
-  @media (prefers-reduced-motion: no-preference){
-    .cursor-blink{ animation: blink 1s steps(1) infinite; }
-  }
+    .nav-cta:hover {
+      background: var(--text-100);
+      color: var(--bg);
+      border-color: var(--text-100);
+    }
 
-  .hero-title{
-    font-family:var(--font-display);
-    font-weight:900;
-    font-size:clamp(3rem, 9vw, 5.4rem);
-    line-height:0.92;
-    letter-spacing:-0.01em;
-    text-transform:uppercase;
-    color:#fff;
-    max-width:14ch;
-  }
-  .hero-title .accent{ color:var(--copper-bright); }
-  .hero-title .underline-wrap{ position:relative; display:inline-block; }
-  .hero-title svg.trace-underline{
-    position:absolute; left:0; bottom:-6px; width:100%; height:14px; overflow:visible;
-  }
-  .hero-title svg.trace-underline path{
-    stroke:var(--copper); stroke-width:3; fill:none; stroke-linecap:round;
-    stroke-dasharray:400; stroke-dashoffset:400;
-  }
-  @media (prefers-reduced-motion: no-preference){
-    .hero-title svg.trace-underline path{ animation: draw 1.4s 0.3s ease-out forwards; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .hero-title svg.trace-underline path{ stroke-dashoffset:0; }
-  }
-  @keyframes draw{ to{ stroke-dashoffset:0; } }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 4rem 0;
+    }
 
-  .hero-subtitle{
-    max-width:620px;
-    color:var(--text-dim);
-    font-size:1.02rem;
-    line-height:1.65;
-  }
-  .hero-subtitle b{ color:var(--text-main); font-weight:600; }
+    .status-badge {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      border: 1px solid var(--accent-glow);
+      background: rgba(255, 69, 0, 0.05);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
 
-  .status-strip{
-    display:flex; flex-wrap:wrap; gap:0.55rem; margin-top:0.25rem;
-  }
-  .status-chip{
-    font-family:var(--font-mono);
-    font-size:0.76rem;
-    color:var(--text-dim);
-    background:rgba(0,0,0,0.35);
-    border:1px solid var(--border);
-    padding:0.35rem 0.8rem;
-    border-radius:5px;
-  }
-  .status-chip b{ color:var(--copper-bright); font-weight:600; }
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
 
-  .hero-actions{ display:flex; gap:0.85rem; margin-top:0.6rem; flex-wrap:wrap; }
-  .btn-flash{
-    font-family:var(--font-mono);
-    background:var(--solder-green);
-    color:#08110b;
-    padding:0.8rem 1.5rem;
-    border-radius:6px;
-    font-weight:700;
-    font-size:0.86rem;
-    text-decoration:none;
-    letter-spacing:0.02em;
-    box-shadow:0 0 0 rgba(126,217,154,0);
-    transition:box-shadow 0.2s ease, transform 0.15s ease, background 0.2s ease;
-  }
-  .btn-flash:hover{ background:var(--solder-green-bright); transform:translateY(-1px); box-shadow:0 6px 24px rgba(95,184,122,0.35);}
-  .btn-outline{
-    font-family:var(--font-mono);
-    background:transparent;
-    border:1px solid var(--border-strong);
-    color:var(--text-main);
-    padding:0.8rem 1.5rem;
-    border-radius:6px;
-    font-weight:600;
-    font-size:0.86rem;
-    cursor:pointer;
-    transition:border-color 0.2s ease, background 0.2s ease;
-  }
-  .btn-outline:hover{ border-color:var(--copper-bright); background:rgba(201,138,75,0.06); }
+    @keyframes blink { 50% { opacity: 0; } }
 
-  /* SECTION MARKERS (partition-table framing) */
-  .section-wrapper{ display:flex; flex-direction:column; gap:1.4rem; }
-  .section-marker{ display:flex; align-items:baseline; gap:0.8rem; }
-  .section-addr{
-    font-family:var(--font-mono);
-    font-size:0.82rem;
-    color:var(--copper);
-    background:rgba(201,138,75,0.08);
-    border:1px solid var(--border);
-    padding:0.15rem 0.5rem;
-    border-radius:4px;
-  }
-  .section-name{
-    font-family:var(--font-display);
-    font-weight:800;
-    font-size:1.9rem;
-    text-transform:uppercase;
-    letter-spacing:0.01em;
-    color:#fff;
-  }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 6rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
 
-  .panel{
-    position:relative;
-    background:var(--surface-1);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:1.75rem;
-  }
-  .about-text{ color:var(--text-dim); font-size:1rem; line-height:1.75; }
-  .about-text b{ color:var(--text-main); }
+    .title-outline {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--text-300);
+    }
 
-  /* corner brackets, PCB test-point style */
-  .bracketed{ position:relative; }
-  .bracketed::before, .bracketed::after{
-    content:""; position:absolute; width:14px; height:14px; pointer-events:none;
-  }
-  .bracketed::before{ top:-1px; left:-1px; border-top:2px solid var(--copper); border-left:2px solid var(--copper); }
-  .bracketed::after{ bottom:-1px; right:-1px; border-bottom:2px solid var(--copper); border-right:2px solid var(--copper); }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-200);
+      max-width: 500px;
+      line-height: 1.6;
+    }
 
-  /* STACK */
-  .stack-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
-  .stack-card{ background:rgba(0,0,0,0.28); border:1px solid var(--border); border-radius:8px; padding:1.3rem; display:flex; flex-direction:column; gap:0.75rem;}
-  .stack-title{ font-family:var(--font-mono); font-size:0.72rem; color:var(--odin-blue); text-transform:uppercase; letter-spacing:0.08em;}
-  .stack-badges{ display:flex; flex-wrap:wrap; gap:0.4rem; }
-  .stack-badge{ background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text-main); padding:0.28rem 0.7rem; border-radius:5px; font-size:0.8rem; font-family:var(--font-mono);}
+    .telemetry {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-300);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+    
+    .telemetry span { color: var(--text-100); }
 
-  /* DEVICES */
-  .devices-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; }
-  .device-card{ background:rgba(0,0,0,0.28); border:1px solid var(--border); border-radius:8px; padding:1.1rem; transition:border-color 0.2s ease;}
-  .device-card:hover{ border-color:var(--border-strong); }
-  .device-name{ font-weight:600; font-size:1.02rem; margin-bottom:0.2rem; }
-  .device-code{ font-family:var(--font-mono); font-size:0.78rem; color:var(--copper);}
+    .engine-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: sticky;
+      top: 1rem;
+      z-index: 50;
+      background: rgba(3, 3, 3, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      border-radius: 8px;
+    }
 
-  /* RELEASES CONTROLS */
-  .controls{ display:flex; gap:0.7rem; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:1.4rem;}
-  .filter-tabs{ display:flex; gap:0.35rem; flex-wrap:wrap; }
-  .tab-btn{
-    font-family:var(--font-mono);
-    background:rgba(255,255,255,0.03);
-    border:1px solid var(--border);
-    color:var(--text-dim);
-    padding:0.5rem 0.95rem;
-    border-radius:5px;
-    font-size:0.78rem;
-    font-weight:600;
-    cursor:pointer;
-    letter-spacing:0.02em;
-    transition:all 0.15s ease;
-  }
-  .tab-btn.active{ background:var(--solder-green); color:#08110b; border-color:var(--solder-green); }
-  .search-input{
-    flex:1; min-width:200px;
-    font-family:var(--font-mono);
-    background:rgba(0,0,0,0.35);
-    border:1px solid var(--border);
-    color:#fff;
-    padding:0.6rem 1rem;
-    border-radius:5px;
-    outline:none;
-    font-size:0.85rem;
-  }
-  .search-input:focus{ border-color:var(--odin-blue); }
-  .search-input::placeholder{ color:var(--text-faint); }
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
 
-  .builds-list{ display:flex; flex-direction:column; gap:1.4rem; }
-  .category-divider{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0.7rem 1rem;
-    border-left:2px solid var(--copper);
-    background:linear-gradient(90deg, rgba(201,138,75,0.08), transparent 100%);
-    border-radius:4px;
-    margin-top:0.5rem;
-  }
-  .category-title{ font-family:var(--font-display); font-weight:700; font-size:1.15rem; text-transform:uppercase; color:#fff; }
-  .category-count{ font-family:var(--font-mono); font-size:0.72rem; background:rgba(201,138,75,0.15); color:var(--copper-bright); padding:0.2rem 0.6rem; border-radius:99px; }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-200);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+    }
 
-  /* BUILD CARD */
-  .card{
-    position:relative;
-    background:var(--surface-1);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:1.6rem;
-    transition:border-color 0.2s ease, transform 0.2s ease;
-  }
-  .card:hover{ border-color:var(--border-strong); transform:translateY(-2px); }
+    .tab-btn:hover { color: var(--text-100); }
+    .tab-btn.active {
+      background: var(--text-100);
+      color: var(--bg);
+    }
 
-  .card-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:0.5rem; }
-  .build-title-row{ display:flex; align-items:center; gap:0.55rem; }
-  .build-title{ font-weight:700; font-size:1.2rem; color:#fff; }
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      color: var(--text-100);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-  .badge{ padding:0.28rem 0.7rem; border-radius:5px; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; font-family:var(--font-mono); white-space:nowrap;}
-  .badge-rom{ background:rgba(95,184,122,0.13); color:var(--solder-green-bright); border:1px solid rgba(95,184,122,0.35); }
-  .badge-kernel{ background:rgba(91,143,199,0.13); color:#9dc0ec; border:1px solid rgba(91,143,199,0.35); }
-  .badge-gapps{ background:rgba(217,164,65,0.13); color:#f0c876; border:1px solid rgba(217,164,65,0.35); }
-  .badge-recovery{ background:rgba(201,138,75,0.13); color:var(--copper-bright); border:1px solid rgba(201,138,75,0.35); }
+    .search-box:focus { border-color: var(--text-100); }
 
-  .status-tag{ display:flex; align-items:center; gap:0.4rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--text-dim); }
+    .builds-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
 
-  .flavor-tags{ display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; }
-  .flavor-badge{ font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:0.18rem 0.55rem; border-radius:4px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text-dim); }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-bottom: -1rem;
+      display: flex;
+      justify-content: space-between;
+    }
 
-  .build-meta{
-    font-family:var(--font-mono);
-    font-size:0.8rem;
-    color:var(--text-dim);
-    display:flex; flex-direction:column; gap:0.3rem;
-    margin-bottom:0.85rem;
-    padding:0.7rem 0.9rem;
-    background:rgba(0,0,0,0.3);
-    border-radius:6px;
-    border:1px solid var(--border);
-  }
-  .build-meta div span.k{ color:var(--text-faint); }
-  .build-meta div span.v{ color:var(--text-main); }
-  .build-meta div::before{ content:"$ "; color:var(--copper); }
+    .rom-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.4s var(--ease-out);
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
 
-  .maintainer-row{ font-size:0.82rem; color:var(--text-dim); margin-bottom:1rem; font-family:var(--font-mono); }
-  .maintainer-link{ color:var(--odin-blue); text-decoration:none; font-weight:700; }
-  .maintainer-link:hover{ text-decoration:underline; }
+    .rom-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.03), transparent 40%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
 
-  .gallery-wrapper{ margin-bottom:1.1rem; }
-  .box-label{ font-family:var(--font-mono); font-size:0.7rem; color:var(--copper); text-transform:uppercase; margin-bottom:0.45rem; letter-spacing:0.05em;}
-  .screenshots-gallery{ display:flex; gap:0.55rem; overflow-x:auto; padding-bottom:0.4rem; }
-  .screenshot-thumb-img{ height:150px; border-radius:6px; border:1px solid var(--border); cursor:pointer; object-fit:cover; transition:transform 0.2s ease, border-color 0.2s ease; }
-  .screenshot-thumb-img:hover{ transform:scale(1.03); border-color:var(--odin-blue); }
+    .rom-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .rom-card:hover::before { opacity: 1; }
 
-  .notice-card{
-    background:rgba(217,164,65,0.08);
-    border:1px solid rgba(217,164,65,0.3);
-    color:#f0c876;
-    padding:0.8rem 1rem;
-    border-radius:6px;
-    font-size:0.83rem;
-    font-family:var(--font-mono);
-    margin-bottom:1.1rem;
-    white-space:pre-line;
-    line-height:1.5;
-  }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
 
-  .changelog-box{
-    background:rgba(0,0,0,0.4);
-    border:1px solid var(--border);
-    padding:0.85rem 1.05rem;
-    border-radius:6px;
-    font-family:var(--font-mono);
-    font-size:0.79rem;
-    color:var(--text-dim);
-    line-height:1.65;
-    margin-bottom:1.1rem;
-    white-space:pre-line;
-  }
-  .changelog-box strong{ color:var(--solder-green-bright); font-family:var(--font-mono); }
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-  .btn-download{
-    display:flex; align-items:center; justify-content:center; gap:0.5rem;
-    width:100%; text-align:center;
-    background:var(--solder-green);
-    color:#08110b;
-    padding:0.8rem;
-    border-radius:6px;
-    font-weight:700;
-    font-family:var(--font-mono);
-    font-size:0.85rem;
-    text-decoration:none;
-    letter-spacing:0.02em;
-    transition:background 0.2s ease, box-shadow 0.2s ease;
-  }
-  .btn-download:hover{ background:var(--solder-green-bright); box-shadow:0 6px 24px rgba(95,184,122,0.3); }
+    .build-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
 
-  /* MODAL */
-  .modal-overlay{
-    display:none; position:fixed; inset:0;
-    background:rgba(4,6,7,0.85);
-    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    z-index:1000; justify-content:center; align-items:center; padding:1rem;
-  }
-  .modal-card{
-    background:var(--surface-2); border:1px solid var(--border-strong); border-radius:10px;
-    max-width:600px; width:100%; max-height:85vh; overflow-y:auto; padding:1.9rem;
-    display:flex; flex-direction:column; gap:1.4rem;
-  }
-  .modal-header{ display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:0.8rem; }
-  .modal-title{ font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:#fff; text-transform:uppercase;}
-  .modal-close{ cursor:pointer; font-size:1.2rem; color:var(--text-dim); background:none; border:none; font-family:var(--font-mono);}
-  .guide-card{ background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; padding:1.15rem; }
-  .guide-title{ font-family:var(--font-mono); font-size:0.88rem; font-weight:700; color:var(--odin-blue); margin-bottom:0.7rem; }
-  .guide-list{ padding-left:1.2rem; font-size:0.86rem; color:var(--text-dim); line-height:1.65; }
-  .guide-list li{ margin-bottom:0.35rem; }
-  .guide-list b{ color:var(--text-main); }
+    .build-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-300);
+      display: flex;
+      gap: 1rem;
+    }
 
-  /* LIGHTBOX */
-  .lightbox-overlay{
-    position:fixed; inset:0; background:rgba(2,3,4,0.94);
-    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    z-index:2000; display:flex; justify-content:center; align-items:center;
-    opacity:0; visibility:hidden; transition:opacity 0.2s ease, visibility 0.2s ease;
-  }
-  .lightbox-overlay.active{ opacity:1; visibility:visible; }
-  .lightbox-img{ max-width:90vw; max-height:85vh; border-radius:8px; border:1px solid var(--border); object-fit:contain; }
-  .lightbox-btn{
-    position:absolute; top:50%; transform:translateY(-50%);
-    background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff;
-    font-size:1.3rem; width:44px; height:44px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center; cursor:pointer;
-  }
-  .lightbox-prev{ left:18px; } .lightbox-next{ right:18px; }
-  .lightbox-close{
-    position:absolute; top:22px; right:22px;
-    background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff;
-    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;
-  }
-  .lightbox-counter{
-    position:absolute; bottom:22px;
-    background:rgba(0,0,0,0.6); border:1px solid var(--border); color:#fff;
-    padding:0.3rem 0.8rem; border-radius:99px; font-size:0.78rem; font-family:var(--font-mono);
-  }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
 
-  .empty-state{ text-align:center; color:var(--text-dim); padding:3rem; background:var(--surface-1); border-radius:10px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.9rem;}
+    .badge-rom { background: #fff; color: #000; }
+    .badge-kernel { background: var(--accent); color: #000; }
+    .badge-gapps { border: 1px solid var(--text-200); color: var(--text-200); }
+    .badge-recovery { border: 1px dashed var(--accent); color: var(--accent); }
 
-  footer{
-    max-width:960px; margin:0 auto; padding-top:2rem;
-    border-top:1px solid var(--border);
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
-    font-family:var(--font-mono); font-size:0.78rem; color:var(--text-faint);
-  }
-  footer a{ color:var(--text-dim); text-decoration:none; }
-  footer a:hover{ color:var(--copper-bright); }
-</style>
+    .card-middle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .card-middle { grid-template-columns: 1fr; }
+    }
+
+    .data-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .data-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-300);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .data-value {
+      font-size: 0.9rem;
+      color: var(--text-200);
+      line-height: 1.5;
+    }
+
+    .changelog-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-200);
+      white-space: pre-line;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .gallery-container {
+      width: 100%;
+      position: relative;
+    }
+    
+    .gallery-container::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; width: 50px; height: 100%;
+      background: linear-gradient(to right, transparent, var(--bg-panel));
+      pointer-events: none;
+    }
+
+    .gallery-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+    }
+    .gallery-track::-webkit-scrollbar { display: none; }
+
+    .img-thumb {
+      height: 200px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, filter 0.3s;
+      filter: grayscale(80%);
+    }
+
+    .img-thumb:hover {
+      filter: grayscale(0%);
+      border-color: var(--text-100);
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--text-100);
+      color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .download-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-out);
+      backdrop-filter: blur(10px);
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transform: scale(0.95);
+      transition: transform 0.4s var(--ease-out);
+    }
+
+    .overlay.active .lightbox-img { transform: scale(1); }
+
+    .close-btn {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      font-family: 'Space Grotesk';
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-300);
+      font-size: 3rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: 'Space Grotesk';
+    }
+    .nav-arrow:hover { color: #fff; }
+    .arrow-left { left: 2rem; }
+    .arrow-right { right: 2rem; }
+    
+    .lb-counter {
+      position: absolute;
+      bottom: 2rem;
+      font-family: 'JetBrains Mono';
+      color: var(--text-200);
+      font-size: 0.85rem;
+    }
+
+    .modal-content {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      transform: translateY(20px);
+      transition: transform 0.4s var(--ease-out);
+    }
+    
+    .overlay.active .modal-content { transform: translateY(0); }
+
+    .modal-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .guide-step-title {
+      color: var(--accent);
+      font-family: 'JetBrains Mono';
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+
+    .guide-list {
+      list-style-type: decimal;
+      padding-left: 1rem;
+      color: var(--text-200);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+    .guide-list b { color: #fff; }
+
+  </style>
 </head>
 <body>
 
-<div class="signal-rail" aria-hidden="true"></div>
+  <div class="noise-overlay"></div>
+  <div class="ambient-glow"></div>
 
-<div class="container">
+  <div class="layout-grid">
 
-  <nav class="navbar">
-    <a href="#" class="nav-brand"><span class="led blink"></span>PROJECT-EXYROMS</a>
-    <div class="nav-links">
-      <a href="#about" class="nav-link">ABOUT</a>
-      <a href="#stack" class="nav-link">STACK</a>
-      <a href="#devices" class="nav-link">DEVICES</a>
-      <a href="#releases" class="nav-link">RELEASES</a>
-      <a href="https://t.me/ExyROMs" target="_blank" class="btn-nav">TELEGRAM</a>
-    </div>
-  </nav>
+    <nav>
+      <a href="#" class="logo">EXY<span>ROMS</span></a>
+      <div>
+        <a href="https://t.me/ExyROMs" target="_blank" class="nav-cta">Telegram Comms</a>
+      </div>
+    </nav>
 
-  <header class="hero">
-    <div class="boot-log" aria-hidden="true">
-      <div><span class="tag">[BOOT]</span> exynos9611 · target loaded</div>
-      <div><span class="tag">[VERIFY]</span> signature check <span class="ok">OK</span></div>
-      <div><span class="tag">[MOUNT]</span> /system /vendor /data <span class="ok">OK</span><span class="cursor-blink">&nbsp;</span></div>
-    </div>
-
-    <h1 class="hero-title">
-      FLASH BEYOND<br>
-      <span class="underline-wrap">
-        <span class="accent">STOCK</span>
-        <svg class="trace-underline" viewBox="0 0 220 14" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M2 8 C 40 12, 70 2, 110 8 S 180 12, 218 6" />
-        </svg>
-      </span>
-    </h1>
-
-    <p class="hero-subtitle">Custom firmware for Samsung Exynos 9611 devices — <b>AOSP-based ROMs</b>, <b>tuned kernels</b>, and <b>bloat-free builds</b>, maintained build by build for daily-driver stability.</p>
-
-    <div class="status-strip">
-      <div class="status-chip">PACKAGES <b id="totalBuildsCount">0</b></div>
-      <div class="status-chip">TARGET <b>A16 / A17</b></div>
-      <div class="status-chip">MAINTAINER <b>PARBINDAR7</b></div>
-    </div>
-
-    <div class="hero-actions">
-      <a href="#releases" class="btn-flash">Browse Releases →</a>
-      <button onclick="toggleGuideModal()" class="btn-outline">Flashing Guide</button>
-    </div>
-  </header>
-
-  <section class="section-wrapper" id="about">
-    <div class="section-marker">
-      <span class="section-addr">0x00</span>
-      <h2 class="section-name">About</h2>
-    </div>
-    <div class="panel bracketed">
-      <p class="about-text">
-        <b>Project-ExyROMs</b> pushes the aging Exynos 9611 platform further than Samsung ever intended. The focus stays narrow and deliberate: <b>AOSP bring-up</b>, <b>uclamp task scheduling</b>, <b>kernel efficiency</b>, and <b>frame-pacing</b> tuning — the difference between a ROM that boots and one that's actually pleasant to carry every day.
+    <section class="hero">
+      <div class="status-badge">
+        <div class="status-dot"></div> Systems Online
+      </div>
+      <h1 class="hero-title">
+        Exynos<br>
+        <span class="title-outline">Engineered.</span>
+      </h1>
+      <p class="hero-desc">
+        Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
       </p>
-    </div>
-  </section>
-
-  <section class="section-wrapper" id="stack">
-    <div class="section-marker">
-      <span class="section-addr">0x01</span>
-      <h2 class="section-name">Toolchain</h2>
-    </div>
-    <div class="stack-grid">
-      <div class="stack-card">
-        <div class="stack-title">Kernel &amp; Scheduling</div>
-        <div class="stack-badges">
-          <span class="stack-badge">KernelSU</span>
-          <span class="stack-badge">Uclamp</span>
-          <span class="stack-badge">Powerhint</span>
-          <span class="stack-badge">ARM64</span>
-        </div>
+      <div class="telemetry">
+        <div>MAINTAINER <br><span>PARBINDAR7</span></div>
+        <div>PACKAGES <br><span id="stat-count">0</span></div>
+        <div>ARCH <br><span>ARM64 / A16-17</span></div>
       </div>
-      <div class="stack-card">
-        <div class="stack-title">Source &amp; Base</div>
-        <div class="stack-badges">
-          <span class="stack-badge">AOSP</span>
-          <span class="stack-badge">LineageOS</span>
-          <span class="stack-badge">Linux 4.14</span>
-          <span class="stack-badge">BPF</span>
-        </div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-title">Flashing &amp; Recovery</div>
-        <div class="stack-badges">
-          <span class="stack-badge">TWRP</span>
-          <span class="stack-badge">Odin / Heimdall</span>
-          <span class="stack-badge">Git</span>
-          <span class="stack-badge">Bash</span>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section-wrapper" id="devices">
-    <div class="section-marker">
-      <span class="section-addr">0x02</span>
-      <h2 class="section-name">Devices</h2>
-    </div>
-    <div class="devices-grid">
-      <div class="device-card"><div class="device-name">Galaxy M31</div><div class="device-code">Exynos 9611 · m31ns</div></div>
-      <div class="device-card"><div class="device-name">Galaxy A51</div><div class="device-code">Exynos 9611 · a51ns</div></div>
-      <div class="device-card"><div class="device-name">Galaxy M21</div><div class="device-code">Exynos 9611 · m21ns</div></div>
-      <div class="device-card"><div class="device-name">Galaxy F41</div><div class="device-code">Exynos 9611 · f41ns</div></div>
-    </div>
-  </section>
-
-  <section class="section-wrapper" id="releases">
-    <div class="section-marker">
-      <span class="section-addr">0x03</span>
-      <h2 class="section-name">Releases</h2>
-    </div>
-
-    <div class="controls">
-      <div class="filter-tabs">
+    <div class="engine-controls">
+      <div class="tabs">
         <button class="tab-btn active" onclick="setFilter('all', this)">ALL</button>
-        <button class="tab-btn" onclick="setFilter('rom', this)">ROM</button>
-        <button class="tab-btn" onclick="setFilter('kernel', this)">KERNEL</button>
+        <button class="tab-btn" onclick="setFilter('rom', this)">ROMS</button>
+        <button class="tab-btn" onclick="setFilter('kernel', this)">KERNELS</button>
         <button class="tab-btn" onclick="setFilter('gapps', this)">GAPPS</button>
         <button class="tab-btn" onclick="setFilter('recovery', this)">RECOVERY</button>
+        <button class="tab-btn" onclick="toggleGuideModal()" style="color: var(--accent);">FLASH GUIDE</button>
       </div>
-      <input type="text" id="searchInput" class="search-input" placeholder="grep build, android ver..." oninput="renderBuilds()">
+      <input type="text" id="searchInput" class="search-input" placeholder="> grep -i 'build_name'" oninput="renderBuilds()">
     </div>
 
-    <div class="builds-list" id="buildsList"></div>
-  </section>
+    <main class="builds-container" id="buildsList"></main>
 
-</div>
+  </div>
 
-<footer>
-  <span>GND · Project-ExyROMs © 2026</span>
-  <a href="https://t.me/ExyROMs" target="_blank">t.me/ExyROMs</a>
-  <span>EOF</span>
-</footer>
-
-<div class="modal-overlay" id="guideModal" onclick="closeGuideOnOverlay(event)">
-  <div class="modal-card">
-    <div class="modal-header">
-      <div class="modal-title">Flashing Guide</div>
-      <button class="modal-close" onclick="toggleGuideModal()">✕</button>
-    </div>
-    <div class="guide-card">
-      <div class="guide-title">Clean flash (recommended)</div>
+  <div class="overlay" id="guideModal">
+    <div class="modal-content">
+      <button class="close-btn" style="position: absolute; top: 1rem; right: 1.5rem;" onclick="toggleGuideModal()">×</button>
+      <h2 class="modal-title">Deployment Protocol</h2>
+      
+      <div class="guide-step-title">// CLEAN FLASH (NEW INSTALL)</div>
       <ol class="guide-list">
-        <li>Boot into <b>TWRP Recovery</b>.</li>
-        <li>Wipe <b>Dalvik / ART Cache, Cache, Metadata, Data</b>.</li>
-        <li>Install the <b>ROM zip</b>.</li>
-        <li><i>(Optional)</i> Flash <b>NikGApps / LiteGApps</b> and <b>Everline Kernel</b>.</li>
-        <li>Reboot to system.</li>
+        <li>Boot device into <b>TWRP Recovery</b>.</li>
+        <li>Navigate: <b>Wipe > Advanced Wipe</b>.</li>
+        <li>Format: <b>Dalvik/ART, Cache, Metadata, Data</b>.</li>
+        <li>Install target <b>ROM.zip</b> package.</li>
+        <li>(Optional) Inject <b>GApps</b> and <b>Everline Kernel</b>.</li>
+        <li>Reboot system.</li>
       </ol>
-    </div>
-    <div class="guide-card">
-      <div class="guide-title">Dirty flash (updating)</div>
+
+      <div class="guide-step-title">// DIRTY FLASH (UPDATE)</div>
       <ol class="guide-list">
         <li>Boot into <b>TWRP Recovery</b>.</li>
-        <li>Wipe <b>Dalvik / ART Cache and Cache</b>.</li>
-        <li>Flash updated <b>ROM zip</b>.</li>
-        <li><i>(Optional)</i> Reflash <b>Everline Kernel</b>.</li>
-        <li>Reboot to system.</li>
+        <li>Wipe: <b>Dalvik/ART Cache</b> and <b>Cache</b> only.</li>
+        <li>Install updated <b>ROM.zip</b>.</li>
+        <li>(Optional) Reflash Custom Kernel.</li>
+        <li>Reboot system.</li>
       </ol>
     </div>
   </div>
-</div>
 
-<div class="lightbox-overlay" id="lightboxModal" onclick="closeLightboxOnBg(event)">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <button class="lightbox-btn lightbox-prev" onclick="navigateLightbox(-1)">❮</button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
-  <button class="lightbox-btn lightbox-next" onclick="navigateLightbox(1)">❯</button>
-  <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
-</div>
+  <div class="overlay" id="lightboxModal">
+    <button class="close-btn" onclick="closeLightbox()">×</button>
+    <button class="nav-arrow arrow-left" onclick="navigateLightbox(-1)">‹</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
+    <button class="nav-arrow arrow-right" onclick="navigateLightbox(1)">›</button>
+    <div class="lb-counter" id="lightboxCounter">1 / 1</div>
+  </div>
 
-<script>
-var buildsData = [
+  <script>
+    var buildsData = [
       // 1. Everline kernel
       {
         title: "Everline kernel",
@@ -1269,172 +1218,189 @@ var buildsData = [
         flavor: ["GOOGLE APPS PACKAGE"],
         changelog: `
                    1.Official NikGApps release packages (Core, Basic, Omni, Full) for custom ROMs.`,
-        downloadUrl: "https://nikgapps.com/downloads" }
-];
+        downloadUrl: "https://nikgapps.com/downloads"
+      }
+    ];
 
-var currentFilter = "all";
-var activeScreenshots = [];
-var currentImageIndex = 0;
+    let currentFilter = "all";
+    let activeScreenshots = [];
+    let currentImageIndex = 0;
 
-function setFilter(filter, btn){
-  currentFilter = filter;
-  document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
-  btn.classList.add("active");
-  renderBuilds();
-}
+    document.getElementById('stat-count').innerText = buildsData.length;
 
-function toggleGuideModal(){
-  var modal = document.getElementById("guideModal");
-  modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
-}
-function closeGuideOnOverlay(e){ if(e.target.id === "guideModal") toggleGuideModal(); }
-
-function openLightbox(buildIndex, imageIndex, type){
-  activeScreenshots = type === 'features' ? (buildsData[buildIndex].featureScreenshots || []) : (buildsData[buildIndex].screenshots || []);
-  currentImageIndex = imageIndex;
-  updateLightboxDisplay();
-  document.getElementById("lightboxModal").classList.add("active");
-}
-function updateLightboxDisplay(){
-  if(activeScreenshots.length === 0) return;
-  document.getElementById("lightboxImg").src = activeScreenshots[currentImageIndex];
-  document.getElementById("lightboxCounter").innerText = (currentImageIndex + 1) + " / " + activeScreenshots.length;
-}
-function navigateLightbox(direction){
-  if(activeScreenshots.length === 0) return;
-  currentImageIndex += direction;
-  if(currentImageIndex < 0) currentImageIndex = activeScreenshots.length - 1;
-  else if(currentImageIndex >= activeScreenshots.length) currentImageIndex = 0;
-  updateLightboxDisplay();
-}
-function closeLightbox(){ document.getElementById("lightboxModal").classList.remove("active"); }
-function closeLightboxOnBg(e){ if(e.target.id === "lightboxModal") closeLightbox(); }
-
-document.addEventListener("keydown", function(e){
-  var modal = document.getElementById("lightboxModal");
-  if(modal.classList.contains("active")){
-    if(e.key === "ArrowRight") navigateLightbox(1);
-    if(e.key === "ArrowLeft") navigateLightbox(-1);
-    if(e.key === "Escape") closeLightbox();
-  }
-});
-
-function getStatus(item){
-  var isEol = /EOL/i.test(item.title) || (item.Notice && /EOL/i.test(item.Notice));
-  var isUnofficial = item.flavor && item.flavor.some(function(f){ return /UNOFFICIAL/i.test(f); });
-  if(isEol) return { label:"EOL", cls:"" , color:"var(--warn-amber)"};
-  if(isUnofficial) return { label:"UNSTABLE", color:"var(--warn-amber)" };
-  return { label:"STABLE", color:"var(--solder-green-bright)" };
-}
-
-function createCardElement(item){
-  var realBuildIndex = buildsData.indexOf(item);
-  var cat = (item.category || "rom").toLowerCase();
-  var badgeClass = "badge-" + cat;
-  var status = getStatus(item);
-
-  var maintainerHtml = "";
-  if(item.maintainer){
-    var githubUsername = item.maintainer.replace('@','');
-    maintainerHtml = '<div class="maintainer-row">MAINTAINER: <a href="https://github.com/' + githubUsername + '" target="_blank" class="maintainer-link">' + item.maintainer + '</a></div>';
-  }
-
-  var flavorHtml = "";
-  if(item.flavor){
-    var tagsArray = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
-    flavorHtml = '<div class="flavor-tags">' + tagsArray.map(function(t){ return '<span class="flavor-badge">' + t + '</span>'; }).join('') + '</div>';
-  }
-
-  var featuresHtml = "";
-  if(item.featureScreenshots && item.featureScreenshots.length){
-    featuresHtml = '<div class="gallery-wrapper"><div class="box-label">Feature Screenshots</div><div class="screenshots-gallery">';
-    item.featureScreenshots.forEach(function(src, f){
-      featuresHtml += '<img src="' + src + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + f + ', \'features\')" alt="Feature Screenshot">';
+    document.addEventListener("mousemove", e => {
+      document.querySelectorAll(".rom-card").forEach(card => {
+        const rect = card.getBoundingClientRect(),
+              x = e.clientX - rect.left,
+              y = e.clientY - rect.top;
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+      });
     });
-    featuresHtml += '</div></div>';
-  }
 
-  var screenshotsHtml = "";
-  if(item.screenshots && item.screenshots.length){
-    screenshotsHtml = '<div class="gallery-wrapper"><div class="box-label">ROM Screenshots</div><div class="screenshots-gallery">';
-    item.screenshots.forEach(function(src, s){
-      screenshotsHtml += '<img src="' + src + '" loading="lazy" class="screenshot-thumb-img" onclick="openLightbox(' + realBuildIndex + ', ' + s + ', \'rom\')" alt="Screenshot">';
-    });
-    screenshotsHtml += '</div></div>';
-  }
-
-  var noticeHtml = item.Notice ? '<div class="notice-card"><strong>NOTICE:</strong>\n' + item.Notice + '</div>' : "";
-
-  var card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML =
-    '<div class="card-header">' +
-      '<div class="build-title-row"><div class="build-title">' + item.title + '</div></div>' +
-      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">' +
-        '<span class="badge ' + badgeClass + '">' + cat.toUpperCase() + '</span>' +
-        '<span class="status-tag"><span class="led" style="background:' + status.color + ';box-shadow:0 0 6px 1px ' + status.color + ';"></span>' + status.label + '</span>' +
-      '</div>' +
-    '</div>' +
-    flavorHtml +
-    '<div class="build-meta">' +
-      '<div><span class="k">DEVICE</span> <span class="v">' + item.device + '</span></div>' +
-      '<div><span class="k">TARGET</span> <span class="v">' + item.android + '</span></div>' +
-      '<div><span class="k">BUILD_DATE</span> <span class="v">' + item.date + '</span></div>' +
-    '</div>' +
-    maintainerHtml +
-    featuresHtml +
-    screenshotsHtml +
-    noticeHtml +
-    '<div class="changelog-box"><strong>CHANGELOG</strong>\n' + item.changelog + '</div>' +
-    '<a href="' + item.downloadUrl + '" target="_blank" class="btn-download">Flash this build</a>';
-
-  return card;
-}
-
-function renderBuilds(){
-  var container = document.getElementById("buildsList");
-  if(!container) return;
-
-  var searchInput = document.getElementById("searchInput");
-  var searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
-  container.innerHTML = "";
-
-  var filtered = buildsData.filter(function(item){
-    var cat = (item.category || "rom").toLowerCase();
-    var matchesCategory = (currentFilter === "all") || (cat === currentFilter);
-    var matchesSearch = (item.title || "").toLowerCase().indexOf(searchQuery) !== -1 ||
-                         (item.device || "").toLowerCase().indexOf(searchQuery) !== -1 ||
-                         (item.android || "").toLowerCase().indexOf(searchQuery) !== -1;
-    return matchesCategory && matchesSearch;
-  });
-
-  document.getElementById("totalBuildsCount").innerText = buildsData.length;
-
-  if(filtered.length === 0){
-    container.innerHTML = '<div class="empty-state">no builds match that query</div>';
-    return;
-  }
-
-  var sections = [
-    { title:"Android 16 ROMs", items: filtered.filter(function(i){ return (i.category||"rom").toLowerCase()==="rom" && (i.android||"").toLowerCase().indexOf("16")!==-1; }) },
-    { title:"Android 17 ROMs", items: filtered.filter(function(i){ return (i.category||"rom").toLowerCase()==="rom" && (i.android||"").toLowerCase().indexOf("17")!==-1; }) },
-    { title:"Kernels", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="kernel"; }) },
-    { title:"Google Apps (GApps)", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="gapps"; }) },
-    { title:"Recovery", items: filtered.filter(function(i){ return (i.category||"").toLowerCase()==="recovery"; }) }
-  ];
-
-  sections.forEach(function(sec){
-    if(sec.items.length > 0){
-      var header = document.createElement("div");
-      header.className = "category-divider";
-      header.innerHTML = '<span class="category-title">' + sec.title + '</span><span class="category-count">' + sec.items.length + ' builds</span>';
-      container.appendChild(header);
-      sec.items.forEach(function(item){ container.appendChild(createCardElement(item)); });
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderBuilds();
     }
-  });
-}
 
-renderBuilds();
-</script>
+    function toggleGuideModal() {
+      const el = document.getElementById("guideModal");
+      el.classList.toggle('active');
+    }
+
+    function openLightbox(buildIndex, imageIndex, type) {
+      const build = buildsData[buildIndex];
+      activeScreenshots = type === 'features' ? (build.featureScreenshots || []) : (build.screenshots || []);
+      currentImageIndex = imageIndex;
+      updateLightboxDisplay();
+      document.getElementById("lightboxModal").classList.add("active");
+    }
+
+    function updateLightboxDisplay() {
+      if (!activeScreenshots.length) return;
+      document.getElementById("lightboxImg").src = activeScreenshots[currentImageIndex];
+      document.getElementById("lightboxCounter").innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
+    }
+
+    function navigateLightbox(direction) {
+      if (!activeScreenshots.length) return;
+      currentImageIndex = (currentImageIndex + direction + activeScreenshots.length) % activeScreenshots.length;
+      updateLightboxDisplay();
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.remove("active");
+    }
+
+    document.addEventListener("keydown", e => {
+      if (document.getElementById("lightboxModal").classList.contains("active")) {
+        if (e.key === "ArrowRight") navigateLightbox(1);
+        if (e.key === "ArrowLeft") navigateLightbox(-1);
+        if (e.key === "Escape") closeLightbox();
+      }
+    });
+
+    function createCardElement(item, idx) {
+      const realIndex = buildsData.indexOf(item);
+      const cat = (item.category || "rom").toLowerCase();
+      
+      let maintainerHtml = '';
+      if (item.maintainer) {
+        maintainerHtml = `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>`;
+      }
+
+      let flavorHtml = '';
+      if (item.flavor) {
+        const arr = Array.isArray(item.flavor) ? item.flavor : [item.flavor];
+        flavorHtml = `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${arr.join(', ')}</div></div>`;
+      }
+
+      let featuresHtml = '';
+      if (item.featureScreenshots?.length) {
+        featuresHtml = `
+          <div class="gallery-container">
+            <div class="data-label" style="margin-bottom:0.75rem;">Feature Screenshots</div>
+            <div class="gallery-track">
+              ${item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" class="img-thumb" onclick="openLightbox(${realIndex}, ${f}, 'features')">`).join('')}
+            </div>
+          </div>`;
+      }
+
+      let screensHtml = '';
+      if (item.screenshots?.length) {
+        screensHtml = `
+          <div class="gallery-container">
+            <div class="data-label" style="margin-bottom:0.75rem;">System Previews</div>
+            <div class="gallery-track">
+              ${item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" class="img-thumb" onclick="openLightbox(${realIndex}, ${s}, 'rom')">`).join('')}
+            </div>
+          </div>`;
+      }
+
+      let noticeHtml = item.Notice ? `<div style="color:var(--accent); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--accent); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
+
+      const card = document.createElement("div");
+      card.className = "rom-card";
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-title-group">
+            <div class="build-name">${item.title}</div>
+            <div class="build-meta">
+              <span>[ ${item.date || 'LATEST'} ]</span>
+              <span>[ ${item.device} ]</span>
+            </div>
+          </div>
+          <span class="badge badge-${cat}">${cat}</span>
+        </div>
+        
+        <div class="card-middle">
+          <div style="display:flex; flex-direction:column; gap:1.5rem;">
+            <div style="display:flex; gap:2rem;">
+              <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
+              ${flavorHtml}
+              ${maintainerHtml}
+            </div>
+            ${noticeHtml}
+            <div class="data-block">
+              <div class="data-label" style="margin-bottom:0.5rem;">Changelog</div>
+              <div class="changelog-box">${item.changelog}</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">
+            ${featuresHtml}
+            ${screensHtml}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="${item.downloadUrl}" target="_blank" class="download-btn">INITIATE DOWNLOAD ➔</a>
+        </div>
+      `;
+      return card;
+    }
+
+    function renderBuilds() {
+      const container = document.getElementById("buildsList");
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      container.innerHTML = "";
+
+      const filtered = buildsData.filter(item => {
+        const cat = (item.category || "rom").toLowerCase();
+        const mCat = currentFilter === "all" || cat === currentFilter;
+        const mSearch = (item.title||"").toLowerCase().includes(search) || 
+                        (item.device||"").toLowerCase().includes(search) ||
+                        (item.android||"").toLowerCase().includes(search);
+        return mCat && mSearch;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
+        return;
+      }
+
+      const sections = [
+        { t: "ANDROID 16 RELEASES", filter: i => i.category === "rom" && i.android.includes("16") },
+        { t: "ANDROID 17 RELEASES", filter: i => i.category === "rom" && i.android.includes("17") },
+        { t: "CUSTOM KERNELS", filter: i => i.category === "kernel" },
+        { t: "GOOGLE APPS (GAPPS)", filter: i => i.category === "gapps" },
+        { t: "SYSTEM RECOVERY", filter: i => i.category === "recovery" }
+      ];
+
+      sections.forEach(sec => {
+        const items = filtered.filter(sec.filter);
+        if (items.length) {
+          const sLabel = document.createElement("div");
+          sLabel.className = "section-label";
+          sLabel.innerHTML = `<span>// ${sec.t}</span><span>[${items.length}]</span>`;
+          container.appendChild(sLabel);
+          items.forEach((item, idx) => container.appendChild(createCardElement(item, idx)));
+        }
+      });
+    }
+
+    renderBuilds();
+  </script>
 </body>
 </html>
