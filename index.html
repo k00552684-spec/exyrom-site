@@ -386,7 +386,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* Controls */
+    /* --- Sticky Controls Bar with Frosted Glass Blur --- */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -394,12 +394,15 @@
       flex-wrap: wrap;
       gap: 1rem;
       position: sticky;
-      top: 1rem;
+      top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
-      background: var(--bg-panel);
+      background: rgba(17, 17, 20, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
+      transform: translateZ(0);
     }
 
     .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
@@ -432,7 +435,7 @@
     .search-box {
       flex: 1;
       min-width: 200px;
-      background: var(--bg);
+      background: rgba(8, 8, 10, 0.6);
       border: 1px solid var(--border-silver);
       padding: 0.6rem 1rem;
       color: var(--text-100);
@@ -440,6 +443,7 @@
       font-size: 0.8rem;
       border-radius: 6px;
       outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .search-box:focus {
@@ -1418,6 +1422,7 @@
           "./features/voltageos/f16.jpg",
           "./features/voltageos/f17.jpg",
           "./features/voltageos/f18.jpg",
+          "./features/voltageos/f19.jpg",
           "./features/voltageos/f19.jpg",
           "./features/voltageos/f20.jpg",
           "./features/voltageos/f21.jpg",
