@@ -662,11 +662,11 @@
       font-size: 0.9rem;
     }
 
-    /* --- High-Performance Opening & Closing Animations with Blur --- */
+    /* --- High-Performance Opening & Closing Animated Lightbox --- */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(5, 5, 7, 0.78);
+      background: rgba(5, 5, 7, 0.82);
       backdrop-filter: blur(0px);
       -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
@@ -727,7 +727,6 @@
       transition: transform 0.38s var(--spring-in), opacity 0.3s ease;
     }
 
-    /* In-between slide transitions */
     .lightbox-img.img-switching {
       transform: scale3d(0.92, 0.92, 1) translateY(8px);
       opacity: 0.3;
@@ -836,6 +835,67 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0) scale(1);
       transition: opacity 0.28s ease 0.06s, transform 0.32s var(--spring-in) 0.06s;
+    }
+
+    /* --- Mobile Optimization: Non-overlapping Lightbox Controls --- */
+    @media (max-width: 768px) {
+      .lightbox-img-wrap {
+        max-width: 86vw;
+        max-height: 68vh;
+        margin-top: -1rem;
+      }
+
+      .lightbox-img {
+        max-width: 86vw;
+        max-height: 68vh;
+      }
+
+      .lb-close {
+        top: max(1rem, env(safe-area-inset-top));
+        right: max(1rem, env(safe-area-inset-right));
+        width: 42px;
+        height: 42px;
+        background: #141418;
+      }
+
+      /* Relocate navigation controls into dedicated bottom area */
+      .lb-prev {
+        top: auto;
+        bottom: max(1.25rem, env(safe-area-inset-bottom));
+        left: calc(50% - 100px);
+        transform: translateY(14px) scale(0.8);
+        width: 44px;
+        height: 44px;
+      }
+
+      .lightbox-overlay.active .lb-prev {
+        transform: translateY(0) scale(1);
+      }
+
+      .lb-next {
+        top: auto;
+        right: auto;
+        left: calc(50% + 56px);
+        bottom: max(1.25rem, env(safe-area-inset-bottom));
+        transform: translateY(14px) scale(0.8);
+        width: 44px;
+        height: 44px;
+      }
+
+      .lightbox-overlay.active .lb-next {
+        transform: translateY(0) scale(1);
+      }
+
+      .lb-counter {
+        bottom: max(1.25rem, env(safe-area-inset-bottom));
+        left: 50%;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.85rem;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -977,12 +1037,12 @@
       },
       {
         title: "Project Matrixx os v12.3",
-        category: "rom" "INACTIVE",
+        category: "rom",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "Android 16",
         date: "May 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["INACTIVE"],
         changelog: `1.contain all previous commits`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.3/v1.jpg",
@@ -1021,12 +1081,12 @@
       },
       {
         title: "Afterlife OS v8.4",
-        category: "rom" "INACTIVE",
+        category: "rom",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "Android 16",
         date: "23 April 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["INACTIVE"],
         changelog: `1.Enable frame pacing\n2.Define screenRecorderAVCProfileLevel\n3.Decrease launch boost to 3sec\n4.Tune schedutil rate limits\n5.HWC Adapt from exynos9630 T BSP\n6.adapt struct decon_win_config_data to exynos9610\n7.fix missing dmabuf_trace_free call on buffer release path\n8.free exporter name on buffer release\n9.CONFIG_HZ to 300`,
         screenshots: [
           "./screenshots/voltageos/afterlife/v1.jpg",
@@ -1112,12 +1172,12 @@
       },
       {
         title: "Matrixx OS v12.2",
-        category: "rom" "INACTIVE",
+        category: "rom",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "Android 16",
         date: "13 April 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["INACTIVE"],
         changelog: `1.Blur Disabled\n2.Decrease launch boost to 3sec\n3.Tune schedutil rate limits\n4.HWC Adapt from exynos9630 T BSP\n5.adapt struct decon_win_config_data to exynos9610\n6.fix missing dmabuf_trace_free call on buffer release path\n7.free exporter name on buffer release`,
         screenshots: [
           "./screenshots/voltageos/matrixos12.2/v1.jpg",
@@ -1510,10 +1570,13 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // --- High-Performance Animated Lightbox Logic ---
+    // --- High-Performance Animated Lightbox Logic with Swipe ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCounter = document.getElementById("lightboxCounter");
+
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
@@ -1563,6 +1626,24 @@
     function handleLightboxBackdropClick(e) {
       if (e.target === lightboxModal || e.target.classList.contains('lightbox-img-wrap')) {
         closeLightbox();
+      }
+    }
+
+    // Touch Swipe Gesture Support for Mobile
+    lightboxModal.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightboxModal.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipeGesture();
+    }, { passive: true });
+
+    function handleSwipeGesture() {
+      const deltaX = touchEndX - touchStartX;
+      if (Math.abs(deltaX) > 40) {
+        if (deltaX < 0) navigateLightbox(1);
+        else navigateLightbox(-1);
       }
     }
 
