@@ -8,7 +8,7 @@
   <!-- Preload Critical Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -158,7 +158,7 @@
       max-width: 1040px;
       display: flex;
       flex-direction: column;
-      gap: 4rem;
+      gap: 3.5rem;
       position: relative;
       z-index: 1;
     }
@@ -217,7 +217,7 @@
       display: flex;
       flex-direction: column;
       gap: 1.75rem;
-      padding: 1.5rem 0 0.5rem 0;
+      padding: 1rem 0 0.5rem 0;
     }
 
     .hero-split {
@@ -295,9 +295,43 @@
     .hero-desc {
       font-size: 1.05rem;
       color: var(--text-200);
-      max-width: 520px;
+      max-width: 540px;
       line-height: 1.7;
       font-weight: 400;
+    }
+
+    /* Live Telemetry Stats HUD */
+    .stats-hud {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+
+    .stat-item {
+      background: rgba(17, 17, 20, 0.7);
+      border: 1px solid var(--border-silver);
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      min-width: 100px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--bronze-light);
+    }
+
+    .stat-lbl {
+      font-size: 0.68rem;
+      color: var(--text-300);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.1rem;
     }
 
     .hero-emblem-col {
@@ -371,7 +405,7 @@
       font-size: 0.8rem;
       color: var(--text-300);
       border-top: 1px solid var(--border-silver);
-      padding-top: 1.5rem;
+      padding-top: 1.25rem;
       flex-wrap: wrap;
     }
     
@@ -393,7 +427,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* Sticky Controls Bar with Frosted Glass Blur */
+    /* Sticky Controls Bar */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -412,7 +446,7 @@
       transform: translateZ(0);
     }
 
-    .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
+    .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
     .tabs::-webkit-scrollbar { display: none; }
 
     .tab-btn {
@@ -421,7 +455,7 @@
       color: var(--text-200);
       font-size: 0.84rem;
       font-weight: 600;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.9rem;
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease;
@@ -439,12 +473,19 @@
       color: #09090b;
     }
 
-    .search-box {
+    .search-wrap {
+      position: relative;
       flex: 1;
-      min-width: 200px;
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box {
+      width: 100%;
       background: rgba(8, 8, 10, 0.55);
       border: 1px solid var(--border-silver);
-      padding: 0.6rem 1rem;
+      padding: 0.6rem 2.2rem 0.6rem 1rem;
       color: var(--text-100);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8rem;
@@ -455,7 +496,24 @@
 
     .search-box:focus {
       border-color: var(--bronze);
+      box-shadow: 0 0 12px rgba(197, 160, 126, 0.2);
     }
+
+    .search-clear {
+      position: absolute;
+      right: 0.6rem;
+      background: transparent;
+      border: none;
+      color: var(--text-300);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .search-clear:hover { color: var(--text-100); }
 
     /* Cards */
     .builds-container {
@@ -481,7 +539,7 @@
 
     .rom-card {
       content-visibility: auto;
-      contain-intrinsic-size: 500px;
+      contain-intrinsic-size: 480px;
       contain: layout style paint;
       background: rgba(20, 20, 24, 0.62);
       backdrop-filter: blur(14px);
@@ -496,7 +554,22 @@
       transform: translateZ(0);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
     }
+
+    /* Mouse Spotlight Radial Glow */
+    .rom-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(197, 160, 126, 0.07), transparent 75%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    .rom-card:hover::before { opacity: 1; }
 
     .rom-card:hover {
       border-color: var(--border-hover);
@@ -509,6 +582,8 @@
       align-items: flex-start;
       border-bottom: 1px solid rgba(200, 205, 215, 0.1);
       padding-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
     }
 
     .card-title-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -531,9 +606,7 @@
       letter-spacing: 0.02em;
     }
 
-    .build-meta span {
-      color: #cbd5e1;
-    }
+    .build-meta span { color: #cbd5e1; }
 
     .badge {
       font-family: 'JetBrains Mono', monospace;
@@ -550,10 +623,30 @@
     .badge-gapps { border: 1px solid var(--bronze); color: var(--bronze); }
     .badge-recovery { border: 1px solid var(--silver); color: var(--silver); }
 
+    /* Flavor Badges */
+    .flavor-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+    }
+    .flavor-default { background: rgba(200, 205, 215, 0.1); color: var(--silver); border: 1px solid var(--border-silver); }
+    .flavor-vanilla { background: rgba(200, 205, 215, 0.12); color: var(--silver-light); border: 1px solid rgba(200, 205, 215, 0.25); }
+    .flavor-gapps { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .flavor-eol { background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .flavor-balanced { background: rgba(197, 160, 126, 0.15); color: var(--bronze-light); border: 1px solid var(--border-bronze); }
+
     .card-middle {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
+      position: relative;
+      z-index: 1;
     }
     
     .card-middle.full-width { grid-template-columns: 1fr; }
@@ -573,6 +666,34 @@
 
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
+    .changelog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .copy-btn {
+      background: rgba(17, 17, 20, 0.6);
+      border: 1px solid var(--border-silver);
+      color: var(--text-300);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      color: var(--silver-light);
+      border-color: var(--bronze);
+      background: rgba(197, 160, 126, 0.1);
+    }
+
     .changelog-box {
       background: rgba(8, 8, 10, 0.45);
       border: 1px solid rgba(200, 205, 215, 0.08);
@@ -586,6 +707,18 @@
       max-height: 180px;
       overflow-y: auto;
       line-height: 1.55;
+    }
+
+    .notice-box {
+      background: rgba(197, 160, 126, 0.08);
+      color: var(--bronze-light);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      border-left: 3px solid var(--bronze);
+      padding: 0.75rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 0.75rem 0;
+      line-height: 1.6;
     }
 
     .gallery-container { 
@@ -615,6 +748,7 @@
       flex-shrink: 0;
       transition: border-color 0.2s ease, transform 0.2s ease;
       content-visibility: auto;
+      background: rgba(0,0,0,0.3);
     }
 
     .img-thumb:hover {
@@ -627,6 +761,8 @@
       justify-content: flex-end;
       padding-top: 1.25rem;
       border-top: 1px solid rgba(200, 205, 215, 0.1);
+      position: relative;
+      z-index: 1;
     }
 
     .download-btn {
@@ -691,7 +827,7 @@
 
     .guide-step-title {
       color: var(--silver-light);
-      font-family: 'JetBrains Mono';
+      font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
       font-weight: 700;
       margin-bottom: 0.75rem;
@@ -808,9 +944,7 @@
       transform: scale(1.08);
     }
 
-    .lb-close:active {
-      transform: scale(0.92);
-    }
+    .lb-close:active { transform: scale(0.92); }
 
     .lb-close svg {
       width: 20px;
@@ -870,9 +1004,7 @@
       color: #09090b;
     }
 
-    .lb-nav-btn:active {
-      transform: scale(0.88);
-    }
+    .lb-nav-btn:active { transform: scale(0.88); }
 
     .lb-nav-btn svg {
       width: 20px;
@@ -931,11 +1063,31 @@
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
           </p>
+
+          <!-- Live Telemetry HUD -->
+          <div class="stats-hud">
+            <div class="stat-item">
+              <span class="stat-num" id="statTotal">0</span>
+              <span class="stat-lbl">Total Packages</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">5</span>
+              <span class="stat-lbl">Target Devices</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" id="statA17">0</span>
+              <span class="stat-lbl">Android 17 Ports</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" id="statKernels">0</span>
+              <span class="stat-lbl">Kernels</span>
+            </div>
+          </div>
         </div>
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img" loading="eager" decoding="async">
+            <img src="oct.jpg" alt="Exynos Emblem" class="octocat-hero-img" loading="eager" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'95\' height=\'95\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23c5a07e\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'4\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'M21 15l-5-5L5 21\'/></svg>'">
             <div class="emblem-label">EXYNOS 9611</div>
           </div>
         </div>
@@ -955,7 +1107,10 @@
         <button class="tab-btn" onclick="setFilter('recovery', this)">RECOVERY</button>
         <button class="tab-btn" onclick="toggleGuideModal()" style="color: var(--bronze);">FLASH GUIDE</button>
       </div>
-      <input type="text" id="searchInput" class="search-box" placeholder="> grep -i 'build_name'">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" class="search-box" placeholder="> grep -i 'build_name'">
+        <button id="clearSearchBtn" class="search-clear" onclick="clearSearch()" aria-label="Clear Search">&times;</button>
+      </div>
     </div>
 
     <main class="builds-container" id="buildsList"></main>
@@ -1110,7 +1265,6 @@
           "./screenshots/voltageos/afterlife/v16.jpg",
           "./screenshots/voltageos/afterlife/v17.jpg",
           "./screenshots/voltageos/afterlife/v18.jpg",
-          "./screenshots/voltageos/afterlife/v18.jpg",
           "./screenshots/voltageos/afterlife/v19.jpg",
           "./screenshots/voltageos/afterlife/v20.jpg",
           "./screenshots/voltageos/afterlife/v21.jpg",
@@ -1225,7 +1379,7 @@
         android: "Android 16",
         date: "13 August 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["VANILLA", "EOL"],
         changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
         Notice: `1.EOL A16. Next update based on A17\n2.Mostly source side changes in this build\n3.No kernel changes`,
         screenshots: [
@@ -1248,7 +1402,7 @@
         android: "Android 16",
         date: "16 August 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["GAPPS"],
+        flavor: ["GAPPS", "EOL"],
         changelog: `1.Re-configure cpuset\n2.Remove cpuidle off node`,
         Notice: `1.OTA Pushed\n2.EOL A16. Next update based on A17\n3.No kernel changes`,
         screenshots: [
@@ -1303,7 +1457,7 @@
         android: "Android 16",
         date: "10 August 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["VANILLA"],
+        flavor: ["VANILLA", "EOL"],
         changelog: `1.Tune Powerhint\n2.Tune up/down frequency rate limits\n3.Switch to AOSP task profiles\n4.Remove unused /dev/freezer`,
         Notice: `1.Blur disabled`,
         screenshots: [
@@ -1446,7 +1600,6 @@
     const pcbCanvas = document.getElementById('pcbCanvas');
     const pcbCtx = pcbCanvas.getContext('2d', { alpha: true, desynchronized: true });
     
-    // Offscreen Canvas to store static circuit paths
     const offscreenCanvas = document.createElement('canvas');
     const offscreenCtx = offscreenCanvas.getContext('2d', { alpha: true });
 
@@ -1455,6 +1608,7 @@
     let pulses = [];
     let pcbRAF = null;
     let isAppHidden = false;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const PULSE_COLORS = ['#c5a07e', '#dfc7b0', '#38bdf8', '#e2e8f0'];
 
@@ -1503,7 +1657,6 @@
         });
       }
 
-      // Pre-render static traces and solder pads ONCE onto offscreen canvas
       offscreenCtx.clearRect(0, 0, pcbWidth, pcbHeight);
       offscreenCtx.lineWidth = 1.1;
       offscreenCtx.strokeStyle = 'rgba(200, 205, 215, 0.04)';
@@ -1532,7 +1685,7 @@
       });
 
       for (let i = 0; i < 10; i++) spawnRandomPulse();
-      if (!pcbRAF) renderPCB();
+      if (!pcbRAF && !prefersReducedMotion) renderPCB();
     }
 
     let resizeTimer = null;
@@ -1568,17 +1721,14 @@
     }
 
     function renderPCB() {
-      if (isAppHidden) {
+      if (isAppHidden || prefersReducedMotion) {
         pcbRAF = null;
         return;
       }
 
       pcbCtx.clearRect(0, 0, pcbWidth, pcbHeight);
-
-      // Blit pre-rendered static circuit in a single GPU operation
       pcbCtx.drawImage(offscreenCanvas, 0, 0, pcbWidth, pcbHeight);
 
-      // Render light pulses
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         const p1 = p.trace[p.segIndex];
@@ -1608,7 +1758,6 @@
         pcbCtx.lineTo(curX, curY);
         pcbCtx.stroke();
 
-        // Pulse Head Dot
         pcbCtx.fillStyle = p.color;
         pcbCtx.beginPath();
         pcbCtx.arc(curX, curY, 2.0, 0, Math.PI * 2);
@@ -1624,10 +1773,9 @@
       pcbRAF = requestAnimationFrame(renderPCB);
     }
 
-    // Pause animation when tab or modal is out of view (saves mobile battery)
     document.addEventListener('visibilitychange', () => {
       isAppHidden = document.hidden;
-      if (!isAppHidden && !pcbRAF) renderPCB();
+      if (!isAppHidden && !pcbRAF && !prefersReducedMotion) renderPCB();
     });
 
     window.addEventListener('pointerdown', (e) => {
@@ -1702,24 +1850,76 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
+    // --- Interactive Mouse Spotlight Tracking on ROM Cards ---
+    document.getElementById('buildsList').addEventListener('mousemove', (e) => {
+      const card = e.target.closest('.rom-card');
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+    });
+
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      renderBuilds();
+      renderBuilds(document.getElementById("searchInput").value.trim());
     }
 
     let searchTimeout;
-    document.getElementById("searchInput").addEventListener("input", (e) => {
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+    searchInput.addEventListener("input", (e) => {
+      const val = e.target.value;
+      clearSearchBtn.style.display = val ? 'flex' : 'none';
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
-        renderBuilds(e.target.value.toLowerCase());
-      }, 120);
+        renderBuilds(val.trim());
+      }, 100);
     });
 
-    function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
+    function clearSearch() {
+      searchInput.value = "";
+      clearSearchBtn.style.display = 'none';
+      renderBuilds();
+    }
 
-    // --- Isolated, Conflict-Free Lightbox Navigation Engine ---
+    function toggleGuideModal() { 
+      document.getElementById("guideModal").classList.toggle('active'); 
+    }
+
+    // --- 1-Click Clipboard Copy Helper ---
+    function copyChangelog(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const prev = btn.innerHTML;
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+        btn.style.borderColor = 'var(--bronze)';
+        btn.style.color = 'var(--bronze-light)';
+        setTimeout(() => {
+          btn.innerHTML = prev;
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 1600);
+      });
+    }
+
+    // --- Flavor Badge Helper ---
+    function renderFlavorPills(flavor) {
+      if (!flavor) return '';
+      const list = Array.isArray(flavor) ? flavor : [flavor];
+      return list.map(f => {
+        const u = f.toUpperCase();
+        let cls = 'flavor-default';
+        if (u.includes('GAPPS')) cls = 'flavor-gapps';
+        else if (u.includes('VANILLA')) cls = 'flavor-vanilla';
+        else if (u.includes('INACTIVE') || u.includes('EOL')) cls = 'flavor-eol';
+        else if (u.includes('BALANCED')) cls = 'flavor-balanced';
+        return `<span class="flavor-pill ${cls}">${f}</span>`;
+      }).join(' ');
+    }
+
+    // --- Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImgWrap = document.getElementById("lightboxImgWrap");
     const lightboxImg = document.getElementById("lightboxImg");
@@ -1816,24 +2016,26 @@
       
       const dateHtml = item.date ? `<div class="data-block"><div class="data-label">Date</div><div class="data-value">${item.date}</div></div>` : '';
       const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
-      const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Type</div><div class="data-value">${(Array.isArray(item.flavor) ? item.flavor : [item.flavor]).join(', ')}</div></div>` : '';
+      const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Edition / Flavor</div><div class="data-value">${renderFlavorPills(item.flavor)}</div></div>` : '';
       
       let featuresHtml = '';
       if (item.featureScreenshots?.length) {
         featuresHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">Feature Screenshots</div><div class="gallery-track">` +
-          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
+          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
           `</div></div>`;
       }
 
       let screensHtml = '';
       if (item.screenshots?.length) {
         screensHtml = `<div class="gallery-container"><div class="data-label" style="margin-bottom:0.75rem;">System Previews</div><div class="gallery-track">` +
-          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
+          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
           `</div></div>`;
       }
 
       const hasMedia = featuresHtml !== '' || screensHtml !== '';
-      const noticeHtml = item.Notice ? `<div style="color:var(--bronze); font-family:'JetBrains Mono'; font-size:0.75rem; border-left:2px solid var(--bronze); padding-left:1rem; margin: 1rem 0;">WARNING: ${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
+      const noticeHtml = item.Notice ? `<div class="notice-box"><strong>// NOTICE:</strong><br>${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
+      const safeChangelog = (item.changelog || '').trim();
+      const escapedChangelog = safeChangelog.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
       return `
         <div class="rom-card">
@@ -1845,15 +2047,21 @@
             <span class="badge badge-${cat}">${cat}</span>
           </div>
           <div class="card-middle ${hasMedia ? '' : 'full-width'}">
-            <div style="display:flex; flex-direction:column; gap:1.5rem;">
-              <div style="display:flex; gap:2rem; flex-wrap:wrap;">
-                <div class="data-block"><div class="data-label">Android</div><div class="data-value">${item.android}</div></div>
+            <div style="display:flex; flex-direction:column; gap:1.25rem;">
+              <div style="display:flex; gap:1.75rem; flex-wrap:wrap;">
+                <div class="data-block"><div class="data-label">Target OS</div><div class="data-value">${item.android}</div></div>
                 ${dateHtml}${flavorHtml}${maintainerHtml}
               </div>
               ${noticeHtml}
               <div class="data-block">
-                <div class="data-label" style="margin-bottom:0.5rem;">Changelog</div>
-                <div class="changelog-box">${(item.changelog || '').trim()}</div>
+                <div class="changelog-header">
+                  <span class="data-label">Changelog</span>
+                  <button class="copy-btn" onclick="copyChangelog(this, \`${escapedChangelog}\`)" aria-label="Copy changelog">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="changelog-box">${safeChangelog}</div>
               </div>
             </div>
             ${hasMedia ? `<div style="display:flex; flex-direction:column; gap:1.5rem; overflow:hidden;">${featuresHtml}${screensHtml}</div>` : ''}
@@ -1864,47 +2072,67 @@
         </div>`;
     }
 
+    // --- Ultra-Fast Single-Pass Categorization & Search Render ---
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
-      
-      const filtered = buildsData.filter(item => {
-        const cat = (item.category || "rom").toLowerCase();
-        const mCat = currentFilter === "all" || cat === currentFilter;
-        if (!mCat) return false;
-        if (!searchTerm) return true;
-        return (item.title||"").toLowerCase().includes(searchTerm) || 
-               (item.device||"").toLowerCase().includes(searchTerm) ||
-               (item.android||"").toLowerCase().includes(searchTerm);
-      });
+      const term = searchTerm.toLowerCase();
 
-      if (!filtered.length) {
-        container.innerHTML = `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
-        return;
+      const buckets = {
+        "ANDROID 17 RELEASES": [],
+        "ANDROID 16 RELEASES": [],
+        "CUSTOM KERNELS": [],
+        "GOOGLE APPS (GAPPS)": [],
+        "SYSTEM RECOVERY": []
+      };
+
+      for (let i = 0; i < buildsData.length; i++) {
+        const item = buildsData[i];
+        const cat = (item.category || "rom").toLowerCase();
+
+        if (currentFilter !== "all" && cat !== currentFilter) continue;
+
+        if (term) {
+          const match = (item.title || "").toLowerCase().includes(term) || 
+                        (item.device || "").toLowerCase().includes(term) ||
+                        (item.android || "").toLowerCase().includes(term) ||
+                        (item.maintainer || "").toLowerCase().includes(term);
+          if (!match) continue;
+        }
+
+        if (cat === "kernel") buckets["CUSTOM KERNELS"].push(item);
+        else if (cat === "gapps") buckets["GOOGLE APPS (GAPPS)"].push(item);
+        else if (cat === "recovery") buckets["SYSTEM RECOVERY"].push(item);
+        else if (cat === "rom") {
+          if (item.android && item.android.includes("17")) buckets["ANDROID 17 RELEASES"].push(item);
+          else if (item.android && item.android.includes("16")) buckets["ANDROID 16 RELEASES"].push(item);
+          else buckets["ANDROID 16 RELEASES"].push(item);
+        }
       }
 
-      const sections = [
-        { t: "ANDROID 16 RELEASES", filter: i => i.category === "rom" && i.android.includes("16") },
-        { t: "ANDROID 17 RELEASES", filter: i => i.category === "rom" && i.android.includes("17") },
-        { t: "CUSTOM KERNELS", filter: i => i.category === "kernel" },
-        { t: "GOOGLE APPS (GAPPS)", filter: i => i.category === "gapps" },
-        { t: "SYSTEM RECOVERY", filter: i => i.category === "recovery" }
-      ];
-
       let htmlBuffer = "";
-      
-      sections.forEach(sec => {
-        const items = filtered.filter(sec.filter);
-        if (items.length) {
-          htmlBuffer += `<div class="section-label"><span>// ${sec.t}</span><span>[${items.length}]</span></div>`;
-          items.forEach(item => {
-            htmlBuffer += createCardHTML(item);
-          });
+      for (const [title, list] of Object.entries(buckets)) {
+        if (!list.length) continue;
+        htmlBuffer += `<div class="section-label"><span>// ${title}</span><span>[${list.length}]</span></div>`;
+        for (let j = 0; j < list.length; j++) {
+          htmlBuffer += createCardHTML(list[j]);
         }
-      });
-      
-      container.innerHTML = htmlBuffer;
+      }
+
+      container.innerHTML = htmlBuffer || `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
     }
 
+    // --- Dynamic HUD Telemetry Initializer ---
+    function updateHUDStats() {
+      const total = buildsData.length;
+      const a17Count = buildsData.filter(b => b.android && b.android.includes("17")).length;
+      const kernelCount = buildsData.filter(b => b.category === "kernel").length;
+
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statA17').innerText = a17Count;
+      document.getElementById('statKernels').innerText = kernelCount;
+    }
+
+    updateHUDStats();
     renderBuilds();
   </script>
 </body>
