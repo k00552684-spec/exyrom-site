@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg: #08080a;
-      --bg-panel: #111114;
-      --bg-card: #141418;
+      --bg-panel: rgba(17, 17, 20, 0.75);
+      --bg-card: rgba(20, 20, 24, 0.65);
       
       /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
@@ -170,6 +170,8 @@
       align-items: center;
       padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
@@ -242,7 +244,9 @@
       font-weight: 700;
       color: var(--bronze);
       border: 1px solid var(--border-bronze);
-      background: var(--bg-panel);
+      background: rgba(17, 17, 20, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       padding: 0.4rem 0.85rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -303,7 +307,9 @@
     }
 
     .android-emblem-card {
-      background: var(--bg-card);
+      background: rgba(20, 20, 24, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -353,7 +359,7 @@
       border: 1px solid var(--border-silver);
       padding: 0.25rem 0.65rem;
       border-radius: 4px;
-      background: var(--bg);
+      background: rgba(8, 8, 10, 0.8);
       pointer-events: none;
     }
 
@@ -397,9 +403,9 @@
       position: sticky;
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
-      background: rgba(17, 17, 20, 0.78);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(17, 17, 20, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
@@ -436,7 +442,7 @@
     .search-box {
       flex: 1;
       min-width: 200px;
-      background: rgba(8, 8, 10, 0.6);
+      background: rgba(8, 8, 10, 0.55);
       border: 1px solid var(--border-silver);
       padding: 0.6rem 1rem;
       color: var(--text-100);
@@ -451,7 +457,7 @@
       border-color: var(--bronze);
     }
 
-    /* Cards */
+    /* --- Frosted Glass ROM Cards --- */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -476,8 +482,10 @@
     .rom-card {
       content-visibility: auto;
       contain-intrinsic-size: 500px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-silver);
+      background: rgba(20, 20, 24, 0.62);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(200, 205, 215, 0.12);
       border-radius: 14px;
       padding: 2rem;
       position: relative;
@@ -485,18 +493,20 @@
       flex-direction: column;
       gap: 1.5rem;
       transform: translateZ(0);
-      transition: border-color 0.2s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(197, 160, 126, 0.08);
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      border-bottom: 1px solid var(--border-silver);
+      border-bottom: 1px solid rgba(200, 205, 215, 0.1);
       padding-bottom: 1.25rem;
     }
 
@@ -563,9 +573,11 @@
     .data-value { font-size: 0.9rem; color: var(--text-200); line-height: 1.5; }
 
     .changelog-box {
-      background: var(--bg);
-      border: 1px solid var(--border-silver);
-      padding: 0.5rem 1rem;
+      background: rgba(8, 8, 10, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(200, 205, 215, 0.08);
+      padding: 0.65rem 1rem;
       border-radius: 8px;
       font-family: 'Outfit', sans-serif;
       font-size: 0.88rem;
@@ -615,7 +627,7 @@
       display: flex;
       justify-content: flex-end;
       padding-top: 1.25rem;
-      border-top: 1px solid var(--border-silver);
+      border-top: 1px solid rgba(200, 205, 215, 0.1);
     }
 
     .download-btn {
@@ -658,7 +670,9 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: #111114;
+      background: rgba(17, 17, 20, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -1584,7 +1598,7 @@
         pcbCtx.beginPath();
         pcbCtx.arc(curX, curY, 2.0, 0, Math.PI * 2);
         pcbCtx.fill();
-        pcbCtx.shadowBlur = 0; // Reset
+        pcbCtx.shadowBlur = 0;
 
         p.t += p.speed;
         if (p.t >= 1) {
