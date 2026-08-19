@@ -62,7 +62,7 @@
       overflow-x: hidden;
     }
 
-    /* --- Status Bar Blur Shield (Mobile Safe Area) --- */
+    /* --- Mobile Safe Area Status Bar Blur --- */
     .status-bar-blur {
       position: fixed;
       top: 0;
@@ -74,6 +74,17 @@
       -webkit-backdrop-filter: blur(14px);
       z-index: 1000;
       pointer-events: none;
+      transform: translateZ(0);
+    }
+
+    /* --- Interactive PCB Circuit Background Canvas --- */
+    #pcbCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
       transform: translateZ(0);
     }
 
@@ -91,50 +102,40 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.18;
+      filter: blur(80px);
+      opacity: 0.14;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
     }
 
     .orb-1 {
-      width: 420px;
-      height: 420px;
+      width: 450px;
+      height: 450px;
       background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
-      top: -5%;
-      left: -5%;
-      animation: driftOne 20s alternate infinite;
+      top: -6%;
+      left: -6%;
+      animation: driftOne 22s alternate infinite;
     }
 
     .orb-2 {
-      width: 450px;
-      height: 450px;
+      width: 480px;
+      height: 480px;
       background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
-      bottom: 5%;
-      right: -5%;
-      opacity: 0.12;
-      animation: driftTwo 24s alternate infinite;
-    }
-
-    #kineticGridCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      transform: translateZ(0);
+      bottom: 4%;
+      right: -6%;
+      opacity: 0.10;
+      animation: driftTwo 26s alternate infinite;
     }
 
     @keyframes driftOne {
       0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(80px, 60px, 0); }
+      100% { transform: translate3d(70px, 50px, 0); }
     }
 
     @keyframes driftTwo {
       0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-70px, -60px, 0); }
+      100% { transform: translate3d(-60px, -50px, 0); }
     }
 
     @keyframes floatEmblem {
@@ -255,7 +256,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Mesh Gradient Title */
+    /* Interactive Mesh Gradient Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -726,7 +727,6 @@
                   visibility 0s;
     }
 
-    /* Isolated Clickable Image Area with Safe Vertical Margins */
     .lightbox-img-wrap {
       max-width: 90vw;
       max-height: 68vh;
@@ -760,7 +760,6 @@
       transition: transform 0.38s var(--spring-in), opacity 0.3s ease;
     }
 
-    /* Floating Close Button at Top Right */
     .lb-close {
       position: fixed;
       top: max(1.25rem, calc(env(safe-area-inset-top) + 0.5rem));
@@ -811,7 +810,6 @@
       pointer-events: none;
     }
 
-    /* Unified Floating Navigation Control Bar */
     .lb-toolbar {
       position: fixed;
       bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem));
@@ -897,8 +895,8 @@
     <div class="ambient-orb orb-2"></div>
   </div>
 
-  <!-- Interactive Kinetic Elastic Grid -->
-  <canvas id="kineticGridCanvas"></canvas>
+  <!-- Interactive PCB Circuit Background Canvas -->
+  <canvas id="pcbCanvas"></canvas>
 
   <div class="layout-grid">
 
@@ -1098,6 +1096,7 @@
           "./screenshots/voltageos/afterlife/v15.jpg",
           "./screenshots/voltageos/afterlife/v16.jpg",
           "./screenshots/voltageos/afterlife/v17.jpg",
+          "./screenshots/voltageos/afterlife/v18.jpg",
           "./screenshots/voltageos/afterlife/v18.jpg",
           "./screenshots/voltageos/afterlife/v19.jpg",
           "./screenshots/voltageos/afterlife/v20.jpg",
@@ -1429,151 +1428,182 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    // --- Interactive Kinetic Elastic Mesh Grid Engine ---
-    const canvas = document.getElementById('kineticGridCanvas');
-    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
-    
-    let gridPoints = [];
-    let cols = 0, rows = 0;
-    const SPACING = 48;
-    const MOUSE_RADIUS = 130;
-    const MOUSE_STRENGTH = 0.55;
-    const SPRING = 0.045;
-    const DAMPING = 0.88;
+    // --- High-Performance PCB Circuit Traces & Pulses Engine ---
+    const pcbCanvas = document.getElementById('pcbCanvas');
+    const pcbCtx = pcbCanvas.getContext('2d', { alpha: true, desynchronized: true });
 
-    let mousePos = { x: -1000, y: -1000, active: false };
-    let kineticRAF = null;
+    let pcbWidth = 0, pcbHeight = 0;
+    let traces = [];
+    let pulses = [];
+    let pcbRAF = null;
 
-    function initKineticGrid() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const PULSE_COLORS = ['#c5a07e', '#dfc7b0', '#38bdf8', '#e2e8f0'];
 
-      cols = Math.ceil(window.innerWidth / SPACING) + 1;
-      rows = Math.ceil(window.innerHeight / SPACING) + 1;
-      gridPoints = [];
+    function initPCB() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      pcbWidth = window.innerWidth;
+      pcbHeight = window.innerHeight;
+      pcbCanvas.width = pcbWidth * dpr;
+      pcbCanvas.height = pcbHeight * dpr;
+      pcbCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const originX = c * SPACING;
-          const originY = r * SPACING;
-          gridPoints.push({
-            origX: originX,
-            origY: originY,
-            x: originX,
-            y: originY,
-            vx: 0,
-            vy: 0
-          });
+      traces = [];
+      pulses = [];
+
+      const GRID_SPACING = 75;
+      const numLines = Math.floor((pcbWidth * pcbHeight) / 28000) + 16;
+
+      for (let i = 0; i < numLines; i++) {
+        let x = Math.floor((Math.random() * pcbWidth) / GRID_SPACING) * GRID_SPACING;
+        let y = Math.floor((Math.random() * pcbHeight) / GRID_SPACING) * GRID_SPACING;
+        
+        let path = [{ x, y }];
+        let segments = Math.floor(Math.random() * 4) + 2;
+
+        for (let s = 0; s < segments; s++) {
+          const dir = Math.floor(Math.random() * 4);
+          const len = (Math.floor(Math.random() * 3) + 1) * GRID_SPACING;
+          
+          if (dir === 0) x += len; // East
+          else if (dir === 1) y += len; // South
+          else if (dir === 2) { x += len * 0.7; y += len * 0.7; } // 45 Deg Diagonal
+          else { x += len * 0.7; y -= len * 0.7; }
+
+          path.push({ x, y });
         }
+
+        traces.push({
+          path: path,
+          viaStart: Math.random() > 0.3,
+          viaEnd: Math.random() > 0.3
+        });
       }
-      if (!kineticRAF) renderKineticGrid();
+
+      // Initial ambient pulses
+      for (let i = 0; i < 14; i++) {
+        spawnRandomPulse();
+      }
+
+      if (!pcbRAF) renderPCB();
     }
 
-    window.addEventListener('resize', initKineticGrid, { passive: true });
+    window.addEventListener('resize', initPCB, { passive: true });
 
-    function updateKineticPhysics() {
-      let movementDetected = false;
+    function spawnRandomPulse(customX = null, customY = null) {
+      if (!traces.length) return;
 
-      for (let i = 0; i < gridPoints.length; i++) {
-        const pt = gridPoints[i];
-
-        if (mousePos.active) {
-          const dx = mousePos.x - pt.x;
-          const dy = mousePos.y - pt.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < MOUSE_RADIUS && dist > 0) {
-            const force = (1 - dist / MOUSE_RADIUS) * MOUSE_STRENGTH;
-            const angle = Math.atan2(dy, dx);
-            pt.vx -= Math.cos(angle) * force * 7;
-            pt.vy -= Math.sin(angle) * force * 7;
+      let traceIdx = Math.floor(Math.random() * traces.length);
+      
+      if (customX !== null && customY !== null) {
+        let minDist = Infinity;
+        traces.forEach((tr, idx) => {
+          const d = Math.hypot(tr.path[0].x - customX, tr.path[0].y - customY);
+          if (d < minDist) {
+            minDist = d;
+            traceIdx = idx;
           }
-        }
-
-        const fx = (pt.origX - pt.x) * SPRING;
-        const fy = (pt.origY - pt.y) * SPRING;
-
-        pt.vx = (pt.vx + fx) * DAMPING;
-        pt.vy = (pt.vy + fy) * DAMPING;
-
-        pt.x += pt.vx;
-        pt.y += pt.vy;
-
-        if (Math.abs(pt.vx) > 0.01 || Math.abs(pt.vy) > 0.01 || Math.abs(pt.origX - pt.x) > 0.1) {
-          movementDetected = true;
-        }
+        });
       }
 
-      return movementDetected;
+      const selectedTrace = traces[traceIdx];
+      pulses.push({
+        trace: selectedTrace.path,
+        segIndex: 0,
+        t: 0,
+        speed: 0.015 + Math.random() * 0.02,
+        color: PULSE_COLORS[Math.floor(Math.random() * PULSE_COLORS.length)],
+        length: 22 + Math.random() * 18
+      });
     }
 
-    function renderKineticGrid() {
-      const isMoving = updateKineticPhysics();
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    function renderPCB() {
+      pcbCtx.clearRect(0, 0, pcbWidth, pcbHeight);
 
-      ctx.lineWidth = 1.0;
-      ctx.strokeStyle = "rgba(200, 205, 215, 0.05)";
+      // 1. Draw Static Conductive Circuit Traces & Vias
+      pcbCtx.lineWidth = 1.2;
+      pcbCtx.strokeStyle = 'rgba(200, 205, 215, 0.045)';
 
-      for (let r = 0; r < rows; r++) {
-        ctx.beginPath();
-        for (let c = 0; c < cols; c++) {
-          const pt = gridPoints[r * cols + c];
-          if (c === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
+      traces.forEach(tr => {
+        pcbCtx.beginPath();
+        pcbCtx.moveTo(tr.path[0].x, tr.path[0].y);
+        for (let i = 1; i < tr.path.length; i++) {
+          pcbCtx.lineTo(tr.path[i].x, tr.path[i].y);
         }
-        ctx.stroke();
-      }
+        pcbCtx.stroke();
 
-      for (let c = 0; c < cols; c++) {
-        ctx.beginPath();
-        for (let r = 0; r < rows; r++) {
-          const pt = gridPoints[r * cols + c];
-          if (r === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
+        // Solder pad / Microchip Via rings
+        if (tr.viaStart) {
+          pcbCtx.fillStyle = 'rgba(197, 160, 126, 0.12)';
+          pcbCtx.beginPath();
+          pcbCtx.arc(tr.path[0].x, tr.path[0].y, 2.5, 0, Math.PI * 2);
+          pcbCtx.fill();
         }
-        ctx.stroke();
-      }
+        if (tr.viaEnd) {
+          const last = tr.path[tr.path.length - 1];
+          pcbCtx.fillStyle = 'rgba(197, 160, 126, 0.12)';
+          pcbCtx.beginPath();
+          pcbCtx.arc(last.x, last.y, 2.5, 0, Math.PI * 2);
+          pcbCtx.fill();
+        }
+      });
 
-      ctx.fillStyle = "rgba(197, 160, 126, 0.28)";
-      for (let i = 0; i < gridPoints.length; i++) {
-        const pt = gridPoints[i];
-        const displacement = Math.abs(pt.origX - pt.x) + Math.abs(pt.origY - pt.y);
-        if (displacement > 0.8) {
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, 1.6, 0, Math.PI * 2);
-          ctx.fill();
+      // 2. Draw & Advance Traveling Data Pulses
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        const p1 = p.trace[p.segIndex];
+        const p2 = p.trace[p.segIndex + 1];
+
+        if (!p2) {
+          pulses.splice(i, 1);
+          if (pulses.length < 12) spawnRandomPulse();
+          continue;
+        }
+
+        const curX = p1.x + (p2.x - p1.x) * p.t;
+        const curY = p1.y + (p2.y - p1.y) * p.t;
+
+        const tailT = Math.max(0, p.t - 0.25);
+        const tailX = p1.x + (p2.x - p1.x) * tailT;
+        const tailY = p1.y + (p2.y - p1.y) * tailT;
+
+        const grad = pcbCtx.createLinearGradient(tailX, tailY, curX, curY);
+        grad.addColorStop(0, 'rgba(0,0,0,0)');
+        grad.addColorStop(1, p.color);
+
+        pcbCtx.strokeStyle = grad;
+        pcbCtx.lineWidth = 2.0;
+        pcbCtx.beginPath();
+        pcbCtx.moveTo(tailX, tailY);
+        pcbCtx.lineTo(curX, curY);
+        pcbCtx.stroke();
+
+        // Glowing pulse head
+        pcbCtx.fillStyle = p.color;
+        pcbCtx.shadowColor = p.color;
+        pcbCtx.shadowBlur = 8;
+        pcbCtx.beginPath();
+        pcbCtx.arc(curX, curY, 2.0, 0, Math.PI * 2);
+        pcbCtx.fill();
+        pcbCtx.shadowBlur = 0; // Reset
+
+        p.t += p.speed;
+        if (p.t >= 1) {
+          p.t = 0;
+          p.segIndex++;
         }
       }
 
-      if (isMoving || mousePos.active) {
-        kineticRAF = requestAnimationFrame(renderKineticGrid);
-      } else {
-        kineticRAF = null;
-      }
+      pcbRAF = requestAnimationFrame(renderPCB);
     }
 
-    function wakeKineticGrid(x, y) {
-      mousePos.x = x;
-      mousePos.y = y;
-      mousePos.active = true;
-      if (!kineticRAF) kineticRAF = requestAnimationFrame(renderKineticGrid);
-    }
-
-    window.addEventListener('pointermove', (e) => {
-      wakeKineticGrid(e.clientX, e.clientY);
-    }, { passive: true });
-
-    window.addEventListener('pointerleave', () => {
-      mousePos.active = false;
-    }, { passive: true });
-
+    // Touch / Click Interactive Circuit Surges
     window.addEventListener('pointerdown', (e) => {
-      wakeKineticGrid(e.clientX, e.clientY);
+      for (let i = 0; i < 3; i++) {
+        spawnRandomPulse(e.clientX, e.clientY);
+      }
     }, { passive: true });
 
-    initKineticGrid();
+    initPCB();
 
     // --- Mesh Title Dynamic Position ---
     const meshTitle = document.getElementById('meshTitle');
