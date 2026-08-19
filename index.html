@@ -12,9 +12,10 @@
 
   <style>
     :root {
-      --bg: #040406;
-      --bg-panel: rgba(14, 14, 18, 0.72);
-      --bg-card: rgba(16, 16, 22, 0.58);
+      /* Deep Navy Blue Canvas & Frosted Glass Palette */
+      --bg: #060c1b;
+      --bg-panel: rgba(10, 20, 42, 0.75);
+      --bg-card: rgba(13, 25, 52, 0.62);
       
       /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
@@ -24,8 +25,8 @@
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(200, 205, 215, 0.12);
-      --border-bronze: rgba(197, 160, 126, 0.24);
+      --border-silver: rgba(180, 205, 240, 0.14);
+      --border-bronze: rgba(197, 160, 126, 0.28);
       --border-hover: #c5a07e;
       
       --text-100: #f8fafc;
@@ -68,9 +69,9 @@
     .glass-diffuse-shield {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      background: radial-gradient(circle at 50% 10%, rgba(8, 8, 12, 0.35) 0%, rgba(4, 4, 6, 0.75) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: radial-gradient(circle at 50% 10%, rgba(12, 26, 58, 0.4) 0%, rgba(6, 12, 27, 0.8) 100%);
       pointer-events: none;
       z-index: 0;
       transform: translateZ(0);
@@ -83,9 +84,9 @@
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(4, 4, 6, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(6, 12, 27, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 1000;
       pointer-events: none;
       transform: translateZ(0);
@@ -99,11 +100,11 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      background: #040406;
+      background: #060c1b;
       transform: translateZ(0);
     }
 
-    /* Ambient Lighting */
+    /* Ambient Navy & Bronze Lighting */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -117,16 +118,16 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.16;
+      filter: blur(90px);
+      opacity: 0.18;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
     }
 
     .orb-1 {
-      width: 440px;
-      height: 440px;
+      width: 460px;
+      height: 460px;
       background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
       top: -5%;
       left: -5%;
@@ -134,12 +135,12 @@
     }
 
     .orb-2 {
-      width: 460px;
-      height: 460px;
+      width: 480px;
+      height: 480px;
       background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
       bottom: 5%;
       right: -5%;
-      opacity: 0.11;
+      opacity: 0.14;
       animation: driftTwo 26s alternate infinite;
     }
 
@@ -185,8 +186,8 @@
       align-items: center;
       padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
@@ -212,7 +213,7 @@
       font-weight: 700;
       text-transform: uppercase;
       text-decoration: none;
-      color: #000000;
+      color: #060c1b;
       background: var(--bronze);
       border: 1px solid var(--bronze);
       padding: 0.5rem 1.1rem;
@@ -223,7 +224,7 @@
     .nav-cta:hover {
       background: var(--silver-light);
       border-color: var(--silver-light);
-      color: #000000;
+      color: #060c1b;
       transform: translate3d(0, -2px, 0);
     }
 
@@ -259,9 +260,9 @@
       font-weight: 700;
       color: var(--bronze);
       border: 1px solid var(--border-bronze);
-      background: rgba(16, 16, 22, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(13, 25, 52, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       padding: 0.4rem 0.85rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -275,7 +276,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Mesh Title */
+    /* Non-Glowing Mesh Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -298,13 +299,13 @@
       background-position: var(--mesh-x, 0%) var(--mesh-y, 50%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 25px rgba(197, 160, 126, 0.25));
-      transition: filter 0.3s ease, transform 0.15s ease-out;
+      filter: none;
+      transition: transform 0.15s ease-out;
       will-change: background-position, transform;
     }
 
     .mesh-title:hover {
-      filter: drop-shadow(0 0 35px rgba(56, 189, 248, 0.45));
+      filter: none;
     }
 
     .hero-desc {
@@ -322,9 +323,9 @@
     }
 
     .android-emblem-card {
-      background: rgba(18, 18, 24, 0.72);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(13, 25, 52, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -374,7 +375,7 @@
       border: 1px solid var(--border-silver);
       padding: 0.25rem 0.65rem;
       border-radius: 4px;
-      background: rgba(6, 6, 8, 0.85);
+      background: rgba(6, 12, 27, 0.88);
       pointer-events: none;
     }
 
@@ -419,8 +420,8 @@
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
       background: var(--bg-panel);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
@@ -451,7 +452,7 @@
     .tab-btn.active {
       background: var(--bronze);
       border-color: var(--bronze);
-      color: #000000;
+      color: #060c1b;
     }
 
     .search-wrap {
@@ -464,7 +465,7 @@
 
     .search-box {
       width: 100%;
-      background: rgba(6, 6, 8, 0.65);
+      background: rgba(6, 12, 27, 0.7);
       border: 1px solid var(--border-silver);
       padding: 0.6rem 2.2rem 0.6rem 1rem;
       color: var(--text-100);
@@ -496,7 +497,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Frosted Glass Translucent Cards */
+    /* Frosted Glass Navy Translucent Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -523,7 +524,7 @@
       contain-intrinsic-size: 450px;
       contain: layout style paint;
       background: var(--bg-card);
-      border: 1px solid rgba(200, 205, 215, 0.14);
+      border: 1px solid rgba(180, 205, 240, 0.14);
       border-radius: 14px;
       padding: 2rem;
       position: relative;
@@ -538,14 +539,14 @@
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(197, 160, 126, 0.1);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(197, 160, 126, 0.12);
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      border-bottom: 1px solid rgba(200, 205, 215, 0.1);
+      border-bottom: 1px solid rgba(180, 205, 240, 0.1);
       padding-bottom: 1.25rem;
     }
 
@@ -581,8 +582,8 @@
       letter-spacing: 0.05em;
     }
 
-    .badge-rom { background: var(--bronze); color: #000000; }
-    .badge-kernel { background: var(--silver); color: #000000; }
+    .badge-rom { background: var(--bronze); color: #060c1b; }
+    .badge-kernel { background: var(--silver); color: #060c1b; }
     .badge-gapps { border: 1px solid var(--bronze); color: var(--bronze); }
     .badge-recovery { border: 1px solid var(--silver); color: var(--silver); }
 
@@ -598,11 +599,11 @@
       display: inline-flex;
       align-items: center;
     }
-    .flavor-default { background: rgba(200, 205, 215, 0.1); color: var(--silver); border: 1px solid var(--border-silver); }
-    .flavor-vanilla { background: rgba(200, 205, 215, 0.12); color: var(--silver-light); border: 1px solid rgba(200, 205, 215, 0.25); }
-    .flavor-gapps { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
-    .flavor-eol { background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .flavor-balanced { background: rgba(197, 160, 126, 0.15); color: var(--bronze-light); border: 1px solid var(--border-bronze); }
+    .flavor-default { background: rgba(180, 205, 240, 0.1); color: var(--silver); border: 1px solid var(--border-silver); }
+    .flavor-vanilla { background: rgba(180, 205, 240, 0.14); color: var(--silver-light); border: 1px solid rgba(180, 205, 240, 0.25); }
+    .flavor-gapps { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .flavor-eol { background: rgba(239, 68, 68, 0.14); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .flavor-balanced { background: rgba(197, 160, 126, 0.16); color: var(--bronze-light); border: 1px solid var(--border-bronze); }
 
     .card-middle {
       display: grid;
@@ -635,7 +636,7 @@
     }
 
     .copy-btn {
-      background: rgba(17, 17, 20, 0.7);
+      background: rgba(10, 20, 42, 0.7);
       border: 1px solid var(--border-silver);
       color: var(--text-300);
       font-family: 'JetBrains Mono', monospace;
@@ -656,8 +657,8 @@
     }
 
     .changelog-box {
-      background: rgba(4, 4, 6, 0.55);
-      border: 1px solid rgba(200, 205, 215, 0.08);
+      background: rgba(6, 12, 27, 0.6);
+      border: 1px solid rgba(180, 205, 240, 0.08);
       padding: 0.65rem 1rem;
       border-radius: 8px;
       font-family: 'Outfit', sans-serif;
@@ -721,7 +722,7 @@
       display: flex;
       justify-content: flex-end;
       padding-top: 1.25rem;
-      border-top: 1px solid rgba(200, 205, 215, 0.1);
+      border-top: 1px solid rgba(180, 205, 240, 0.1);
     }
 
     .download-btn {
@@ -729,7 +730,7 @@
       align-items: center;
       gap: 0.5rem;
       background: var(--bronze);
-      color: #000000;
+      color: #060c1b;
       font-weight: 700;
       font-size: 0.88rem;
       padding: 0.75rem 1.8rem;
@@ -742,7 +743,7 @@
     .download-btn:hover {
       background: var(--silver-light);
       border-color: var(--silver-light);
-      color: #000000;
+      color: #060c1b;
       transform: translate3d(0, -2px, 0);
     }
 
@@ -750,7 +751,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
+      background: rgba(6, 12, 27, 0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       z-index: 2000;
@@ -766,7 +767,7 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(14, 14, 18, 0.94);
+      background: rgba(10, 20, 42, 0.94);
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -811,7 +812,7 @@
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(6, 12, 27, 0.88);
       backdrop-filter: blur(0px);
       -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
@@ -887,7 +888,7 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(18, 18, 22, 0.85);
+      background: rgba(10, 20, 42, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-bronze);
@@ -911,7 +912,7 @@
 
     .lb-close:hover {
       background: var(--bronze);
-      color: #000000;
+      color: #060c1b;
       transform: scale(1.08) translateY(0);
     }
 
@@ -936,7 +937,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(14, 14, 18, 0.88);
+      background: rgba(10, 20, 42, 0.88);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
@@ -972,7 +973,7 @@
 
     .lb-nav-btn:hover {
       background: var(--bronze);
-      color: #000000;
+      color: #060c1b;
     }
 
     .lb-nav-btn:active { transform: scale(0.88); }
@@ -1005,7 +1006,7 @@
   <!-- Native Mobile Status Bar Blur Overlay -->
   <div class="status-bar-blur"></div>
 
-  <!-- Ambient Light Orbs -->
+  <!-- Ambient Navy & Bronze Light Orbs -->
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
@@ -1032,7 +1033,7 @@
           <div class="status-badge">
             <div class="status-dot"></div> Systems Online
           </div>
-          <!-- Interactive Mesh Gradient Distortion Text -->
+          <!-- Non-Glowing Mesh Title -->
           <h1 class="mesh-title" id="meshTitle">EXYNOS</h1>
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
@@ -1602,7 +1603,7 @@
         return;
       }
 
-      ctx.fillStyle = '#040406';
+      ctx.fillStyle = '#060c1b';
       ctx.fillRect(0, 0, width, height);
 
       const maxDist = 120;
@@ -1796,7 +1797,7 @@
       }).join(' ');
     }
 
-    // --- Lightbox Engine ---
+    // --- Cinematic Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImgWrap = document.getElementById("lightboxImgWrap");
     const lightboxImg = document.getElementById("lightboxImg");
@@ -1951,7 +1952,7 @@
         </div>`;
     }
 
-    // --- Categorization & Search Render: Android 16 First -> Android 17 Second ---
+    // --- Fast Render: Android 16 First -> Android 17 Second ---
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
       const term = searchTerm.toLowerCase();
