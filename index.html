@@ -62,7 +62,18 @@
       overflow-x: hidden;
     }
 
-    /* Ambient GPU Lighting */
+    /* --- Kinetic Elastic Grid Background Canvas --- */
+    #kineticGridCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      transform: translateZ(0);
+    }
+
+    /* Ambient Background Orbs */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -76,8 +87,8 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.18;
+      filter: blur(70px);
+      opacity: 0.16;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
@@ -100,28 +111,6 @@
       right: -5%;
       opacity: 0.12;
       animation: driftTwo 24s alternate infinite;
-    }
-
-    #gridCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .cyber-grid {
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(to right, rgba(200, 205, 215, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(200, 205, 215, 0.025) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-      z-index: 0;
-      mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
-      -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
     }
 
     @keyframes driftOne {
@@ -252,13 +241,37 @@
       animation: pulseDot 2s infinite;
     }
 
-    .hero-title {
-      font-size: clamp(3.2rem, 8vw, 5.5rem);
+    /* --- Interactive Mesh Gradient Distortion Text --- */
+    .mesh-title {
+      font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
       line-height: 1;
       letter-spacing: -0.04em;
       text-transform: uppercase;
-      color: var(--text-100);
+      display: inline-block;
+      cursor: default;
+      user-select: none;
+      
+      background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #e2e8f0 20%,
+        var(--bronze-light) 40%,
+        #38bdf8 60%,
+        var(--bronze) 80%,
+        #f8fafc 100%
+      );
+      background-size: 280% 280%;
+      background-position: var(--mesh-x, 0%) var(--mesh-y, 50%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(197, 160, 126, 0.25));
+      transition: filter 0.3s ease, transform 0.15s ease-out;
+      will-change: background-position, transform;
+    }
+
+    .mesh-title:hover {
+      filter: drop-shadow(0 0 35px rgba(56, 189, 248, 0.45));
     }
 
     .hero-desc {
@@ -662,7 +675,7 @@
       font-size: 0.9rem;
     }
 
-    /* --- High-Performance Opening & Closing Animated Lightbox --- */
+    /* --- High-Performance Animated Lightbox --- */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -794,10 +807,6 @@
       transform: translateY(-50%) scale(1);
     }
 
-    .lb-prev:hover {
-      transform: translateY(-50%) scale(1.1) !important;
-    }
-
     .lb-next {
       right: max(1rem, env(safe-area-inset-right));
       top: 50%;
@@ -806,10 +815,6 @@
 
     .lightbox-overlay.active .lb-next {
       transform: translateY(-50%) scale(1);
-    }
-
-    .lb-next:hover {
-      transform: translateY(-50%) scale(1.1) !important;
     }
 
     .lb-counter {
@@ -837,7 +842,7 @@
       transition: opacity 0.28s ease 0.06s, transform 0.32s var(--spring-in) 0.06s;
     }
 
-    /* --- Mobile Optimization: Lightbox Controls --- */
+    /* Mobile Controls Re-positioning */
     @media (max-width: 768px) {
       .lightbox-img-wrap {
         max-width: 86vw;
@@ -858,7 +863,6 @@
         background: #141418;
       }
 
-      /* Relocate navigation controls into dedicated bottom area */
       .lb-prev {
         top: auto;
         bottom: max(1.25rem, env(safe-area-inset-bottom));
@@ -901,14 +905,14 @@
 </head>
 <body>
 
-  <!-- Ambient Lighting Elements -->
+  <!-- Ambient Light Orbs -->
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
   </div>
 
-  <canvas id="gridCanvas"></canvas>
-  <div class="cyber-grid"></div>
+  <!-- Interactive Kinetic Elastic Grid -->
+  <canvas id="kineticGridCanvas"></canvas>
 
   <div class="layout-grid">
 
@@ -925,7 +929,8 @@
           <div class="status-badge">
             <div class="status-dot"></div> Systems Online
           </div>
-          <h1 class="hero-title">EXYNOS</h1>
+          <!-- Interactive Mesh Gradient Distortion Text -->
+          <h1 class="mesh-title" id="meshTitle">EXYNOS</h1>
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
           </p>
@@ -1437,73 +1442,175 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    // --- Interactive Grid Box Lighting Engine ---
-    const canvas = document.getElementById('gridCanvas');
+    // --- Interactive Kinetic Elastic Mesh Grid Engine ---
+    const canvas = document.getElementById('kineticGridCanvas');
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
-    const GRID_SIZE = 48;
+    
+    let gridPoints = [];
+    let cols = 0, rows = 0;
+    const SPACING = 48;
+    const MOUSE_RADIUS = 130;
+    const MOUSE_STRENGTH = 0.55;
+    const SPRING = 0.045;
+    const DAMPING = 0.88;
 
-    const GLOW_COLORS = ['#38bdf8', '#2dd4bf', '#34d399', '#c5a07e', '#a855f7', '#f43f5e', '#fbbf24', '#818cf8'];
-    let activeTiles = [];
-    let isRendering = false;
+    let mousePos = { x: -1000, y: -1000, active: false };
+    let kineticRAF = null;
+    let isKineticMoving = true;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas, { passive: true });
-    resizeCanvas();
+    function initKineticGrid() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    function triggerBox(clientX, clientY) {
-      const snapX = Math.floor(clientX / GRID_SIZE) * GRID_SIZE;
-      const snapY = Math.floor(clientY / GRID_SIZE) * GRID_SIZE;
-      const randomColor = GLOW_COLORS[Math.floor(Math.random() * GLOW_COLORS.length)];
+      cols = Math.ceil(window.innerWidth / SPACING) + 1;
+      rows = Math.ceil(window.innerHeight / SPACING) + 1;
+      gridPoints = [];
 
-      const existing = activeTiles.find(t => t.x === snapX && t.y === snapY);
-      if (existing) {
-        existing.alpha = 1.0;
-        existing.color = randomColor;
-      } else {
-        activeTiles.push({ x: snapX, y: snapY, color: randomColor, alpha: 1.0 });
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const originX = c * SPACING;
+          const originY = r * SPACING;
+          gridPoints.push({
+            origX: originX,
+            origY: originY,
+            x: originX,
+            y: originY,
+            vx: 0,
+            vy: 0
+          });
+        }
       }
-
-      if (!isRendering) {
-        isRendering = true;
-        requestAnimationFrame(renderGridGlow);
-      }
+      isKineticMoving = true;
+      if (!kineticRAF) renderKineticGrid();
     }
 
-    window.addEventListener('pointerdown', (e) => {
-      triggerBox(e.clientX, e.clientY);
-    }, { passive: true });
+    window.addEventListener('resize', initKineticGrid, { passive: true });
 
-    function renderGridGlow() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function updateKineticPhysics() {
+      let movementDetected = false;
 
-      for (let i = activeTiles.length - 1; i >= 0; i--) {
-        const tile = activeTiles[i];
-        
-        ctx.globalAlpha = tile.alpha * 0.3;
-        ctx.fillStyle = tile.color;
-        ctx.fillRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+      for (let i = 0; i < gridPoints.length; i++) {
+        const pt = gridPoints[i];
 
-        ctx.globalAlpha = tile.alpha;
-        ctx.strokeStyle = tile.color;
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(tile.x + 1, tile.y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+        if (mousePos.active) {
+          const dx = mousePos.x - pt.x;
+          const dy = mousePos.y - pt.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-        tile.alpha -= 0.025;
+          if (dist < MOUSE_RADIUS && dist > 0) {
+            const force = (1 - dist / MOUSE_RADIUS) * MOUSE_STRENGTH;
+            const angle = Math.atan2(dy, dx);
+            pt.vx -= Math.cos(angle) * force * 7;
+            pt.vy -= Math.sin(angle) * force * 7;
+          }
+        }
 
-        if (tile.alpha <= 0) {
-          activeTiles.splice(i, 1);
+        // Spring restoration force
+        const fx = (pt.origX - pt.x) * SPRING;
+        const fy = (pt.origY - pt.y) * SPRING;
+
+        pt.vx = (pt.vx + fx) * DAMPING;
+        pt.vy = (pt.vy + fy) * DAMPING;
+
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+
+        if (Math.abs(pt.vx) > 0.01 || Math.abs(pt.vy) > 0.01 || Math.abs(pt.origX - pt.x) > 0.1) {
+          movementDetected = true;
         }
       }
 
-      if (activeTiles.length > 0) {
-        requestAnimationFrame(renderGridGlow);
-      } else {
-        isRendering = false;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return movementDetected;
+    }
+
+    function renderKineticGrid() {
+      const isMoving = updateKineticPhysics();
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      ctx.lineWidth = 1.0;
+      ctx.strokeStyle = "rgba(200, 205, 215, 0.05)";
+
+      // Draw horizontal elastic connecting lines
+      for (let r = 0; r < rows; r++) {
+        ctx.beginPath();
+        for (let c = 0; c < cols; c++) {
+          const pt = gridPoints[r * cols + c];
+          if (c === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
       }
+
+      // Draw vertical elastic connecting lines
+      for (let c = 0; c < cols; c++) {
+        ctx.beginPath();
+        for (let r = 0; r < rows; r++) {
+          const pt = gridPoints[r * cols + c];
+          if (r === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+      }
+
+      // Draw subtle luminous intersection dots
+      ctx.fillStyle = "rgba(197, 160, 126, 0.28)";
+      for (let i = 0; i < gridPoints.length; i++) {
+        const pt = gridPoints[i];
+        const displacement = Math.abs(pt.origX - pt.x) + Math.abs(pt.origY - pt.y);
+        if (displacement > 0.8) {
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      if (isMoving || mousePos.active) {
+        kineticRAF = requestAnimationFrame(renderKineticGrid);
+      } else {
+        kineticRAF = null;
+      }
+    }
+
+    function wakeKineticGrid(x, y) {
+      mousePos.x = x;
+      mousePos.y = y;
+      mousePos.active = true;
+      if (!kineticRAF) kineticRAF = requestAnimationFrame(renderKineticGrid);
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      wakeKineticGrid(e.clientX, e.clientY);
+    }, { passive: true });
+
+    window.addEventListener('pointerleave', () => {
+      mousePos.active = false;
+    }, { passive: true });
+
+    window.addEventListener('pointerdown', (e) => {
+      wakeKineticGrid(e.clientX, e.clientY);
+    }, { passive: true });
+
+    initKineticGrid();
+
+    // --- Interactive Mesh Text Hover Dynamics ---
+    const meshTitle = document.getElementById('meshTitle');
+    if (meshTitle) {
+      meshTitle.addEventListener('mousemove', (e) => {
+        const rect = meshTitle.getBoundingClientRect();
+        const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+        const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+        meshTitle.style.setProperty('--mesh-x', `${xPercent}%`);
+        meshTitle.style.setProperty('--mesh-y', `${yPercent}%`);
+        meshTitle.style.transform = `translate3d(${(xPercent - 50) * 0.05}px, ${(yPercent - 50) * 0.05}px, 0)`;
+      });
+
+      meshTitle.addEventListener('mouseleave', () => {
+        meshTitle.style.setProperty('--mesh-x', '0%');
+        meshTitle.style.setProperty('--mesh-y', '50%');
+        meshTitle.style.transform = 'translate3d(0, 0, 0)';
+      });
     }
 
     // --- Emblem Card Drag Mechanics ---
@@ -1570,7 +1677,7 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // --- High-Performance Animated Lightbox Logic ---
+    // --- High-Performance Animated Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCounter = document.getElementById("lightboxCounter");
@@ -1606,11 +1713,9 @@
       if (!activeScreenshots.length) return;
       
       lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
-      
       if (switchTimeout) clearTimeout(switchTimeout);
       
       lightboxImg.classList.add('img-switching');
-      
       switchTimeout = setTimeout(() => {
         lightboxImg.src = activeScreenshots[currentImageIndex];
         lightboxImg.onload = () => {
@@ -1636,7 +1741,6 @@
       }
     }
 
-    // Touch gesture logic for mobile
     lightboxModal.addEventListener('touchstart', (e) => {
       if (e.target.closest('.lb-ctrl-btn')) return;
       touchStartX = e.changedTouches[0].clientX;
@@ -1645,7 +1749,6 @@
 
     lightboxModal.addEventListener('touchend', (e) => {
       if (e.target.closest('.lb-ctrl-btn')) return;
-      
       const deltaX = e.changedTouches[0].clientX - touchStartX;
       const deltaY = e.changedTouches[0].clientY - touchStartY;
       
