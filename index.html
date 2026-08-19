@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg: #08080a;
-      --bg-panel: rgba(17, 17, 20, 0.78);
-      --bg-card: rgba(20, 20, 24, 0.65);
+      --bg-panel: rgba(17, 17, 20, 0.85);
+      --bg-card: rgba(18, 18, 22, 0.88);
       
       /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
@@ -69,9 +69,9 @@
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(8, 8, 10, 0.65);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(8, 8, 10, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 1000;
       pointer-events: none;
       transform: translateZ(0);
@@ -88,7 +88,7 @@
       transform: translateZ(0);
     }
 
-    /* Ambient Lighting (GPU Accelerated) */
+    /* Ambient Lighting (GPU-friendly) */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -102,8 +102,8 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.14;
+      filter: blur(80px);
+      opacity: 0.12;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
@@ -124,7 +124,7 @@
       background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
       bottom: 5%;
       right: -5%;
-      opacity: 0.10;
+      opacity: 0.08;
       animation: driftTwo 26s alternate infinite;
     }
 
@@ -260,7 +260,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Interactive Mesh Title */
+    /* Mesh Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -298,40 +298,6 @@
       max-width: 540px;
       line-height: 1.7;
       font-weight: 400;
-    }
-
-    /* Live Telemetry Stats HUD */
-    .stats-hud {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 0.25rem;
-    }
-
-    .stat-item {
-      background: rgba(17, 17, 20, 0.7);
-      border: 1px solid var(--border-silver);
-      border-radius: 8px;
-      padding: 0.55rem 0.9rem;
-      display: flex;
-      flex-direction: column;
-      min-width: 100px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    }
-
-    .stat-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--bronze-light);
-    }
-
-    .stat-lbl {
-      font-size: 0.68rem;
-      color: var(--text-300);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 0.1rem;
     }
 
     .hero-emblem-col {
@@ -437,7 +403,7 @@
       position: sticky;
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
-      background: rgba(17, 17, 20, 0.75);
+      background: var(--bg-panel);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
@@ -515,7 +481,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Cards */
+    /* Performance-Optimized Solid Card Containers (No Backdrop Thrashing) */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -539,11 +505,9 @@
 
     .rom-card {
       content-visibility: auto;
-      contain-intrinsic-size: 480px;
+      contain-intrinsic-size: 450px;
       contain: layout style paint;
-      background: rgba(20, 20, 24, 0.62);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: var(--bg-card);
       border: 1px solid rgba(200, 205, 215, 0.12);
       border-radius: 14px;
       padding: 2rem;
@@ -557,20 +521,6 @@
       overflow: hidden;
     }
 
-    /* Mouse Spotlight Radial Glow */
-    .rom-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(197, 160, 126, 0.07), transparent 75%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 0;
-    }
-
-    .rom-card:hover::before { opacity: 1; }
-
     .rom-card:hover {
       border-color: var(--border-hover);
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(197, 160, 126, 0.08);
@@ -582,8 +532,6 @@
       align-items: flex-start;
       border-bottom: 1px solid rgba(200, 205, 215, 0.1);
       padding-bottom: 1.25rem;
-      position: relative;
-      z-index: 1;
     }
 
     .card-title-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -645,8 +593,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
-      position: relative;
-      z-index: 1;
     }
     
     .card-middle.full-width { grid-template-columns: 1fr; }
@@ -695,7 +641,7 @@
     }
 
     .changelog-box {
-      background: rgba(8, 8, 10, 0.45);
+      background: rgba(8, 8, 10, 0.5);
       border: 1px solid rgba(200, 205, 215, 0.08);
       padding: 0.65rem 1rem;
       border-radius: 8px;
@@ -761,8 +707,6 @@
       justify-content: flex-end;
       padding-top: 1.25rem;
       border-top: 1px solid rgba(200, 205, 215, 0.1);
-      position: relative;
-      z-index: 1;
     }
 
     .download-btn {
@@ -805,7 +749,7 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(17, 17, 20, 0.88);
+      background: rgba(17, 17, 20, 0.94);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-bronze);
@@ -1063,26 +1007,6 @@
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
           </p>
-
-          <!-- Live Telemetry HUD -->
-          <div class="stats-hud">
-            <div class="stat-item">
-              <span class="stat-num" id="statTotal">0</span>
-              <span class="stat-lbl">Total Packages</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-num">5</span>
-              <span class="stat-lbl">Target Devices</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-num" id="statA17">0</span>
-              <span class="stat-lbl">Android 17 Ports</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-num" id="statKernels">0</span>
-              <span class="stat-lbl">Kernels</span>
-            </div>
-          </div>
         </div>
 
         <div class="hero-emblem-col">
@@ -1684,7 +1608,7 @@
         }
       });
 
-      for (let i = 0; i < 10; i++) spawnRandomPulse();
+      for (let i = 0; i < 8; i++) spawnRandomPulse();
       if (!pcbRAF && !prefersReducedMotion) renderPCB();
     }
 
@@ -1736,7 +1660,7 @@
 
         if (!p2) {
           pulses.splice(i, 1);
-          if (pulses.length < 8) spawnRandomPulse();
+          if (pulses.length < 6) spawnRandomPulse();
           continue;
         }
 
@@ -1849,15 +1773,6 @@
       window.addEventListener('touchmove', onDragMove, { passive: false });
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
-
-    // --- Interactive Mouse Spotlight Tracking on ROM Cards ---
-    document.getElementById('buildsList').addEventListener('mousemove', (e) => {
-      const card = e.target.closest('.rom-card');
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-      card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-    });
 
     function setFilter(filter, btn) {
       currentFilter = filter;
@@ -2072,14 +1987,14 @@
         </div>`;
     }
 
-    // --- Ultra-Fast Single-Pass Categorization & Search Render ---
+    // --- Fast Render: Android 16 First -> Android 17 Second ---
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
       const term = searchTerm.toLowerCase();
 
       const buckets = {
-        "ANDROID 17 RELEASES": [],
         "ANDROID 16 RELEASES": [],
+        "ANDROID 17 RELEASES": [],
         "CUSTOM KERNELS": [],
         "GOOGLE APPS (GAPPS)": [],
         "SYSTEM RECOVERY": []
@@ -2103,8 +2018,8 @@
         else if (cat === "gapps") buckets["GOOGLE APPS (GAPPS)"].push(item);
         else if (cat === "recovery") buckets["SYSTEM RECOVERY"].push(item);
         else if (cat === "rom") {
-          if (item.android && item.android.includes("17")) buckets["ANDROID 17 RELEASES"].push(item);
-          else if (item.android && item.android.includes("16")) buckets["ANDROID 16 RELEASES"].push(item);
+          if (item.android && item.android.includes("16")) buckets["ANDROID 16 RELEASES"].push(item);
+          else if (item.android && item.android.includes("17")) buckets["ANDROID 17 RELEASES"].push(item);
           else buckets["ANDROID 16 RELEASES"].push(item);
         }
       }
@@ -2121,18 +2036,6 @@
       container.innerHTML = htmlBuffer || `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
     }
 
-    // --- Dynamic HUD Telemetry Initializer ---
-    function updateHUDStats() {
-      const total = buildsData.length;
-      const a17Count = buildsData.filter(b => b.android && b.android.includes("17")).length;
-      const kernelCount = buildsData.filter(b => b.category === "kernel").length;
-
-      document.getElementById('statTotal').innerText = total;
-      document.getElementById('statA17').innerText = a17Count;
-      document.getElementById('statKernels').innerText = kernelCount;
-    }
-
-    updateHUDStats();
     renderBuilds();
   </script>
 </body>
