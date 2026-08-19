@@ -62,18 +62,22 @@
       overflow-x: hidden;
     }
 
-    /* --- Kinetic Elastic Grid Background Canvas --- */
-    #kineticGridCanvas {
+    /* --- Status Bar Blur Shield (Mobile Safe Area) --- */
+    .status-bar-blur {
       position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: max(28px, env(safe-area-inset-top));
+      background: rgba(8, 8, 10, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
       pointer-events: none;
-      z-index: 0;
       transform: translateZ(0);
     }
 
-    /* Ambient Background Orbs */
+    /* Ambient Lighting */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -87,8 +91,8 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.16;
+      filter: blur(60px);
+      opacity: 0.18;
       will-change: transform;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
@@ -111,6 +115,16 @@
       right: -5%;
       opacity: 0.12;
       animation: driftTwo 24s alternate infinite;
+    }
+
+    #kineticGridCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      transform: translateZ(0);
     }
 
     @keyframes driftOne {
@@ -241,7 +255,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* --- Interactive Mesh Gradient Distortion Text --- */
+    /* Mesh Gradient Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -251,7 +265,6 @@
       display: inline-block;
       cursor: default;
       user-select: none;
-      
       background: linear-gradient(
         135deg,
         #ffffff 0%,
@@ -807,6 +820,10 @@
       transform: translateY(-50%) scale(1);
     }
 
+    .lb-prev:hover {
+      transform: translateY(-50%) scale(1.1) !important;
+    }
+
     .lb-next {
       right: max(1rem, env(safe-area-inset-right));
       top: 50%;
@@ -815,6 +832,10 @@
 
     .lightbox-overlay.active .lb-next {
       transform: translateY(-50%) scale(1);
+    }
+
+    .lb-next:hover {
+      transform: translateY(-50%) scale(1.1) !important;
     }
 
     .lb-counter {
@@ -842,7 +863,7 @@
       transition: opacity 0.28s ease 0.06s, transform 0.32s var(--spring-in) 0.06s;
     }
 
-    /* Mobile Controls Re-positioning */
+    /* Mobile Controls Placement */
     @media (max-width: 768px) {
       .lightbox-img-wrap {
         max-width: 86vw;
@@ -856,7 +877,7 @@
       }
 
       .lb-close {
-        top: max(1rem, env(safe-area-inset-top));
+        top: max(1.25rem, env(safe-area-inset-top));
         right: max(1rem, env(safe-area-inset-right));
         width: 42px;
         height: 42px;
@@ -904,6 +925,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Native Mobile Status Bar Blur Overlay -->
+  <div class="status-bar-blur"></div>
 
   <!-- Ambient Light Orbs -->
   <div class="ambient-bg">
@@ -1111,6 +1135,7 @@
           "./screenshots/voltageos/afterlife/v15.jpg",
           "./screenshots/voltageos/afterlife/v16.jpg",
           "./screenshots/voltageos/afterlife/v17.jpg",
+          "./screenshots/voltageos/afterlife/v18.jpg",
           "./screenshots/voltageos/afterlife/v18.jpg",
           "./screenshots/voltageos/afterlife/v19.jpg",
           "./screenshots/voltageos/afterlife/v20.jpg",
@@ -1456,7 +1481,6 @@
 
     let mousePos = { x: -1000, y: -1000, active: false };
     let kineticRAF = null;
-    let isKineticMoving = true;
 
     function initKineticGrid() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1482,7 +1506,6 @@
           });
         }
       }
-      isKineticMoving = true;
       if (!kineticRAF) renderKineticGrid();
     }
 
@@ -1507,7 +1530,6 @@
           }
         }
 
-        // Spring restoration force
         const fx = (pt.origX - pt.x) * SPRING;
         const fy = (pt.origY - pt.y) * SPRING;
 
@@ -1532,7 +1554,6 @@
       ctx.lineWidth = 1.0;
       ctx.strokeStyle = "rgba(200, 205, 215, 0.05)";
 
-      // Draw horizontal elastic connecting lines
       for (let r = 0; r < rows; r++) {
         ctx.beginPath();
         for (let c = 0; c < cols; c++) {
@@ -1543,7 +1564,6 @@
         ctx.stroke();
       }
 
-      // Draw vertical elastic connecting lines
       for (let c = 0; c < cols; c++) {
         ctx.beginPath();
         for (let r = 0; r < rows; r++) {
@@ -1554,7 +1574,6 @@
         ctx.stroke();
       }
 
-      // Draw subtle luminous intersection dots
       ctx.fillStyle = "rgba(197, 160, 126, 0.28)";
       for (let i = 0; i < gridPoints.length; i++) {
         const pt = gridPoints[i];
@@ -1594,7 +1613,7 @@
 
     initKineticGrid();
 
-    // --- Interactive Mesh Text Hover Dynamics ---
+    // --- Mesh Title Dynamic Position ---
     const meshTitle = document.getElementById('meshTitle');
     if (meshTitle) {
       meshTitle.addEventListener('mousemove', (e) => {
@@ -1677,7 +1696,7 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // --- High-Performance Animated Lightbox Engine ---
+    // --- Conflict-Free Lightbox Navigation Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCounter = document.getElementById("lightboxCounter");
