@@ -32,8 +32,10 @@
       --text-200: #cbd5e1;
       --text-300: #94a3b8;
 
-      --spring-in: cubic-bezier(0.16, 1, 0.3, 1);
-      --spring-out: cubic-bezier(0.4, 0, 0.2, 1);
+      /* Cinematic Fluid Motion Curves */
+      --fluid-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --fluid-out: cubic-bezier(0.25, 1, 0.5, 1);
+      --fluid-in: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -693,7 +695,7 @@
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s var(--fluid-in);
       padding: 1rem;
     }
 
@@ -709,6 +711,12 @@
       max-width: 600px;
       width: 100%;
       position: relative;
+      transform: scale(0.94) translateY(12px);
+      transition: transform 0.32s var(--fluid-spring);
+    }
+
+    .overlay.active .modal-content {
+      transform: scale(1) translateY(0);
     }
 
     .modal-title {
@@ -737,7 +745,7 @@
       font-size: 0.9rem;
     }
 
-    /* Lightbox Modal & Floating Bottom Controls */
+    /* --- Cinema-Grade Smooth Lightbox Transitions --- */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -751,10 +759,10 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.28s var(--spring-out),
-                  backdrop-filter 0.28s var(--spring-out),
-                  -webkit-backdrop-filter 0.28s var(--spring-out),
-                  visibility 0s linear 0.28s;
+      transition: opacity 0.35s var(--fluid-in),
+                  backdrop-filter 0.35s var(--fluid-in),
+                  -webkit-backdrop-filter 0.35s var(--fluid-in),
+                  visibility 0s linear 0.35s;
       transform: translateZ(0);
       will-change: opacity, backdrop-filter;
     }
@@ -763,11 +771,11 @@
       opacity: 1;
       visibility: visible;
       pointer-events: all;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: opacity 0.32s var(--spring-in),
-                  backdrop-filter 0.32s var(--spring-in),
-                  -webkit-backdrop-filter 0.32s var(--spring-in),
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: opacity 0.42s var(--fluid-out),
+                  backdrop-filter 0.42s var(--fluid-out),
+                  -webkit-backdrop-filter 0.42s var(--fluid-out),
                   visibility 0s;
     }
 
@@ -777,7 +785,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1200px;
+      perspective: 1400px;
       margin-top: -1.5rem;
       touch-action: pan-y;
     }
@@ -791,17 +799,23 @@
       border: 1px solid var(--border-bronze);
       object-fit: contain;
       user-select: none;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 160, 126, 0.08);
       opacity: 0;
-      transform: scale3d(0.82, 0.82, 1) translateY(18px);
-      transition: transform 0.28s var(--spring-out), opacity 0.24s ease;
-      will-change: transform, opacity;
+      transform: scale3d(0.85, 0.85, 1) translateY(24px);
+      filter: blur(6px);
+      transition: transform 0.32s var(--fluid-in),
+                  opacity 0.28s var(--fluid-in),
+                  filter 0.28s var(--fluid-in);
+      will-change: transform, opacity, filter;
     }
 
     .lightbox-overlay.active .lightbox-img {
       opacity: 1;
       transform: scale3d(1, 1, 1) translateY(0);
-      transition: transform 0.38s var(--spring-in), opacity 0.3s ease;
+      filter: blur(0px);
+      transition: transform 0.46s var(--fluid-spring),
+                  opacity 0.38s ease,
+                  filter 0.35s ease;
     }
 
     .lb-close {
@@ -823,20 +837,20 @@
       z-index: 100000;
       touch-action: manipulation;
       opacity: 0;
-      transform: scale(0.6);
-      transition: transform 0.25s var(--spring-out), opacity 0.2s ease, background 0.2s;
+      transform: scale(0.65) translateY(-8px);
+      transition: transform 0.28s var(--fluid-in), opacity 0.25s ease, background 0.2s;
     }
 
     .lightbox-overlay.active .lb-close {
       opacity: 1;
-      transform: scale(1);
-      transition: transform 0.32s var(--spring-in) 0.05s, opacity 0.25s ease 0.05s;
+      transform: scale(1) translateY(0);
+      transition: transform 0.42s var(--fluid-spring) 0.06s, opacity 0.35s ease 0.06s;
     }
 
     .lb-close:hover {
       background: var(--bronze);
       color: #000000;
-      transform: scale(1.08);
+      transform: scale(1.08) translateY(0);
     }
 
     .lb-close:active { transform: scale(0.92); }
@@ -856,7 +870,7 @@
       position: fixed;
       bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem));
       left: 50%;
-      transform: translateX(-50%) translateY(24px) scale(0.85);
+      transform: translateX(-50%) translateY(30px) scale(0.8);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -869,14 +883,14 @@
       z-index: 100000;
       opacity: 0;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
-      transition: transform 0.28s var(--spring-out), opacity 0.22s ease;
+      transition: transform 0.28s var(--fluid-in), opacity 0.25s ease;
       touch-action: manipulation;
     }
 
     .lightbox-overlay.active .lb-toolbar {
       opacity: 1;
       transform: translateX(-50%) translateY(0) scale(1);
-      transition: transform 0.35s var(--spring-in) 0.06s, opacity 0.3s ease 0.06s;
+      transition: transform 0.44s var(--fluid-spring) 0.08s, opacity 0.35s ease 0.08s;
     }
 
     .lb-nav-btn {
@@ -1423,7 +1437,6 @@
           "./features/voltageos/f17.jpg",
           "./features/voltageos/f18.jpg",
           "./features/voltageos/f19.jpg",
-          "./features/voltageos/f19.jpg",
           "./features/voltageos/f20.jpg",
           "./features/voltageos/f21.jpg",
           "./features/voltageos/f22.jpg",
@@ -1523,14 +1536,13 @@
         return;
       }
 
-      // Pure Black Clear
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, width, height);
 
       const maxDist = 120;
       const maxDistSq = maxDist * maxDist;
 
-      // 1. Draw subtle inter-connecting lines
+      // 1. Interconnecting vector filaments
       ctx.lineWidth = 0.8;
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
@@ -1551,7 +1563,7 @@
         }
       }
 
-      // 2. Draw Moving Points & Update Coordinates
+      // 2. Moving Point Coordinates
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
@@ -1564,7 +1576,6 @@
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce seamlessly on boundaries
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
       }
@@ -1593,7 +1604,7 @@
 
     initPoints();
 
-    // --- Mesh Title Dynamic Position ---
+    // --- Mesh Title Position ---
     const meshTitle = document.getElementById('meshTitle');
     if (meshTitle) {
       meshTitle.addEventListener('mousemove', (e) => {
@@ -1719,7 +1730,7 @@
       }).join(' ');
     }
 
-    // --- Lightbox Engine ---
+    // --- Cinematic Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImgWrap = document.getElementById("lightboxImgWrap");
     const lightboxImg = document.getElementById("lightboxImg");
@@ -1756,17 +1767,19 @@
       if (!activeScreenshots.length) return;
       lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
 
-      lightboxImg.style.transition = 'transform 0.12s ease-out, opacity 0.12s ease-out';
-      lightboxImg.style.opacity = '0.2';
-      lightboxImg.style.transform = `scale(0.92) translateX(${dir * -18}px)`;
+      lightboxImg.style.transition = 'transform 0.16s var(--fluid-in), opacity 0.16s ease, filter 0.16s ease';
+      lightboxImg.style.opacity = '0.15';
+      lightboxImg.style.filter = 'blur(4px)';
+      lightboxImg.style.transform = `scale(0.92) translateX(${dir * -24}px)`;
 
       setTimeout(() => {
         lightboxImg.src = activeScreenshots[currentImageIndex];
-        lightboxImg.style.transition = 'transform 0.24s var(--spring-in), opacity 0.24s ease';
+        lightboxImg.style.transition = 'transform 0.38s var(--fluid-spring), opacity 0.3s ease, filter 0.28s ease';
         lightboxImg.style.opacity = '1';
+        lightboxImg.style.filter = 'blur(0px)';
         lightboxImg.style.transform = 'scale(1) translateX(0)';
         isNavigating = false;
-      }, 70);
+      }, 90);
     }
 
     function navigateLightbox(dir) {
