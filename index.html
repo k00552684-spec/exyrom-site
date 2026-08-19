@@ -1829,7 +1829,7 @@
       
       const dateHtml = item.date ? `<div class="data-block"><div class="data-label">Date</div><div class="data-value">${item.date}</div></div>` : '';
       const maintainerHtml = item.maintainer ? `<div class="data-block"><div class="data-label">Maintainer</div><div class="data-value">${item.maintainer}</div></div>` : '';
-      const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Edition / Flavor</div><div class="data-value">${renderFlavorPills(item.flavor)}</div></div>` : '';
+      const flavorHtml = item.flavor ? `<div class="data-block"><div class="data-label">Edition / Variant</div><div class="data-value">${renderFlavorPills(item.flavor)}</div></div>` : '';
       
       let featuresHtml = '';
       if (item.featureScreenshots?.length) {
