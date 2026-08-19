@@ -275,7 +275,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Non-Glowing Mesh Title */
+    /* Mesh Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -298,13 +298,13 @@
       background-position: var(--mesh-x, 0%) var(--mesh-y, 50%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: none;
-      transition: transform 0.15s ease-out;
+      filter: drop-shadow(0 0 25px rgba(197, 160, 126, 0.25));
+      transition: filter 0.3s ease, transform 0.15s ease-out;
       will-change: background-position, transform;
     }
 
     .mesh-title:hover {
-      filter: none;
+      filter: drop-shadow(0 0 35px rgba(56, 189, 248, 0.45));
     }
 
     .hero-desc {
@@ -1032,7 +1032,7 @@
           <div class="status-badge">
             <div class="status-dot"></div> Systems Online
           </div>
-          <!-- Non-Glowing Mesh Title -->
+          <!-- Interactive Mesh Gradient Distortion Text -->
           <h1 class="mesh-title" id="meshTitle">EXYNOS</h1>
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
@@ -1502,6 +1502,7 @@
           "./features/voltageos/f17.jpg",
           "./features/voltageos/f18.jpg",
           "./features/voltageos/f19.jpg",
+          "./features/voltageos/f19.jpg",
           "./features/voltageos/f20.jpg",
           "./features/voltageos/f21.jpg",
           "./features/voltageos/f22.jpg",
@@ -1795,7 +1796,7 @@
       }).join(' ');
     }
 
-    // --- Cinematic Lightbox Engine ---
+    // --- Lightbox Engine ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImgWrap = document.getElementById("lightboxImgWrap");
     const lightboxImg = document.getElementById("lightboxImg");
@@ -1950,7 +1951,7 @@
         </div>`;
     }
 
-    // --- Fast Render: Android 16 First -> Android 17 Second ---
+    // --- Categorization & Search Render: Android 16 First -> Android 17 Second ---
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
       const term = searchTerm.toLowerCase();
