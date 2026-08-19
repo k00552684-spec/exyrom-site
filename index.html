@@ -62,7 +62,7 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Lighting */
+    /* Ambient GPU Lighting */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -837,7 +837,7 @@
       transition: opacity 0.28s ease 0.06s, transform 0.32s var(--spring-in) 0.06s;
     }
 
-    /* --- Mobile Optimization: Non-overlapping Lightbox Controls --- */
+    /* --- Mobile Optimization: Lightbox Controls --- */
     @media (max-width: 768px) {
       .lightbox-img-wrap {
         max-width: 86vw;
@@ -991,11 +991,11 @@
 
   <!-- Animated Lightbox Modal with Blur Background -->
   <div class="lightbox-overlay" id="lightboxModal" onclick="handleLightboxBackdropClick(event)">
-    <button class="lb-ctrl-btn lb-close" onclick="closeLightbox()" aria-label="Close Lightbox">
+    <button class="lb-ctrl-btn lb-close" onclick="event.stopPropagation(); closeLightbox();" aria-label="Close Lightbox">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
 
-    <button class="lb-ctrl-btn lb-prev" onclick="navigateLightbox(-1)" aria-label="Previous Image">
+    <button class="lb-ctrl-btn lb-prev" onclick="event.stopPropagation(); navigateLightbox(-1);" aria-label="Previous Image">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
 
@@ -1003,7 +1003,7 @@
       <img class="lightbox-img" id="lightboxImg" src="" alt="Preview" decoding="async">
     </div>
 
-    <button class="lb-ctrl-btn lb-next" onclick="navigateLightbox(1)" aria-label="Next Image">
+    <button class="lb-ctrl-btn lb-next" onclick="event.stopPropagation(); navigateLightbox(1);" aria-label="Next Image">
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
 
@@ -1570,13 +1570,14 @@
 
     function toggleGuideModal() { document.getElementById("guideModal").classList.toggle('active'); }
 
-    // --- High-Performance Animated Lightbox Logic with Swipe ---
+    // --- High-Performance Animated Lightbox Logic ---
     const lightboxModal = document.getElementById("lightboxModal");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxCounter = document.getElementById("lightboxCounter");
 
+    let switchTimeout = null;
     let touchStartX = 0;
-    let touchEndX = 0;
+    let touchStartY = 0;
 
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
@@ -1604,12 +1605,18 @@
     function updateLightboxDisplay() {
       if (!activeScreenshots.length) return;
       
+      lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
+      
+      if (switchTimeout) clearTimeout(switchTimeout);
+      
       lightboxImg.classList.add('img-switching');
-      setTimeout(() => {
+      
+      switchTimeout = setTimeout(() => {
         lightboxImg.src = activeScreenshots[currentImageIndex];
-        lightboxCounter.innerText = `${currentImageIndex + 1} / ${activeScreenshots.length}`;
-        lightboxImg.classList.remove('img-switching');
-      }, 120);
+        lightboxImg.onload = () => {
+          lightboxImg.classList.remove('img-switching');
+        };
+      }, 60);
     }
 
     function navigateLightbox(dir) {
@@ -1629,25 +1636,26 @@
       }
     }
 
-    // Touch Swipe Gesture Support for Mobile
-    lightboxModal.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
+    // Touch gesture logic for mobile
+    lightboxModal.addEventListener('touchstart', (e) => {
+      if (e.target.closest('.lb-ctrl-btn')) return;
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
     }, { passive: true });
 
-    lightboxModal.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipeGesture();
-    }, { passive: true });
-
-    function handleSwipeGesture() {
-      const deltaX = touchEndX - touchStartX;
-      if (Math.abs(deltaX) > 40) {
+    lightboxModal.addEventListener('touchend', (e) => {
+      if (e.target.closest('.lb-ctrl-btn')) return;
+      
+      const deltaX = e.changedTouches[0].clientX - touchStartX;
+      const deltaY = e.changedTouches[0].clientY - touchStartY;
+      
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
         if (deltaX < 0) navigateLightbox(1);
         else navigateLightbox(-1);
       }
-    }
+    }, { passive: true });
 
-    document.addEventListener("keydown", e => {
+    document.addEventListener("keydown", (e) => {
       if (lightboxModal.classList.contains("active")) {
         if (e.key === "ArrowRight") navigateLightbox(1);
         if (e.key === "ArrowLeft") navigateLightbox(-1);
