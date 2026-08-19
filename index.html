@@ -12,9 +12,9 @@
 
   <style>
     :root {
-      --bg: #000000;
-      --bg-panel: rgba(12, 12, 14, 0.88);
-      --bg-card: rgba(14, 14, 16, 0.92);
+      --bg: #040406;
+      --bg-panel: rgba(14, 14, 18, 0.72);
+      --bg-card: rgba(16, 16, 22, 0.58);
       
       /* Metallic & Pastel Palette */
       --bronze: #c5a07e;
@@ -25,14 +25,14 @@
       --silver-dark: #64748b;
       
       --border-silver: rgba(200, 205, 215, 0.12);
-      --border-bronze: rgba(197, 160, 126, 0.22);
+      --border-bronze: rgba(197, 160, 126, 0.24);
       --border-hover: #c5a07e;
       
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
       --text-300: #94a3b8;
 
-      /* Cinematic Fluid Motion Curves */
+      /* Motion Curves */
       --fluid-spring: cubic-bezier(0.16, 1, 0.3, 1);
       --fluid-out: cubic-bezier(0.25, 1, 0.5, 1);
       --fluid-in: cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,6 +64,18 @@
       overflow-x: hidden;
     }
 
+    /* Fixed High-Performance Global Diffuse Glass Layer */
+    .glass-diffuse-shield {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: radial-gradient(circle at 50% 10%, rgba(8, 8, 12, 0.35) 0%, rgba(4, 4, 6, 0.75) 100%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translateZ(0);
+    }
+
     /* Mobile Status Bar Blur Overlay */
     .status-bar-blur {
       position: fixed;
@@ -71,9 +83,9 @@
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(4, 4, 6, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 1000;
       pointer-events: none;
       transform: translateZ(0);
@@ -87,8 +99,58 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      background: #000000;
+      background: #040406;
       transform: translateZ(0);
+    }
+
+    /* Ambient Lighting */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      contain: strict;
+      transform: translateZ(0);
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.16;
+      will-change: transform;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    .orb-1 {
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
+      top: -5%;
+      left: -5%;
+      animation: driftOne 22s alternate infinite;
+    }
+
+    .orb-2 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
+      bottom: 5%;
+      right: -5%;
+      opacity: 0.11;
+      animation: driftTwo 26s alternate infinite;
+    }
+
+    @keyframes driftOne {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(60px, 40px, 0); }
+    }
+
+    @keyframes driftTwo {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50px, -40px, 0); }
     }
 
     @keyframes floatEmblem {
@@ -123,8 +185,8 @@
       align-items: center;
       padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
@@ -197,9 +259,9 @@
       font-weight: 700;
       color: var(--bronze);
       border: 1px solid var(--border-bronze);
-      background: rgba(14, 14, 16, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(16, 16, 22, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 0.4rem 0.85rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -213,7 +275,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Mesh Title */
+    /* Non-Glowing Mesh Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -236,13 +298,13 @@
       background-position: var(--mesh-x, 0%) var(--mesh-y, 50%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 25px rgba(197, 160, 126, 0.25));
-      transition: filter 0.3s ease, transform 0.15s ease-out;
+      filter: none;
+      transition: transform 0.15s ease-out;
       will-change: background-position, transform;
     }
 
     .mesh-title:hover {
-      filter: drop-shadow(0 0 35px rgba(56, 189, 248, 0.45));
+      filter: none;
     }
 
     .hero-desc {
@@ -260,9 +322,9 @@
     }
 
     .android-emblem-card {
-      background: rgba(14, 14, 16, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(18, 18, 24, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -270,7 +332,7 @@
       flex-direction: column;
       align-items: center;
       gap: 0.85rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
       position: relative;
       animation: floatEmblem 5s ease-in-out infinite;
       cursor: grab;
@@ -312,7 +374,7 @@
       border: 1px solid var(--border-silver);
       padding: 0.25rem 0.65rem;
       border-radius: 4px;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(6, 6, 8, 0.85);
       pointer-events: none;
     }
 
@@ -357,8 +419,8 @@
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
       background: var(--bg-panel);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
@@ -402,7 +464,7 @@
 
     .search-box {
       width: 100%;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(6, 6, 8, 0.65);
       border: 1px solid var(--border-silver);
       padding: 0.6rem 2.2rem 0.6rem 1rem;
       color: var(--text-100);
@@ -434,7 +496,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Performance-Optimized Card Containers */
+    /* Frosted Glass Translucent Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -461,7 +523,7 @@
       contain-intrinsic-size: 450px;
       contain: layout style paint;
       background: var(--bg-card);
-      border: 1px solid rgba(200, 205, 215, 0.12);
+      border: 1px solid rgba(200, 205, 215, 0.14);
       border-radius: 14px;
       padding: 2rem;
       position: relative;
@@ -469,14 +531,14 @@
       flex-direction: column;
       gap: 1.5rem;
       transform: translateZ(0);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
       overflow: hidden;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 20px rgba(197, 160, 126, 0.08);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(197, 160, 126, 0.1);
     }
 
     .card-top {
@@ -573,7 +635,7 @@
     }
 
     .copy-btn {
-      background: rgba(17, 17, 20, 0.8);
+      background: rgba(17, 17, 20, 0.7);
       border: 1px solid var(--border-silver);
       color: var(--text-300);
       font-family: 'JetBrains Mono', monospace;
@@ -594,7 +656,7 @@
     }
 
     .changelog-box {
-      background: rgba(6, 6, 8, 0.7);
+      background: rgba(4, 4, 6, 0.55);
       border: 1px solid rgba(200, 205, 215, 0.08);
       padding: 0.65rem 1rem;
       border-radius: 8px;
@@ -647,7 +709,7 @@
       flex-shrink: 0;
       transition: border-color 0.2s ease, transform 0.2s ease;
       content-visibility: auto;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.4);
     }
 
     .img-thumb:hover {
@@ -688,7 +750,9 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 2000;
       display: flex;
       justify-content: center;
@@ -702,9 +766,7 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(14, 14, 16, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(14, 14, 18, 0.94);
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -745,11 +807,11 @@
       font-size: 0.9rem;
     }
 
-    /* --- Cinema-Grade Smooth Lightbox Transitions --- */
+    /* Lightbox Modal */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(0px);
       -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
@@ -825,9 +887,9 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(18, 18, 22, 0.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(18, 18, 22, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-bronze);
       color: var(--silver-light);
       display: flex;
@@ -874,9 +936,9 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(14, 14, 16, 0.94);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(14, 14, 18, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-bronze);
       padding: 0.35rem 0.6rem;
       border-radius: 999px;
@@ -949,8 +1011,11 @@
     <div class="ambient-orb orb-2"></div>
   </div>
 
-  <!-- Pure Black Interactive Moving Points Background Canvas -->
+  <!-- Interactive Moving Points Background Canvas -->
   <canvas id="pointsCanvas"></canvas>
+
+  <!-- Hardware-Accelerated Diffuse Glass Shield -->
+  <div class="glass-diffuse-shield"></div>
 
   <div class="layout-grid">
 
@@ -967,7 +1032,7 @@
           <div class="status-badge">
             <div class="status-dot"></div> Systems Online
           </div>
-          <!-- Interactive Mesh Gradient Distortion Text -->
+          <!-- Non-Glowing Mesh Title -->
           <h1 class="mesh-title" id="meshTitle">EXYNOS</h1>
           <p class="hero-desc">
             Pro-grade firmware, AOSP ports, and optimized kernel architecture for the Samsung Exynos 9611 platform. Built for performance, maintained for stability.
@@ -1485,7 +1550,7 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    // --- Ultra-Fast Pure Black Moving Points Engine ---
+    // --- Fast Moving Points Engine ---
     const canvas = document.getElementById('pointsCanvas');
     const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
 
@@ -1536,13 +1601,13 @@
         return;
       }
 
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = '#040406';
       ctx.fillRect(0, 0, width, height);
 
       const maxDist = 120;
       const maxDistSq = maxDist * maxDist;
 
-      // 1. Interconnecting vector filaments
+      // 1. Interconnecting lines
       ctx.lineWidth = 0.8;
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
