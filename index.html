@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
-  <!-- Preload Critical Fonts -->
+  <!-- Preload Critical Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   <style>
     :root {
       --bg: #08080a;
-      --bg-panel: rgba(17, 17, 20, 0.75);
+      --bg-panel: rgba(17, 17, 20, 0.78);
       --bg-card: rgba(20, 20, 24, 0.65);
       
       /* Metallic & Pastel Palette */
@@ -24,8 +24,8 @@
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(200, 205, 215, 0.14);
-      --border-bronze: rgba(197, 160, 126, 0.25);
+      --border-silver: rgba(200, 205, 215, 0.12);
+      --border-bronze: rgba(197, 160, 126, 0.22);
       --border-hover: #c5a07e;
       
       --text-100: #f8fafc;
@@ -62,14 +62,14 @@
       overflow-x: hidden;
     }
 
-    /* --- Mobile Safe Area Status Bar Blur --- */
+    /* Mobile Status Bar Blur Overlay */
     .status-bar-blur {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(8, 8, 10, 0.6);
+      background: rgba(8, 8, 10, 0.65);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       z-index: 1000;
@@ -77,7 +77,7 @@
       transform: translateZ(0);
     }
 
-    /* --- Interactive PCB Circuit Background Canvas --- */
+    /* PCB Background Canvas */
     #pcbCanvas {
       position: fixed;
       inset: 0;
@@ -88,7 +88,7 @@
       transform: translateZ(0);
     }
 
-    /* Ambient Lighting */
+    /* Ambient Lighting (GPU Accelerated) */
     .ambient-bg {
       position: fixed;
       inset: 0;
@@ -102,7 +102,7 @@
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
+      filter: blur(70px);
       opacity: 0.14;
       will-change: transform;
       animation-iteration-count: infinite;
@@ -110,32 +110,32 @@
     }
 
     .orb-1 {
-      width: 450px;
-      height: 450px;
+      width: 420px;
+      height: 420px;
       background: radial-gradient(circle, #c5a07e 0%, rgba(197, 160, 126, 0) 70%);
-      top: -6%;
-      left: -6%;
+      top: -5%;
+      left: -5%;
       animation: driftOne 22s alternate infinite;
     }
 
     .orb-2 {
-      width: 480px;
-      height: 480px;
+      width: 450px;
+      height: 450px;
       background: radial-gradient(circle, #0ea5e9 0%, rgba(14, 165, 233, 0) 70%);
-      bottom: 4%;
-      right: -6%;
+      bottom: 5%;
+      right: -5%;
       opacity: 0.10;
       animation: driftTwo 26s alternate infinite;
     }
 
     @keyframes driftOne {
       0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(70px, 50px, 0); }
+      100% { transform: translate3d(60px, 40px, 0); }
     }
 
     @keyframes driftTwo {
       0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-60px, -50px, 0); }
+      100% { transform: translate3d(-50px, -40px, 0); }
     }
 
     @keyframes floatEmblem {
@@ -260,7 +260,7 @@
       animation: pulseDot 2s infinite;
     }
 
-    /* Interactive Mesh Gradient Title */
+    /* Interactive Mesh Title */
     .mesh-title {
       font-size: clamp(3.4rem, 8.5vw, 5.8rem);
       font-weight: 900;
@@ -393,7 +393,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* --- Sticky Controls Bar with Frosted Glass Blur --- */
+    /* Sticky Controls Bar with Frosted Glass Blur */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -403,9 +403,9 @@
       position: sticky;
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
-      background: rgba(17, 17, 20, 0.72);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(17, 17, 20, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
@@ -457,7 +457,7 @@
       border-color: var(--bronze);
     }
 
-    /* --- Frosted Glass ROM Cards --- */
+    /* Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -482,9 +482,10 @@
     .rom-card {
       content-visibility: auto;
       contain-intrinsic-size: 500px;
+      contain: layout style paint;
       background: rgba(20, 20, 24, 0.62);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(200, 205, 215, 0.12);
       border-radius: 14px;
       padding: 2rem;
@@ -574,8 +575,6 @@
 
     .changelog-box {
       background: rgba(8, 8, 10, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(200, 205, 215, 0.08);
       padding: 0.65rem 1rem;
       border-radius: 8px;
@@ -652,7 +651,7 @@
       transform: translate3d(0, -2px, 0);
     }
 
-    /* Modal */
+    /* Guide Modal */
     .overlay {
       position: fixed;
       inset: 0;
@@ -707,7 +706,7 @@
       font-size: 0.9rem;
     }
 
-    /* --- Clean, Non-Overlapping Lightbox with Unified Bottom Floating Bar --- */
+    /* Lightbox Modal & Floating Bottom Controls */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -1394,6 +1393,7 @@
           "./features/voltageos/f17.jpg",
           "./features/voltageos/f18.jpg",
           "./features/voltageos/f19.jpg",
+          "./features/voltageos/f19.jpg",
           "./features/voltageos/f20.jpg",
           "./features/voltageos/f21.jpg",
           "./features/voltageos/f22.jpg",
@@ -1442,45 +1442,55 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    // --- High-Performance PCB Circuit Traces & Pulses Engine ---
+    // --- Ultra-Optimized PCB Engine with Offscreen Buffer Pre-rendering ---
     const pcbCanvas = document.getElementById('pcbCanvas');
     const pcbCtx = pcbCanvas.getContext('2d', { alpha: true, desynchronized: true });
+    
+    // Offscreen Canvas to store static circuit paths
+    const offscreenCanvas = document.createElement('canvas');
+    const offscreenCtx = offscreenCanvas.getContext('2d', { alpha: true });
 
     let pcbWidth = 0, pcbHeight = 0;
     let traces = [];
     let pulses = [];
     let pcbRAF = null;
+    let isAppHidden = false;
 
     const PULSE_COLORS = ['#c5a07e', '#dfc7b0', '#38bdf8', '#e2e8f0'];
 
     function initPCB() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       pcbWidth = window.innerWidth;
       pcbHeight = window.innerHeight;
+
       pcbCanvas.width = pcbWidth * dpr;
       pcbCanvas.height = pcbHeight * dpr;
       pcbCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      offscreenCanvas.width = pcbWidth * dpr;
+      offscreenCanvas.height = pcbHeight * dpr;
+      offscreenCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
       traces = [];
       pulses = [];
 
-      const GRID_SPACING = 75;
-      const numLines = Math.floor((pcbWidth * pcbHeight) / 28000) + 16;
+      const GRID_SPACING = 80;
+      const numLines = Math.floor((pcbWidth * pcbHeight) / 32000) + 12;
 
       for (let i = 0; i < numLines; i++) {
         let x = Math.floor((Math.random() * pcbWidth) / GRID_SPACING) * GRID_SPACING;
         let y = Math.floor((Math.random() * pcbHeight) / GRID_SPACING) * GRID_SPACING;
         
         let path = [{ x, y }];
-        let segments = Math.floor(Math.random() * 4) + 2;
+        let segments = Math.floor(Math.random() * 3) + 2;
 
         for (let s = 0; s < segments; s++) {
           const dir = Math.floor(Math.random() * 4);
-          const len = (Math.floor(Math.random() * 3) + 1) * GRID_SPACING;
+          const len = (Math.floor(Math.random() * 2) + 1) * GRID_SPACING;
           
-          if (dir === 0) x += len; // East
-          else if (dir === 1) y += len; // South
-          else if (dir === 2) { x += len * 0.7; y += len * 0.7; } // 45 Deg Diagonal
+          if (dir === 0) x += len;
+          else if (dir === 1) y += len;
+          else if (dir === 2) { x += len * 0.7; y += len * 0.7; }
           else { x += len * 0.7; y -= len * 0.7; }
 
           path.push({ x, y });
@@ -1488,20 +1498,48 @@
 
         traces.push({
           path: path,
-          viaStart: Math.random() > 0.3,
-          viaEnd: Math.random() > 0.3
+          viaStart: Math.random() > 0.35,
+          viaEnd: Math.random() > 0.35
         });
       }
 
-      // Initial ambient pulses
-      for (let i = 0; i < 14; i++) {
-        spawnRandomPulse();
-      }
+      // Pre-render static traces and solder pads ONCE onto offscreen canvas
+      offscreenCtx.clearRect(0, 0, pcbWidth, pcbHeight);
+      offscreenCtx.lineWidth = 1.1;
+      offscreenCtx.strokeStyle = 'rgba(200, 205, 215, 0.04)';
 
+      traces.forEach(tr => {
+        offscreenCtx.beginPath();
+        offscreenCtx.moveTo(tr.path[0].x, tr.path[0].y);
+        for (let i = 1; i < tr.path.length; i++) {
+          offscreenCtx.lineTo(tr.path[i].x, tr.path[i].y);
+        }
+        offscreenCtx.stroke();
+
+        if (tr.viaStart) {
+          offscreenCtx.fillStyle = 'rgba(197, 160, 126, 0.1)';
+          offscreenCtx.beginPath();
+          offscreenCtx.arc(tr.path[0].x, tr.path[0].y, 2.5, 0, Math.PI * 2);
+          offscreenCtx.fill();
+        }
+        if (tr.viaEnd) {
+          const last = tr.path[tr.path.length - 1];
+          offscreenCtx.fillStyle = 'rgba(197, 160, 126, 0.1)';
+          offscreenCtx.beginPath();
+          offscreenCtx.arc(last.x, last.y, 2.5, 0, Math.PI * 2);
+          offscreenCtx.fill();
+        }
+      });
+
+      for (let i = 0; i < 10; i++) spawnRandomPulse();
       if (!pcbRAF) renderPCB();
     }
 
-    window.addEventListener('resize', initPCB, { passive: true });
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(initPCB, 150);
+    }, { passive: true });
 
     function spawnRandomPulse(customX = null, customY = null) {
       if (!traces.length) return;
@@ -1524,44 +1562,23 @@
         trace: selectedTrace.path,
         segIndex: 0,
         t: 0,
-        speed: 0.015 + Math.random() * 0.02,
-        color: PULSE_COLORS[Math.floor(Math.random() * PULSE_COLORS.length)],
-        length: 22 + Math.random() * 18
+        speed: 0.016 + Math.random() * 0.018,
+        color: PULSE_COLORS[Math.floor(Math.random() * PULSE_COLORS.length)]
       });
     }
 
     function renderPCB() {
+      if (isAppHidden) {
+        pcbRAF = null;
+        return;
+      }
+
       pcbCtx.clearRect(0, 0, pcbWidth, pcbHeight);
 
-      // 1. Draw Static Conductive Circuit Traces & Vias
-      pcbCtx.lineWidth = 1.2;
-      pcbCtx.strokeStyle = 'rgba(200, 205, 215, 0.045)';
+      // Blit pre-rendered static circuit in a single GPU operation
+      pcbCtx.drawImage(offscreenCanvas, 0, 0, pcbWidth, pcbHeight);
 
-      traces.forEach(tr => {
-        pcbCtx.beginPath();
-        pcbCtx.moveTo(tr.path[0].x, tr.path[0].y);
-        for (let i = 1; i < tr.path.length; i++) {
-          pcbCtx.lineTo(tr.path[i].x, tr.path[i].y);
-        }
-        pcbCtx.stroke();
-
-        // Solder pad / Microchip Via rings
-        if (tr.viaStart) {
-          pcbCtx.fillStyle = 'rgba(197, 160, 126, 0.12)';
-          pcbCtx.beginPath();
-          pcbCtx.arc(tr.path[0].x, tr.path[0].y, 2.5, 0, Math.PI * 2);
-          pcbCtx.fill();
-        }
-        if (tr.viaEnd) {
-          const last = tr.path[tr.path.length - 1];
-          pcbCtx.fillStyle = 'rgba(197, 160, 126, 0.12)';
-          pcbCtx.beginPath();
-          pcbCtx.arc(last.x, last.y, 2.5, 0, Math.PI * 2);
-          pcbCtx.fill();
-        }
-      });
-
-      // 2. Draw & Advance Traveling Data Pulses
+      // Render light pulses
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         const p1 = p.trace[p.segIndex];
@@ -1569,7 +1586,7 @@
 
         if (!p2) {
           pulses.splice(i, 1);
-          if (pulses.length < 12) spawnRandomPulse();
+          if (pulses.length < 8) spawnRandomPulse();
           continue;
         }
 
@@ -1585,20 +1602,17 @@
         grad.addColorStop(1, p.color);
 
         pcbCtx.strokeStyle = grad;
-        pcbCtx.lineWidth = 2.0;
+        pcbCtx.lineWidth = 1.8;
         pcbCtx.beginPath();
         pcbCtx.moveTo(tailX, tailY);
         pcbCtx.lineTo(curX, curY);
         pcbCtx.stroke();
 
-        // Glowing pulse head
+        // Pulse Head Dot
         pcbCtx.fillStyle = p.color;
-        pcbCtx.shadowColor = p.color;
-        pcbCtx.shadowBlur = 8;
         pcbCtx.beginPath();
         pcbCtx.arc(curX, curY, 2.0, 0, Math.PI * 2);
         pcbCtx.fill();
-        pcbCtx.shadowBlur = 0;
 
         p.t += p.speed;
         if (p.t >= 1) {
@@ -1610,11 +1624,14 @@
       pcbRAF = requestAnimationFrame(renderPCB);
     }
 
-    // Touch / Click Interactive Circuit Surges
+    // Pause animation when tab or modal is out of view (saves mobile battery)
+    document.addEventListener('visibilitychange', () => {
+      isAppHidden = document.hidden;
+      if (!isAppHidden && !pcbRAF) renderPCB();
+    });
+
     window.addEventListener('pointerdown', (e) => {
-      for (let i = 0; i < 3; i++) {
-        spawnRandomPulse(e.clientX, e.clientY);
-      }
+      for (let i = 0; i < 2; i++) spawnRandomPulse(e.clientX, e.clientY);
     }, { passive: true });
 
     initPCB();
@@ -1628,7 +1645,7 @@
         const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
         meshTitle.style.setProperty('--mesh-x', `${xPercent}%`);
         meshTitle.style.setProperty('--mesh-y', `${yPercent}%`);
-        meshTitle.style.transform = `translate3d(${(xPercent - 50) * 0.05}px, ${(yPercent - 50) * 0.05}px, 0)`;
+        meshTitle.style.transform = `translate3d(${(xPercent - 50) * 0.04}px, ${(yPercent - 50) * 0.04}px, 0)`;
       });
 
       meshTitle.addEventListener('mouseleave', () => {
@@ -1749,7 +1766,7 @@
         lightboxImg.style.opacity = '1';
         lightboxImg.style.transform = 'scale(1) translateX(0)';
         isNavigating = false;
-      }, 80);
+      }, 70);
     }
 
     function navigateLightbox(dir) {
@@ -1770,7 +1787,6 @@
       }
     }
 
-    // Touch Swiping exclusively attached to the image canvas area
     lightboxImgWrap.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].clientX;
       touchStartY = e.changedTouches[0].clientY;
