@@ -476,7 +476,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* --- LIGHTNING FAST OPTIMIZED CARDS --- */
+    /* Performance Optimized Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -1702,11 +1702,16 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
+    // --- BUTTERY-SMOOTH ASYNCHRONOUS TAB SWITCHING ---
     function setFilter(filter, btn) {
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      renderBuilds(document.getElementById("searchInput").value.trim());
+      
+      // Defer DOM building to the next frame to prevent category selection stutter
+      requestAnimationFrame(() => {
+        renderBuilds(document.getElementById("searchInput").value.trim());
+      });
     }
 
     let searchTimeout;
@@ -1717,13 +1722,15 @@
       const val = e.target.value;
       clearSearchBtn.style.display = val ? 'flex' : 'none';
       clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => renderBuilds(val.trim()), 75);
+      searchTimeout = setTimeout(() => {
+        requestAnimationFrame(() => renderBuilds(val.trim()));
+      }, 75);
     });
 
     function clearSearch() {
       searchInput.value = "";
       clearSearchBtn.style.display = 'none';
-      renderBuilds();
+      requestAnimationFrame(() => renderBuilds());
     }
 
     function toggleGuideModal() { 
@@ -1908,6 +1915,7 @@
 
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
+      if (!container) return;
       const term = searchTerm.toLowerCase();
 
       const buckets = {
