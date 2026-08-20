@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg: #030407;
-      --bg-panel: rgba(15, 18, 28, 0.55);
-      --bg-card: rgba(16, 20, 32, 0.52);
+      --bg-panel: rgba(14, 17, 26, 0.72);
+      --bg-card: rgba(16, 20, 30, 0.65);
       
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
@@ -23,9 +23,9 @@
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(255, 255, 255, 0.12);
-      --border-bronze: rgba(197, 160, 126, 0.35);
-      --border-hover: rgba(212, 163, 115, 0.8);
+      --border-silver: rgba(255, 255, 255, 0.09);
+      --border-bronze: rgba(197, 160, 126, 0.3);
+      --border-hover: rgba(212, 163, 115, 0.75);
       
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
@@ -63,7 +63,8 @@
       overflow-x: hidden;
     }
 
-    /* --- VIBRANT GLOWING BACKGROUND (GIVES THE BLUR VISIBLE COLOR) --- */
+    /* --- HARDWARE-ACCELERATED AMBIENT GLOW STAGE --- */
+    /* Uses native soft radial gradients instead of heavy live filter blurs to eliminate GPU overhead */
     .ambient-stage {
       position: fixed;
       inset: 0;
@@ -71,58 +72,58 @@
       pointer-events: none;
       z-index: 0;
       background: var(--bg);
-      transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
+      contain: strict;
     }
 
     .glow-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.55;
       will-change: transform;
-      transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
+      pointer-events: none;
     }
 
     .orb-cyan {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #0284c7 0%, rgba(2, 132, 199, 0) 70%);
-      top: -10%;
-      left: -10%;
-      animation: driftCyan 18s ease-in-out infinite alternate;
+      width: 55vw;
+      height: 55vw;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.48) 0%, rgba(2, 132, 199, 0.2) 35%, transparent 70%);
+      top: -12%;
+      left: -12%;
+      animation: driftCyan 20s ease-in-out infinite alternate;
     }
 
     .orb-purple {
-      width: 55vw;
-      height: 55vw;
-      background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.42) 0%, rgba(139, 92, 246, 0.18) 35%, transparent 70%);
       top: 35%;
       right: -15%;
-      animation: driftPurple 24s ease-in-out infinite alternate-reverse;
+      animation: driftPurple 26s ease-in-out infinite alternate-reverse;
     }
 
     .orb-amber {
-      width: 45vw;
-      height: 45vw;
-      background: radial-gradient(circle, #d97706 0%, rgba(217, 119, 6, 0) 70%);
-      bottom: -10%;
-      left: 15%;
-      animation: driftAmber 20s ease-in-out infinite alternate;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.45) 0%, rgba(217, 119, 6, 0.16) 35%, transparent 70%);
+      bottom: -12%;
+      left: 12%;
+      animation: driftAmber 22s ease-in-out infinite alternate;
     }
 
     @keyframes driftCyan {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(18vw, 15vh, 0) scale(1.25); }
+      100% { transform: translate3d(14vw, 12vh, 0) scale(1.2); }
     }
 
     @keyframes driftPurple {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(-18vw, -12vh, 0) scale(1.3); }
+      100% { transform: translate3d(-14vw, -10vh, 0) scale(1.25); }
     }
 
     @keyframes driftAmber {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(12vw, -16vh, 0) scale(1.2); }
+      100% { transform: translate3d(10vw, -12vh, 0) scale(1.15); }
     }
 
     /* Fixed Particle Canvas */
@@ -134,19 +135,19 @@
       height: 100vh;
       pointer-events: none;
       z-index: 1;
-      transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
     }
 
-    /* Global Soft Backdrop Diffuser */
+    /* Single Global Glass Shield (Master Diffuse Layer) */
     .ambient-glass-shield {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: rgba(3, 4, 7, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(3, 4, 7, 0.35);
       pointer-events: none;
       z-index: 2;
-      transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
     }
 
     /* Mobile Status Bar Blur Overlay */
@@ -156,16 +157,15 @@
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(3, 4, 7, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(3, 4, 7, 0.85);
       z-index: 1000;
       pointer-events: none;
+      transform: translate3d(0, 0, 0);
     }
 
     @keyframes floatEmblem {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -6px, 0); }
     }
 
     @keyframes pulseDot {
@@ -188,20 +188,19 @@
       z-index: 3;
     }
 
-    /* Heavily Blurred Frosted Navbar */
+    /* High-Performance Frosted Navbar */
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
       margin-bottom: 0.5rem;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transform: translate3d(0, 0, 0);
     }
 
     .logo {
@@ -228,7 +227,7 @@
       border: 1px solid var(--bronze);
       padding: 0.5rem 1.1rem;
       border-radius: 6px;
-      transition: all 0.2s ease;
+      transition: background 0.15s ease, transform 0.15s ease;
     }
 
     .nav-cta:hover {
@@ -270,9 +269,7 @@
       font-weight: 700;
       color: var(--bronze);
       border: 1px solid var(--border-bronze);
-      background: rgba(14, 18, 30, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(14, 18, 30, 0.7);
       padding: 0.4rem 0.85rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -309,7 +306,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 25px rgba(197, 160, 126, 0.25));
-      transition: filter 0.3s ease;
+      transition: filter 0.2s ease;
     }
 
     .mesh-title:hover {
@@ -331,9 +328,7 @@
     }
 
     .android-emblem-card {
-      background: rgba(14, 18, 30, 0.55);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(14, 18, 30, 0.7);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -341,13 +336,14 @@
       flex-direction: column;
       align-items: center;
       gap: 0.85rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       animation: floatEmblem 5s ease-in-out infinite;
       cursor: grab;
       user-select: none;
       touch-action: none;
       width: fit-content;
       will-change: transform;
+      transform: translate3d(0, 0, 0);
     }
 
     .android-emblem-card.is-dragging {
@@ -415,7 +411,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* Heavily Blurred Controls Bar */
+    /* Sticky Controls Bar */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -426,12 +422,11 @@
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
       background: var(--bg-panel);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transform: translate3d(0, 0, 0);
     }
 
     .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
@@ -453,7 +448,7 @@
     .tab-btn:hover {
       color: var(--silver-light);
       border-color: var(--border-silver);
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .tab-btn.active {
@@ -480,7 +475,7 @@
       font-size: 0.8rem;
       border-radius: 6px;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.15s ease;
     }
 
     .search-box:focus {
@@ -504,7 +499,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Highly Visible Frosted Glass Translucent Cards */
+    /* Performance Optimized Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -528,8 +523,6 @@
 
     .rom-card {
       background: var(--bg-card);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
       padding: 2rem;
@@ -537,13 +530,15 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      contain: content;
+      transform: translate3d(0, 0, 0);
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(197, 160, 126, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), 0 0 20px rgba(197, 160, 126, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       transform: translateY(-2px);
     }
 
@@ -750,29 +745,27 @@
       transform: translateY(-2px);
     }
 
-    /* Modal Layering with Visible Blur */
+    /* Modal Layering */
     .overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 2000;
       display: flex;
       justify-content: center;
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s var(--fluid-in);
+      transition: opacity 0.2s var(--fluid-in);
       padding: 1rem;
     }
 
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(14, 18, 30, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(14, 18, 30, 0.88);
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -780,7 +773,7 @@
       width: 100%;
       position: relative;
       transform: scale(0.94) translateY(12px);
-      transition: transform 0.32s var(--fluid-spring);
+      transition: transform 0.25s var(--fluid-spring);
       box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
 
@@ -814,13 +807,11 @@
       font-size: 0.9rem;
     }
 
-    /* Lightbox Modal with Deep Background Blur */
+    /* Lightbox Modal */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
       display: flex;
       align-items: center;
@@ -828,21 +819,21 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.35s var(--fluid-in),
-                  backdrop-filter 0.35s var(--fluid-in),
-                  -webkit-backdrop-filter 0.35s var(--fluid-in),
-                  visibility 0s linear 0.35s;
+      transition: opacity 0.25s var(--fluid-in),
+                  backdrop-filter 0.25s var(--fluid-in),
+                  -webkit-backdrop-filter 0.25s var(--fluid-in),
+                  visibility 0s linear 0.25s;
     }
 
     .lightbox-overlay.active {
       opacity: 1;
       visibility: visible;
       pointer-events: all;
-      backdrop-filter: blur(35px) saturate(180%);
-      -webkit-backdrop-filter: blur(35px) saturate(180%);
-      transition: opacity 0.42s var(--fluid-out),
-                  backdrop-filter 0.42s var(--fluid-out),
-                  -webkit-backdrop-filter 0.42s var(--fluid-out),
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      transition: opacity 0.3s var(--fluid-out),
+                  backdrop-filter 0.3s var(--fluid-out),
+                  -webkit-backdrop-filter 0.3s var(--fluid-out),
                   visibility 0s;
     }
 
@@ -867,20 +858,14 @@
       user-select: none;
       box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 160, 126, 0.15);
       opacity: 0;
-      transform: scale3d(0.85, 0.85, 1) translateY(24px);
-      filter: blur(6px);
-      transition: transform 0.32s var(--fluid-in),
-                  opacity 0.28s var(--fluid-in),
-                  filter 0.28s var(--fluid-in);
+      transform: scale3d(0.9, 0.9, 1) translateY(18px);
+      transition: transform 0.25s var(--fluid-in), opacity 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lightbox-img {
       opacity: 1;
       transform: scale3d(1, 1, 1) translateY(0);
-      filter: blur(0px);
-      transition: transform 0.46s var(--fluid-spring),
-                  opacity 0.38s ease,
-                  filter 0.35s ease;
+      transition: transform 0.35s var(--fluid-spring), opacity 0.3s ease;
     }
 
     .lb-close {
@@ -891,8 +876,6 @@
       height: 44px;
       border-radius: 50%;
       background: rgba(18, 22, 35, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
       color: var(--silver-light);
       display: flex;
@@ -902,7 +885,7 @@
       z-index: 100000;
       opacity: 0;
       transform: scale(0.65) translateY(-8px);
-      transition: all 0.28s var(--fluid-in);
+      transition: all 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lb-close {
@@ -936,15 +919,13 @@
       align-items: center;
       gap: 0.5rem;
       background: rgba(14, 18, 30, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-bronze);
       padding: 0.35rem 0.6rem;
       border-radius: 999px;
       z-index: 100000;
       opacity: 0;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
-      transition: all 0.28s var(--fluid-in);
+      transition: all 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lb-toolbar {
@@ -963,7 +944,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .lb-nav-btn:hover {
@@ -996,7 +977,7 @@
 </head>
 <body>
 
-  <!-- Ambient Light Stage (Vibrant Moving Background) -->
+  <!-- Ambient Glowing Background -->
   <div class="ambient-stage">
     <div class="glow-orb orb-cyan"></div>
     <div class="glow-orb orb-purple"></div>
@@ -1602,7 +1583,6 @@
       const maxDistSq = maxDist * maxDist;
       const pCount = particles.length;
 
-      // Single-batch line draw call for optimal GPU execution
       ctx.lineWidth = 0.75;
       ctx.strokeStyle = 'rgba(197, 160, 126, 0.12)';
       ctx.beginPath();
@@ -1623,7 +1603,6 @@
       }
       ctx.stroke();
 
-      // Render point coordinates
       for (let i = 0; i < pCount; i++) {
         const p = particles[i];
         ctx.fillStyle = p.color;
@@ -1782,7 +1761,6 @@
     let touchStartX = 0;
     let touchStartY = 0;
 
-    // Delegated click listener for image previews
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if (target) {
@@ -1907,7 +1885,7 @@
                 <div class="changelog-header">
                   <span class="data-label">Changelog</span>
                   <button class="copy-btn" onclick="copyChangelog(this, \`${escapedChangelog}\`)" aria-label="Copy changelog">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy
                   </button>
                 </div>
