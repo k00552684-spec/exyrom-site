@@ -12,9 +12,9 @@
 
   <style>
     :root {
-      --bg: #050608;
-      --bg-panel: rgba(14, 16, 24, 0.72);
-      --bg-card: rgba(16, 18, 28, 0.65);
+      --bg: #030407;
+      --bg-panel: rgba(15, 18, 28, 0.55);
+      --bg-card: rgba(16, 20, 32, 0.52);
       
       --bronze: #c5a07e;
       --bronze-light: #dfc7b0;
@@ -23,9 +23,9 @@
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(255, 255, 255, 0.08);
-      --border-bronze: rgba(197, 160, 126, 0.28);
-      --border-hover: rgba(212, 163, 115, 0.65);
+      --border-silver: rgba(255, 255, 255, 0.12);
+      --border-bronze: rgba(197, 160, 126, 0.35);
+      --border-hover: rgba(212, 163, 115, 0.8);
       
       --text-100: #f8fafc;
       --text-200: #cbd5e1;
@@ -61,11 +61,10 @@
       padding: 0 1.5rem 8rem 1.5rem;
       position: relative;
       overflow-x: hidden;
-      contain: paint;
     }
 
-    /* Hardware-Accelerated Ambient Light Stage */
-    .ambient-background-stage {
+    /* --- VIBRANT GLOWING BACKGROUND (GIVES THE BLUR VISIBLE COLOR) --- */
+    .ambient-stage {
       position: fixed;
       inset: 0;
       overflow: hidden;
@@ -75,58 +74,58 @@
       transform: translateZ(0);
     }
 
-    .blur-orb {
+    .glow-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.38;
+      filter: blur(60px);
+      opacity: 0.55;
       will-change: transform;
       transform: translateZ(0);
     }
 
     .orb-cyan {
-      width: 45vw;
-      height: 45vw;
+      width: 50vw;
+      height: 50vw;
       background: radial-gradient(circle, #0284c7 0%, rgba(2, 132, 199, 0) 70%);
-      top: -5%;
-      left: -5%;
-      animation: floatCyan 22s ease-in-out infinite alternate;
+      top: -10%;
+      left: -10%;
+      animation: driftCyan 18s ease-in-out infinite alternate;
     }
 
     .orb-purple {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #7c3aed 0%, rgba(124, 58, 237, 0) 70%);
-      top: 40%;
-      right: -10%;
-      animation: floatPurple 28s ease-in-out infinite alternate-reverse;
+      width: 55vw;
+      height: 55vw;
+      background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+      top: 35%;
+      right: -15%;
+      animation: driftPurple 24s ease-in-out infinite alternate-reverse;
     }
 
     .orb-amber {
-      width: 40vw;
-      height: 40vw;
+      width: 45vw;
+      height: 45vw;
       background: radial-gradient(circle, #d97706 0%, rgba(217, 119, 6, 0) 70%);
-      bottom: -5%;
-      left: 10%;
-      animation: floatAmber 24s ease-in-out infinite alternate;
+      bottom: -10%;
+      left: 15%;
+      animation: driftAmber 20s ease-in-out infinite alternate;
     }
 
-    @keyframes floatCyan {
+    @keyframes driftCyan {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(15vw, 12vh, 0) scale(1.2); }
+      100% { transform: translate3d(18vw, 15vh, 0) scale(1.25); }
     }
 
-    @keyframes floatPurple {
+    @keyframes driftPurple {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(-15vw, -10vh, 0) scale(1.25); }
+      100% { transform: translate3d(-18vw, -12vh, 0) scale(1.3); }
     }
 
-    @keyframes floatAmber {
+    @keyframes driftAmber {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(10vw, -14vh, 0) scale(1.1); }
+      100% { transform: translate3d(12vw, -16vh, 0) scale(1.2); }
     }
 
-    /* Interactive Canvas Background */
+    /* Fixed Particle Canvas */
     #pointsCanvas {
       position: fixed;
       top: 0;
@@ -138,13 +137,13 @@
       transform: translateZ(0);
     }
 
-    /* Single Optimized Global Glass Shield */
-    .glass-diffuse-shield {
+    /* Global Soft Backdrop Diffuser */
+    .ambient-glass-shield {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      background: rgba(5, 6, 8, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(3, 4, 7, 0.4);
       pointer-events: none;
       z-index: 2;
       transform: translateZ(0);
@@ -157,9 +156,9 @@
       left: 0;
       right: 0;
       height: max(28px, env(safe-area-inset-top));
-      background: rgba(5, 6, 8, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(3, 4, 7, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 1000;
       pointer-events: none;
     }
@@ -176,7 +175,7 @@
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--bronze); }
 
     .layout-grid {
@@ -189,18 +188,20 @@
       z-index: 3;
     }
 
-    /* Navbar */
+    /* Heavily Blurred Frosted Navbar */
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.1rem 1.5rem;
       background: var(--bg-panel);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
       margin-top: 1.5rem;
       margin-bottom: 0.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .logo {
@@ -227,7 +228,7 @@
       border: 1px solid var(--bronze);
       padding: 0.5rem 1.1rem;
       border-radius: 6px;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .nav-cta:hover {
@@ -269,7 +270,9 @@
       font-weight: 700;
       color: var(--bronze);
       border: 1px solid var(--border-bronze);
-      background: rgba(14, 16, 24, 0.6);
+      background: rgba(14, 18, 30, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 0.4rem 0.85rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -328,7 +331,9 @@
     }
 
     .android-emblem-card {
-      background: rgba(14, 16, 24, 0.7);
+      background: rgba(14, 18, 30, 0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       border: 1px solid var(--border-bronze);
       border-radius: 16px;
       padding: 1.1rem 1.25rem;
@@ -336,7 +341,7 @@
       flex-direction: column;
       align-items: center;
       gap: 0.85rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       animation: floatEmblem 5s ease-in-out infinite;
       cursor: grab;
       user-select: none;
@@ -376,7 +381,7 @@
       border: 1px solid var(--border-silver);
       padding: 0.25rem 0.65rem;
       border-radius: 4px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       pointer-events: none;
     }
 
@@ -410,7 +415,7 @@
       .octocat-hero-img { width: 85px; height: 85px; }
     }
 
-    /* Sticky Controls Bar */
+    /* Heavily Blurred Controls Bar */
     .engine-controls {
       display: flex;
       justify-content: space-between;
@@ -420,11 +425,13 @@
       position: sticky;
       top: max(1rem, calc(env(safe-area-inset-top) + 0.5rem));
       z-index: 50;
-      background: rgba(14, 16, 24, 0.92);
+      background: var(--bg-panel);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-bronze);
       padding: 0.75rem 1rem;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .tabs { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
@@ -439,14 +446,14 @@
       padding: 0.5rem 0.9rem;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease;
+      transition: all 0.15s ease;
       white-space: nowrap;
     }
 
     .tab-btn:hover {
       color: var(--silver-light);
       border-color: var(--border-silver);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .tab-btn.active {
@@ -465,7 +472,7 @@
 
     .search-box {
       width: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid var(--border-silver);
       padding: 0.6rem 2.2rem 0.6rem 1rem;
       color: var(--text-100);
@@ -497,7 +504,7 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Performance Optimized Cards */
+    /* Highly Visible Frosted Glass Translucent Cards */
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -521,6 +528,8 @@
 
     .rom-card {
       background: var(--bg-card);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-silver);
       border-radius: 14px;
       padding: 2rem;
@@ -528,13 +537,13 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(197, 160, 126, 0.15);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(197, 160, 126, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       transform: translateY(-2px);
     }
 
@@ -596,9 +605,9 @@
     }
     .flavor-default { background: rgba(200, 205, 215, 0.1); color: var(--silver); border: 1px solid var(--border-silver); }
     .flavor-vanilla { background: rgba(200, 205, 215, 0.12); color: var(--silver-light); border: 1px solid rgba(200, 205, 215, 0.25); }
-    .flavor-gapps { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
-    .flavor-eol { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .flavor-balanced { background: rgba(197, 160, 126, 0.18); color: var(--bronze-light); border: 1px solid var(--border-bronze); }
+    .flavor-gapps { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .flavor-eol { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .flavor-balanced { background: rgba(197, 160, 126, 0.2); color: var(--bronze-light); border: 1px solid var(--border-bronze); }
 
     .card-middle {
       display: grid;
@@ -631,7 +640,7 @@
     }
 
     .copy-btn {
-      background: rgba(17, 17, 20, 0.6);
+      background: rgba(17, 20, 32, 0.7);
       border: 1px solid var(--border-silver);
       color: var(--text-300);
       font-family: 'JetBrains Mono', monospace;
@@ -648,12 +657,12 @@
     .copy-btn:hover {
       color: var(--silver-light);
       border-color: var(--bronze);
-      background: rgba(197, 160, 126, 0.2);
+      background: rgba(197, 160, 126, 0.25);
     }
 
     .changelog-box {
-      background: rgba(4, 5, 8, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(4, 5, 8, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 0.65rem 1rem;
       border-radius: 8px;
       font-family: 'Outfit', sans-serif;
@@ -667,7 +676,7 @@
     }
 
     .notice-box {
-      background: rgba(197, 160, 126, 0.1);
+      background: rgba(197, 160, 126, 0.12);
       color: var(--bronze-light);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.76rem;
@@ -704,7 +713,7 @@
       object-fit: contain;
       flex-shrink: 0;
       transition: border-color 0.2s ease, transform 0.2s ease;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
     }
 
     .img-thumb:hover {
@@ -741,13 +750,13 @@
       transform: translateY(-2px);
     }
 
-    /* Modal Layering */
+    /* Modal Layering with Visible Blur */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
       z-index: 2000;
       display: flex;
       justify-content: center;
@@ -761,7 +770,9 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(14, 16, 24, 0.92);
+      background: rgba(14, 18, 30, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-bronze);
       padding: 2.5rem;
       border-radius: 14px;
@@ -770,6 +781,7 @@
       position: relative;
       transform: scale(0.94) translateY(12px);
       transition: transform 0.32s var(--fluid-spring);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
 
     .overlay.active .modal-content {
@@ -802,11 +814,13 @@
       font-size: 0.9rem;
     }
 
-    /* Lightbox Modal */
+    /* Lightbox Modal with Deep Background Blur */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
       z-index: 99999;
       display: flex;
       align-items: center;
@@ -824,8 +838,8 @@
       opacity: 1;
       visibility: visible;
       pointer-events: all;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(35px) saturate(180%);
+      -webkit-backdrop-filter: blur(35px) saturate(180%);
       transition: opacity 0.42s var(--fluid-out),
                   backdrop-filter 0.42s var(--fluid-out),
                   -webkit-backdrop-filter 0.42s var(--fluid-out),
@@ -851,7 +865,7 @@
       border: 1px solid var(--border-bronze);
       object-fit: contain;
       user-select: none;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 160, 126, 0.12);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 160, 126, 0.15);
       opacity: 0;
       transform: scale3d(0.85, 0.85, 1) translateY(24px);
       filter: blur(6px);
@@ -876,7 +890,7 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(18, 18, 22, 0.8);
+      background: rgba(18, 22, 35, 0.7);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-bronze);
@@ -921,7 +935,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(14, 16, 24, 0.85);
+      background: rgba(14, 18, 30, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-bronze);
@@ -982,18 +996,18 @@
 </head>
 <body>
 
-  <!-- Background Orbs Layer -->
-  <div class="ambient-background-stage">
-    <div class="blur-orb orb-cyan"></div>
-    <div class="blur-orb orb-purple"></div>
-    <div class="blur-orb orb-amber"></div>
+  <!-- Ambient Light Stage (Vibrant Moving Background) -->
+  <div class="ambient-stage">
+    <div class="glow-orb orb-cyan"></div>
+    <div class="glow-orb orb-purple"></div>
+    <div class="glow-orb orb-amber"></div>
   </div>
 
   <!-- Hardware-Accelerated Points Canvas -->
   <canvas id="pointsCanvas"></canvas>
 
-  <!-- Global Diffusion Layer -->
-  <div class="glass-diffuse-shield"></div>
+  <!-- Ambient Frosted Diffuse Layer -->
+  <div class="ambient-glass-shield"></div>
 
   <!-- Mobile Status Bar Overlay -->
   <div class="status-bar-blur"></div>
@@ -1893,7 +1907,7 @@
                 <div class="changelog-header">
                   <span class="data-label">Changelog</span>
                   <button class="copy-btn" onclick="copyChangelog(this, \`${escapedChangelog}\`)" aria-label="Copy changelog">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     Copy
                   </button>
                 </div>
