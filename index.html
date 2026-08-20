@@ -1292,13 +1292,13 @@
           if (!match) continue;
         }
 
-        if (cat === "kernel") buckets["// CUSTOM KERNELS"].push(item);
-        else if (cat === "gapps") buckets["// GOOGLE APPS (GAPPS)"].push(item);
-        else if (cat === "recovery") buckets["// RECOVERY PACKAGES"].push(item);
+        if (cat === "kernel") buckets["03 // CUSTOM KERNELS"].push(item);
+        else if (cat === "gapps") buckets["04 // GOOGLE APPS (GAPPS)"].push(item);
+        else if (cat === "recovery") buckets["05 // RECOVERY PACKAGES"].push(item);
         else if (cat === "rom") {
-          if (item.android && item.android.includes("16")) buckets["// ANDROID 16 BUILDS"].push(item);
-          else if (item.android && item.android.includes("17")) buckets["// ANDROID 17 BUILDS"].push(item);
-          else buckets["// ANDROID 16 BUILDS"].push(item);
+          if (item.android && item.android.includes("16")) buckets["01 // ANDROID 16 BUILDS"].push(item);
+          else if (item.android && item.android.includes("17")) buckets["02 // ANDROID 17 BUILDS"].push(item);
+          else buckets["01 // ANDROID 16 BUILDS"].push(item);
         }
       }
 
