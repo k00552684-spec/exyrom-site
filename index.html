@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Project-ExyROMs</title>
 
-  <!-- Google Fonts: Montserrat & JetBrains Mono -->
+  <!-- Preconnect & Preload Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #030407;
-      --bg-panel: rgba(14, 17, 26, 0.75);
+      --bg-panel: rgba(14, 17, 26, 0.72);
       --bg-card: rgba(16, 20, 32, 0.65);
       
       --bronze: #c5a07e;
@@ -23,8 +23,8 @@
       --silver-light: #e2e8f0;
       --silver-dark: #64748b;
       
-      --border-silver: rgba(255, 255, 255, 0.1);
-      --border-bronze: rgba(197, 160, 126, 0.32);
+      --border-silver: rgba(255, 255, 255, 0.12);
+      --border-bronze: rgba(197, 160, 126, 0.3);
       --border-hover: rgba(212, 163, 115, 0.75);
       
       --text-100: #f8fafc;
@@ -69,7 +69,7 @@
       }
     }
 
-    /* Ambient Glow Stage */
+    /* --- HARDWARE-ACCELERATED AMBIENT GLOW STAGE --- */
     .ambient-stage {
       position: fixed;
       inset: 0;
@@ -92,16 +92,16 @@
     .orb-cyan {
       width: 55vw;
       height: 55vw;
-      background: radial-gradient(circle, rgba(2, 132, 199, 0.45) 0%, rgba(2, 132, 199, 0.18) 35%, transparent 70%);
-      top: -10%;
-      left: -10%;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.48) 0%, rgba(2, 132, 199, 0.2) 35%, transparent 70%);
+      top: -12%;
+      left: -12%;
       animation: driftCyan 20s ease-in-out infinite alternate;
     }
 
     .orb-purple {
       width: 60vw;
       height: 60vw;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0.16) 35%, transparent 70%);
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.42) 0%, rgba(139, 92, 246, 0.18) 35%, transparent 70%);
       top: 35%;
       right: -15%;
       animation: driftPurple 26s ease-in-out infinite alternate-reverse;
@@ -110,8 +110,8 @@
     .orb-amber {
       width: 50vw;
       height: 50vw;
-      background: radial-gradient(circle, rgba(217, 119, 6, 0.42) 0%, rgba(217, 119, 6, 0.15) 35%, transparent 70%);
-      bottom: -10%;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.45) 0%, rgba(217, 119, 6, 0.16) 35%, transparent 70%);
+      bottom: -12%;
       left: 12%;
       animation: driftAmber 22s ease-in-out infinite alternate;
     }
@@ -143,15 +143,30 @@
       transform: translate3d(0, 0, 0);
     }
 
-    /* Global Frosted Glass Shield */
+    /* Single Global Glass Shield (Master Diffuse Layer) */
     .ambient-glass-shield {
       position: fixed;
       inset: 0;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       background: rgba(3, 4, 7, 0.35);
       pointer-events: none;
       z-index: 2;
+      transform: translate3d(0, 0, 0);
+    }
+
+    /* Optimized Status Bar Blur Overlay with Safe-Area Coverage */
+    .status-bar-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: max(24px, env(safe-area-inset-top));
+      background: rgba(3, 4, 7, 0.45);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      z-index: 1500;
+      pointer-events: none;
       transform: translate3d(0, 0, 0);
     }
 
@@ -185,11 +200,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.9rem 1.25rem;
+      padding: 0.9wm 1.25rem;
       background: var(--bg-panel);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
-      margin-top: 1rem;
+      margin-top: calc(max(20px, env(safe-area-inset-top)) + 0.75rem);
       margin-bottom: 0.25rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transform: translate3d(0, 0, 0);
@@ -975,6 +990,9 @@
   <!-- Ambient Frosted Diffuse Layer -->
   <div class="ambient-glass-shield"></div>
 
+  <!-- Status Bar Blur Overlay -->
+  <div class="status-bar-blur"></div>
+
   <div class="layout-grid">
 
     <nav>
@@ -1739,7 +1757,6 @@
     let touchStartX = 0;
     let touchStartY = 0;
 
-    // Delegated click listener for image previews
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if (target) {
@@ -1911,7 +1928,7 @@
         else if (cat === "rom") {
           if (item.android && item.android.includes("16")) buckets["ANDROID 16 RELEASES"].push(item);
           else if (item.android && item.android.includes("17")) buckets["ANDROID 17 RELEASES"].push(item);
-          else buckets["ANDROID 16 RELEASES"].push(item);
+          else buckets["ANDROID 16 REList"].push(item); // fallback safe
         }
       }
 
