@@ -69,7 +69,7 @@
       }
     }
 
-    /* --- HARDWARE-ACCELERATED AMBIENT GLOW STAGE --- */
+    /* Ambient Glow Stage */
     .ambient-stage {
       position: fixed;
       inset: 0;
@@ -408,6 +408,7 @@
     .tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
     .tabs::-webkit-scrollbar { display: none; }
 
+    /* Animated Spring Tabs */
     .tab-btn {
       background: transparent;
       border: 1px solid transparent;
@@ -417,8 +418,8 @@
       padding: 0.45rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
-      transition: all 0.15s ease;
       white-space: nowrap;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .tab-btn:hover {
@@ -427,11 +428,17 @@
       background: rgba(255, 255, 255, 0.06);
     }
 
+    .tab-btn:active {
+      transform: scale(0.94);
+    }
+
     .tab-btn.active {
       background: var(--bronze);
       border-color: var(--bronze);
       color: #000000;
       font-weight: 700;
+      box-shadow: 0 4px 18px rgba(197, 160, 126, 0.35);
+      transform: scale(1.02);
     }
 
     .search-wrap {
@@ -476,7 +483,18 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* Performance Optimized Cards */
+    /* --- BUTTERY-SMOOTH STAGGERED TAB-SWITCHING ANIMATION --- */
+    @keyframes smoothTabFade {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     .builds-container {
       display: flex;
       flex-direction: column;
@@ -496,6 +514,7 @@
       margin-bottom: -0.6rem;
       display: flex;
       justify-content: space-between;
+      animation: smoothTabFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .rom-card {
@@ -512,10 +531,9 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
       transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
       
-      /* ULTRA PERFORMANCE HINTS */
-      contain: layout style paint;
-      content-visibility: auto;
-      contain-intrinsic-size: 450px;
+      /* GPU Accelerated Staggered Entrance */
+      animation: smoothTabFade 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+      will-change: transform, opacity;
       transform: translate3d(0, 0, 0);
     }
 
@@ -807,7 +825,7 @@
       font-size: 0.86rem;
     }
 
-    /* --- CINEMATIC BUTTERY-SMOOTH LIGHTBOX ANIMATIONS --- */
+    /* Lightbox Modal */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -1851,7 +1869,7 @@
       }
     });
 
-    function createCardHTML(item) {
+    function createCardHTML(item, cardIndex) {
       const realIndex = buildsData.indexOf(item);
       const cat = (item.category || "rom").toLowerCase();
       
@@ -1877,9 +1895,10 @@
       const noticeHtml = item.Notice ? `<div class="notice-box"><strong>// NOTICE:</strong><br>${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
       const safeChangelog = (item.changelog || '').trim();
       const escapedChangelog = safeChangelog.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+      const staggerDelay = Math.min((cardIndex || 0) * 35, 280);
 
       return `
-        <div class="rom-card">
+        <div class="rom-card" style="animation-delay: ${staggerDelay}ms;">
           <div class="card-top">
             <div class="card-title-group">
               <div class="build-name">${item.title}</div>
@@ -1915,7 +1934,6 @@
 
     function renderBuilds(searchTerm = "") {
       const container = document.getElementById("buildsList");
-      if (!container) return;
       const term = searchTerm.toLowerCase();
 
       const buckets = {
@@ -1951,11 +1969,12 @@
       }
 
       let htmlBuffer = "";
+      let cardCounter = 0;
       for (const [title, list] of Object.entries(buckets)) {
         if (!list.length) continue;
         htmlBuffer += `<div class="section-label"><span>// ${title}</span><span>[${list.length}]</span></div>`;
         for (let j = 0; j < list.length; j++) {
-          htmlBuffer += createCardHTML(list[j]);
+          htmlBuffer += createCardHTML(list[j], cardCounter++);
         }
       }
 
