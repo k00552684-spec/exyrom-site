@@ -155,6 +155,21 @@
       transform: translate3d(0, 0, 0);
     }
 
+    /* Status Bar Blur Overlay with Safe-Area Coverage */
+    .status-bar-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: max(24px, env(safe-area-inset-top));
+      background: rgba(3, 4, 7, 0.45);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      z-index: 1500;
+      pointer-events: none;
+      transform: translate3d(0, 0, 0);
+    }
+
     @keyframes floatEmblem {
       0%, 100% { transform: translate3d(0, 0, 0); }
       50% { transform: translate3d(0, -6px, 0); }
@@ -189,7 +204,7 @@
       background: var(--bg-panel);
       border: 1px solid var(--border-bronze);
       border-radius: 14px;
-      margin-top: 1rem;
+      margin-top: calc(max(20px, env(safe-area-inset-top)) + 0.75rem);
       margin-bottom: 0.25rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transform: translate3d(0, 0, 0);
@@ -365,13 +380,12 @@
     .maintainer-tag {
       color: var(--bronze-pastel);
       font-weight: 700;
-      text-decoration: none;
+      text-decoration: underline;
       transition: color 0.2s ease;
     }
 
     .maintainer-tag:hover {
       color: #fff;
-      text-decoration: underline;
     }
 
     @media (max-width: 768px) {
@@ -975,7 +989,9 @@
   <!-- Ambient Frosted Diffuse Layer -->
   <div class="ambient-glass-shield"></div>
 
-  <!-- Light-speed Image Optimization: Added asynchronous prefetch headers for image assets -->
+  <!-- Status Bar Blur Overlay -->
+  <div class="status-bar-blur"></div>
+
   <div class="layout-grid">
 
     <nav>
@@ -996,7 +1012,7 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <img src="oct.jpg" alt="Emblem" class="octocat-hero-img" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
+            <img src="oct.jpg" alt="Emblem" class="octocat-hero-img" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -1505,7 +1521,7 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    /* Optimized 2D Canvas Engine with lazy requestAnimationFrame */
+    /* Optimized 2D Canvas Engine */
     const canvas = document.getElementById('pointsCanvas');
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
@@ -1527,14 +1543,14 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       particles = [];
-      const particleCount = Math.min(Math.floor((width * height) / 32000) + 10, 35); // Optimized count for buttery smoothness
+      const particleCount = Math.min(Math.floor((width * height) / 28000) + 14, 45);
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
           radius: Math.random() * 1.5 + 1.2,
           color: POINT_COLORS[Math.floor(Math.random() * POINT_COLORS.length)],
           alpha: Math.random() * 0.5 + 0.35
@@ -1547,7 +1563,7 @@
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initPoints, 200);
+      resizeTimer = setTimeout(initPoints, 150);
     }, { passive: true });
 
     function renderPoints() {
@@ -1558,12 +1574,12 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      const maxDist = 100;
+      const maxDist = 110;
       const maxDistSq = maxDist * maxDist;
       const pCount = particles.length;
 
-      ctx.lineWidth = 0.7;
-      ctx.strokeStyle = 'rgba(197, 160, 126, 0.1)';
+      ctx.lineWidth = 0.75;
+      ctx.strokeStyle = 'rgba(197, 160, 126, 0.12)';
       ctx.beginPath();
       for (let i = 0; i < pCount; i++) {
         const p1 = particles[i];
@@ -1608,7 +1624,7 @@
 
     initPoints();
 
-    // Throttled mouse move event handler
+    // Mouse follow effect with requestAnimationFrame throttling
     const meshTitle = document.getElementById('meshTitle');
     if (meshTitle) {
       let titleRAF = null;
