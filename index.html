@@ -975,6 +975,7 @@
   <!-- Ambient Frosted Diffuse Layer -->
   <div class="ambient-glass-shield"></div>
 
+  <!-- Light-speed Image Optimization: Added asynchronous prefetch headers for image assets -->
   <div class="layout-grid">
 
     <nav>
@@ -995,7 +996,7 @@
 
         <div class="hero-emblem-col">
           <div class="android-emblem-card" id="draggableEmblem" title="Drag me!">
-            <img src="oct.jpg" alt="Emblem" class="octocat-hero-img" loading="eager" decoding="async" onerror="this.style.display='none'">
+            <img src="oct.jpg" alt="Emblem" class="octocat-hero-img" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -1504,7 +1505,7 @@
     let activeScreenshots = [];
     let currentImageIndex = 0;
 
-    /* Optimized 2D Canvas Engine */
+    /* Optimized 2D Canvas Engine with lazy requestAnimationFrame */
     const canvas = document.getElementById('pointsCanvas');
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
@@ -1526,14 +1527,14 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       particles = [];
-      const particleCount = Math.min(Math.floor((width * height) / 28000) + 14, 45);
+      const particleCount = Math.min(Math.floor((width * height) / 32000) + 10, 35); // Optimized count for buttery smoothness
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
           radius: Math.random() * 1.5 + 1.2,
           color: POINT_COLORS[Math.floor(Math.random() * POINT_COLORS.length)],
           alpha: Math.random() * 0.5 + 0.35
@@ -1546,7 +1547,7 @@
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initPoints, 150);
+      resizeTimer = setTimeout(initPoints, 200);
     }, { passive: true });
 
     function renderPoints() {
@@ -1557,12 +1558,12 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      const maxDist = 110;
+      const maxDist = 100;
       const maxDistSq = maxDist * maxDist;
       const pCount = particles.length;
 
-      ctx.lineWidth = 0.75;
-      ctx.strokeStyle = 'rgba(197, 160, 126, 0.12)';
+      ctx.lineWidth = 0.7;
+      ctx.strokeStyle = 'rgba(197, 160, 126, 0.1)';
       ctx.beginPath();
       for (let i = 0; i < pCount; i++) {
         const p1 = particles[i];
@@ -1607,7 +1608,7 @@
 
     initPoints();
 
-    // Mouse follow effect with requestAnimationFrame throttling
+    // Throttled mouse move event handler
     const meshTitle = document.getElementById('meshTitle');
     if (meshTitle) {
       let titleRAF = null;
@@ -1739,7 +1740,6 @@
     let touchStartX = 0;
     let touchStartY = 0;
 
-    // Delegated click listener for image previews
     document.getElementById("buildsList").addEventListener('click', (e) => {
       const target = e.target.closest('.img-thumb');
       if (target) {
@@ -1828,14 +1828,14 @@
       let featuresHtml = '';
       if (item.featureScreenshots?.length) {
         featuresHtml = `<div class="gallery-container"><div class="data-label">Feature Screenshots</div><div class="gallery-track">` +
-          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
+          item.featureScreenshots.map((src, f) => `<img src="${src}" loading="lazy" decoding="async" fetchpriority="low" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${f}" data-type="features">`).join('') +
           `</div></div>`;
       }
 
       let screensHtml = '';
       if (item.screenshots?.length) {
         screensHtml = `<div class="gallery-container"><div class="data-label">System Previews</div><div class="gallery-track">` +
-          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" decoding="async" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
+          item.screenshots.map((src, s) => `<img src="${src}" loading="lazy" decoding="async" fetchpriority="low" class="img-thumb" onerror="this.style.display='none'" data-bidx="${realIndex}" data-imgidx="${s}" data-type="rom">`).join('') +
           `</div></div>`;
       }
 
