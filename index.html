@@ -406,7 +406,6 @@
       transition: border-radius 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
     }
 
-    /* Sticky Controls Bar (Stick on Top) */
     .engine-controls.is-stuck {
       border-radius: 0;
       border-color: transparent;
@@ -425,18 +424,19 @@
     .tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
     .tabs::-webkit-scrollbar { display: none; }
 
-    /* Animated Spring Tabs */
+    /* Animated Dynamic Spring Tabs */
     .tab-btn {
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-200);
       font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.45rem 0.8rem;
+      padding: 0.45rem 0.85rem;
       border-radius: 6px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, background, color;
     }
 
     .tab-btn:hover {
@@ -446,7 +446,7 @@
     }
 
     .tab-btn:active {
-      transform: scale(0.94);
+      transform: scale(0.92);
     }
 
     .tab-btn.active {
@@ -454,8 +454,8 @@
       border-color: var(--bronze);
       color: #000000;
       font-weight: 700;
-      box-shadow: 0 4px 18px rgba(197, 160, 126, 0.35);
-      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(197, 160, 126, 0.45), 0 4px 14px rgba(0, 0, 0, 0.4);
+      transform: scale(1.04);
     }
 
     .search-wrap {
@@ -500,15 +500,33 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* --- BUTTERY-SMOOTH STAGGERED TAB-SWITCHING ANIMATION --- */
-    @keyframes smoothTabFade {
+    /* --- BUTTERY-SMOOTH MOTION-BLUR SWITCHING KEYFRAMES --- */
+    @keyframes smoothSwitchCascade {
       0% {
         opacity: 0;
-        transform: translateY(16px) scale(0.985);
+        transform: translate3d(0, 26px, 0) scale(0.965);
+        filter: blur(10px);
+      }
+      65% {
+        opacity: 0.95;
+        transform: translate3d(0, -2px, 0) scale(1.005);
+        filter: blur(0px);
       }
       100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    @keyframes smoothSectionFade {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 14px, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
       }
     }
 
@@ -531,7 +549,7 @@
       margin-bottom: -0.6rem;
       display: flex;
       justify-content: space-between;
-      animation: smoothTabFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: smoothSectionFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .rom-card {
@@ -548,9 +566,10 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
       transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
       
-      /* GPU Accelerated Staggered Entrance */
-      animation: smoothTabFade 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
-      will-change: transform, opacity;
+      /* GPU-Accelerated Dynamic Staggered Reveal Animation */
+      animation: smoothSwitchCascade 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--stagger, 0) * 45ms);
+      will-change: transform, opacity, filter;
       transform: translate3d(0, 0, 0);
     }
 
@@ -1155,15 +1174,15 @@
       },
       {
         title: "Everline Kernel",
-        categroy: "kernel",
+        category: "kernel",
         device: "Samsung Galaxy A51, F41, M31, M31s, M21",
         android: "Android 13 to 17",
         date: "24 August 2026",
         maintainer: "PARBINDAR7",
-        flavor: ["BALANCE"],
+        flavor: ["BALANCED"],
         changelog: "1. Add AutoFDO support\n2. <b>cpufreq_schedutil:</b> Add sugov_cpu_is_busy\n3. <b>cpufreq_schedutil:</b> Add ignore_dl_rate_limit\n4. <b>cpufreq_schedutil:</b> Add rt_rq_is_runnable\n5. <b>ems:</b> Uclamp ontime_load_avg boost\n6. <b>ems:</b> Add ontime_en and ontime_prefer_perf\n7. Built with Clang 22.1.8",
         Notice: "1. crDroid latest compatible\n2. Only support builds 26.07.2026 or newer",
-        donwloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2024-08-2026/"
+        downloadUrl: "https://sourceforge.net/projects/parbindar7-builds/files/Everline%2024-08-2026/"
       },
       {
         title: "Everline kernel",
@@ -1633,9 +1652,9 @@
     if (sentinel && controls) {
       const observer = new IntersectionObserver(([entry]) => {
         controls.classList.toggle('is-stuck', !entry.isIntersecting);
-    }, { threshold: [1.0] });
+      }, { threshold: [1.0] });
 
-    observer.observe(sentinel);
+      observer.observe(sentinel);
     }
     
     function initPoints() {
@@ -1796,13 +1815,14 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
-    // --- BUTTERY-SMOOTH ASYNCHRONOUS TAB SWITCHING ---
+    // --- BUTTERY-SMOOTH ASYNCHRONOUS TAB SWITCHING WITH RE-TRIGGERED CASCADE ---
     function setFilter(filter, btn) {
+      if (currentFilter === filter) return;
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       
-      // Defer DOM building to the next frame to prevent category selection stutter
+      // Request frame to immediately execute the staggered cascade animation
       requestAnimationFrame(() => {
         renderBuilds(document.getElementById("searchInput").value.trim());
       });
@@ -1971,10 +1991,9 @@
       const noticeHtml = item.Notice ? `<div class="notice-box"><strong>// NOTICE:</strong><br>${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
       const safeChangelog = (item.changelog || '').trim();
       const escapedChangelog = safeChangelog.replace(/`/g, '\\`').replace(/\$/g, '\\$');
-      const staggerDelay = Math.min((cardIndex || 0) * 35, 280);
 
       return `
-        <div class="rom-card" style="animation-delay: ${staggerDelay}ms;">
+        <div class="rom-card" style="--stagger: ${cardIndex};">
           <div class="card-top">
             <div class="card-title-group">
               <div class="build-name">${item.title}</div>
