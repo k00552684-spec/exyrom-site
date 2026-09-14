@@ -69,7 +69,7 @@
       }
     }
 
-    /* Ambient Glow Stage */
+    /* --- HARDWARE-ACCELERATED AMBIENT GLOW STAGE --- */
     .ambient-stage {
       position: fixed;
       inset: 0;
@@ -325,7 +325,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       animation: floatEmblem 5s ease-in-out infinite;
       cursor: grab;
       user-select: none;
@@ -393,50 +393,32 @@
       flex-wrap: wrap;
       gap: 0.85rem;
       position: sticky;
-      top: 0;
-      z-index: 9999;
+      top: max(0.75rem, calc(env(safe-area-inset-top) + 0.35rem));
+      z-index: 50;
       background: var(--bg-panel);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border: 1px solid var(--border-bronze);
       padding: 0.65rem 0.9rem;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transform: translate3d(0, 0, 0);
-      transition: border-radius 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
     }
 
-    .engine-controls.is-stuck {
-      border-radius: 0;
-      border-color: transparent;
-      background-color: rgba(11, 13, 20, 0.85);
-      box-shadow: 0 0 0 100vmax rgba(11, 13, 20, 0.85);
-      clip-path: inset(0 -100vmax 0 -100vmax);
-    }
-
-    #sticky-sentinel {
-      height: 1px;
-      margin-bottom: -1px;
-      pointer-events: none;
-      visibility: hidden;
-    }
-    
     .tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; align-items: center; }
     .tabs::-webkit-scrollbar { display: none; }
 
-    /* Animated Dynamic Spring Tabs */
     .tab-btn {
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-200);
       font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.45rem 0.85rem;
+      padding: 0.45rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
+      transition: all 0.15s ease;
       white-space: nowrap;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, background, color;
     }
 
     .tab-btn:hover {
@@ -445,17 +427,11 @@
       background: rgba(255, 255, 255, 0.06);
     }
 
-    .tab-btn:active {
-      transform: scale(0.92);
-    }
-
     .tab-btn.active {
       background: var(--bronze);
       border-color: var(--bronze);
       color: #000000;
       font-weight: 700;
-      box-shadow: 0 0 20px rgba(197, 160, 126, 0.45), 0 4px 14px rgba(0, 0, 0, 0.4);
-      transform: scale(1.04);
     }
 
     .search-wrap {
@@ -500,17 +476,34 @@
 
     .search-clear:hover { color: var(--text-100); }
 
-    /* --- BUTTERY-SMOOTH MOTION-BLUR SWITCHING KEYFRAMES --- */
+    /* --- THE NEW FULL-CONTAINER ANIMATION --- */
+    /* This manages the whole grid container when switching tabs so it shrinks, blurs, and fades out */
+    .builds-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      width: 100%;
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform, filter;
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: blur(0px);
+    }
+
+    .builds-container.is-exiting {
+      opacity: 0;
+      transform: translate3d(0, 15px, 0) scale(0.98);
+      filter: blur(5px);
+    }
+
+    /* Individual Element Entrance Animations */
     @keyframes smoothSwitchCascade {
       0% {
         opacity: 0;
-        transform: translate3d(0, 26px, 0) scale(0.965);
-        filter: blur(10px);
-      }
-      65% {
-        opacity: 0.95;
-        transform: translate3d(0, -2px, 0) scale(1.005);
-        filter: blur(0px);
+        transform: translate3d(0, 30px, 0) scale(0.95);
+        filter: blur(8px);
       }
       100% {
         opacity: 1;
@@ -528,13 +521,6 @@
         opacity: 1;
         transform: translate3d(0, 0, 0);
       }
-    }
-
-    .builds-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-      width: 100%;
     }
 
     .section-label {
@@ -563,13 +549,14 @@
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
       
       /* GPU-Accelerated Dynamic Staggered Reveal Animation */
-      animation: smoothSwitchCascade 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
-      animation-delay: calc(var(--stagger, 0) * 45ms);
+      animation: smoothSwitchCascade 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--stagger, 0) * 40ms);
       will-change: transform, opacity, filter;
+      contain: content;
       transform: translate3d(0, 0, 0);
     }
 
@@ -581,7 +568,7 @@
 
     .rom-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), 0 0 20px rgba(197, 160, 126, 0.18);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), 0 0 20px rgba(197, 160, 126, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       transform: translateY(-2px);
     }
 
@@ -802,8 +789,8 @@
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 2000;
       display: flex;
       justify-content: center;
@@ -817,9 +804,7 @@
     .overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
-      background: rgba(14, 18, 30, 0.9);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(14, 18, 30, 0.88);
       border: 1px solid var(--border-bronze);
       padding: 2rem;
       border-radius: 14px;
@@ -865,7 +850,7 @@
     .lightbox-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.75);
       z-index: 99999;
       display: flex;
       align-items: center;
@@ -873,29 +858,27 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
-      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  -webkit-backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  visibility 0s linear 0.3s;
+      transition: opacity 0.25s var(--fluid-in),
+                  backdrop-filter 0.25s var(--fluid-in),
+                  -webkit-backdrop-filter 0.25s var(--fluid-in),
+                  visibility 0s linear 0.25s;
     }
 
     .lightbox-overlay.active {
       opacity: 1;
       visibility: visible;
       pointer-events: all;
-      backdrop-filter: blur(35px) saturate(180%);
-      -webkit-backdrop-filter: blur(35px) saturate(180%);
-      transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-                  backdrop-filter 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-                  -webkit-backdrop-filter 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      transition: opacity 0.3s var(--fluid-out),
+                  backdrop-filter 0.3s var(--fluid-out),
+                  -webkit-backdrop-filter 0.3s var(--fluid-out),
                   visibility 0s;
     }
 
     .lightbox-img-wrap {
       max-width: 90vw;
-      max-height: 70vh;
+      max-height: 68vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -912,21 +895,16 @@
       border: 1px solid var(--border-bronze);
       object-fit: contain;
       user-select: none;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95), 0 0 40px rgba(197, 160, 126, 0.2);
-      
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 160, 126, 0.15);
       opacity: 0;
-      transform: scale3d(0.8, 0.8, 1) translateY(30px);
-      filter: blur(12px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity 0.25s ease-out,
-                  filter 0.3s ease-out;
-      will-change: transform, opacity, filter;
+      transform: scale3d(0.9, 0.9, 1) translateY(18px);
+      transition: transform 0.25s var(--fluid-in), opacity 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lightbox-img {
       opacity: 1;
       transform: scale3d(1, 1, 1) translateY(0);
-      filter: blur(0px);
+      transition: transform 0.35s var(--fluid-spring), opacity 0.3s ease;
     }
 
     .lb-close {
@@ -936,9 +914,7 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(18, 22, 35, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(18, 22, 35, 0.7);
       border: 1px solid var(--border-bronze);
       color: var(--silver-light);
       display: flex;
@@ -947,14 +923,13 @@
       cursor: pointer;
       z-index: 100000;
       opacity: 0;
-      transform: scale(0.6) translateY(-15px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background 0.2s;
+      transform: scale(0.65) translateY(-8px);
+      transition: all 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lb-close {
       opacity: 1;
       transform: scale(1) translateY(0);
-      transition-delay: 0.05s;
     }
 
     .lb-close:hover {
@@ -978,26 +953,23 @@
       position: fixed;
       bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem));
       left: 50%;
-      transform: translateX(-50%) translateY(40px) scale(0.85);
+      transform: translateX(-50%) translateY(30px) scale(0.8);
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(14, 18, 30, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(14, 18, 30, 0.75);
       border: 1px solid var(--border-bronze);
       padding: 0.35rem 0.6rem;
       border-radius: 999px;
       z-index: 100000;
       opacity: 0;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      transition: all 0.2s var(--fluid-in);
     }
 
     .lightbox-overlay.active .lb-toolbar {
       opacity: 1;
       transform: translateX(-50%) translateY(0) scale(1);
-      transition-delay: 0.08s;
     }
 
     .lb-nav-btn {
@@ -1087,8 +1059,6 @@
       </div>
     </section>
 
-    <div id="sticky-sentinel"></div>
-    
     <div class="engine-controls">
       <div class="tabs">
         <button class="tab-btn active" onclick="setFilter('all', this)">ALL</button>
@@ -1104,6 +1074,7 @@
       </div>
     </div>
 
+    <!-- MAIN BUILDS LIST -->
     <main class="builds-container" id="buildsList"></main>
 
   </div>
@@ -1884,17 +1855,36 @@
       window.addEventListener('touchend', onDragEnd, { passive: true });
     }
 
-    // --- BUTTERY-SMOOTH ASYNCHRONOUS TAB SWITCHING WITH RE-TRIGGERED CASCADE ---
+    // --- BUTTERY-SMOOTH EXIT & ENTER ANIMATION HANDLER ---
+    function triggerRender(searchTerm = "") {
+      const container = document.getElementById("buildsList");
+      
+      // If empty on first load, render immediately
+      if (!container.innerHTML.trim()) {
+        renderBuilds(searchTerm);
+        return;
+      }
+
+      // 1. Trigger Exit State
+      container.classList.add('is-exiting');
+
+      // 2. Wait for the exit transition (250ms), then swap DOM
+      setTimeout(() => {
+        renderBuilds(searchTerm);
+        
+        // 3. Remove exit state so the new items can animate in via keyframes
+        container.classList.remove('is-exiting');
+      }, 250);
+    }
+
     function setFilter(filter, btn) {
       if (currentFilter === filter) return;
       currentFilter = filter;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       
-      // Request frame to immediately execute the staggered cascade animation
-      requestAnimationFrame(() => {
-        renderBuilds(document.getElementById("searchInput").value.trim());
-      });
+      // Use the new smooth animation handler
+      triggerRender(document.getElementById("searchInput").value.trim());
     }
 
     let searchTimeout;
@@ -1906,14 +1896,14 @@
       clearSearchBtn.style.display = val ? 'flex' : 'none';
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
-        requestAnimationFrame(() => renderBuilds(val.trim()));
-      }, 75);
+        triggerRender(val.trim());
+      }, 250); // Small debounce
     });
 
     function clearSearch() {
       searchInput.value = "";
       clearSearchBtn.style.display = 'none';
-      requestAnimationFrame(() => renderBuilds());
+      triggerRender("");
     }
 
     function toggleGuideModal() { 
@@ -2060,9 +2050,12 @@
       const noticeHtml = item.Notice ? `<div class="notice-box"><strong>// NOTICE:</strong><br>${item.Notice.replace(/\n/g, '<br>')}</div>` : '';
       const safeChangelog = (item.changelog || '').trim();
       const escapedChangelog = safeChangelog.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+      
+      // Dynamic stagger duration (max 320ms so it doesn't take forever to load)
+      const staggerDelay = Math.min((cardIndex || 0) * 40, 320);
 
       return `
-        <div class="rom-card" style="--stagger: ${cardIndex};">
+        <div class="rom-card" style="--stagger: ${staggerDelay}ms;">
           <div class="card-top">
             <div class="card-title-group">
               <div class="build-name">${item.title}</div>
@@ -2145,6 +2138,7 @@
       container.innerHTML = htmlBuffer || `<div style="text-align:center; padding:4rem; font-family:'JetBrains Mono'; color:var(--text-300);">[ SYSTEM: No matching packages found ]</div>`;
     }
 
+    // Trigger initial render
     renderBuilds();
   </script>
 </body>
